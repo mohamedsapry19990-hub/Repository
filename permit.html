@@ -2,13 +2,9 @@
 <html lang="ar" dir="rtl">
 
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <base target="_top">
-
 <title>تقديم ومعايا تصريح شركة ثانية</title>
 
 <?!= include("style"); ?>
@@ -27,9 +23,10 @@
     font-weight: bold;
     font-size: 15px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    animation: fadeIn 0.4s ease-in-out;
   }
 
-  /* تنسيق شريط التنبيه للنجاح (أخضر) - مطابق للصورة */
+  /* تنسيق شريط التنبيه للنجاح (أخضر) */
   .alert-banner-success {
     display: none;
     background-color: #d1e7dd;
@@ -40,6 +37,7 @@
     margin-bottom: 20px;
     text-align: center;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    animation: fadeIn 0.4s ease-in-out;
   }
 
   .alert-banner-success h4 {
@@ -53,7 +51,7 @@
     font-size: 13.5px;
   }
 
-  /* حل نهائي لمشاكل الـ Select على الموبايل والكمبيوتر باستخدام قائمة مخصصة */
+  /* تنسيق القوائم المنسدلة المخصصة للموبايل والكمبيوتر */
   .custom-select-wrapper {
       position: relative;
       user-select: none;
@@ -118,26 +116,35 @@
       background-color: #e7f1ff;
       color: #0056b3;
   }
-</style>
 
+  .preview-image {
+      max-width: 100%;
+      max-height: 180px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-top: 10px;
+      object-fit: contain;
+  }
+
+  @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+  }
+</style>
 </head>
 
 <body class="permit-page">
 
 <div class="container">
-
     <div class="card">
-
         <h2 class="title">
-
             📄 تقديم ومعايا تصريح شركة ثانية
-
         </h2>
 
         <!-- شريط التنبيه للنجاح (أخضر) -->
         <div id="successBanner" class="alert-banner-success">
           <h4>✅ تم حفظ البيانات بنجاح!</h4>
-          <p>بيانات حضرتك وصلت بنجاح وانشاء الله محاضره حضرتك في اقرب وقت.</p>
+          <p>بيانات حضرتك وصلت بنجاح وإن شاء الله محاضرتك في أقرب وقت.</p>
         </div>
 
         <!-- شريط التنبيه العلوي للأخطاء -->
@@ -145,187 +152,90 @@
 
         <hr>
 
-        <div class="form-group">
+        <form id="permitForm">
+            <div class="form-group">
+                <label>الاسم بالكامل</label>
+                <input type="text" id="name" class="form-control" placeholder="أدخل الاسم بالكامل" required>
+            </div>
 
-            <label>الاسم بالكامل</label>
+            <div class="form-group">
+                <label>الرقم القومي</label>
+                <input type="text" id="nationalId" class="form-control" maxlength="14" placeholder="14 رقم" required oninput="this.value = this.value.replace(/\D/g, '')">
+            </div>
 
-            <input
-            type="text"
-            id="name"
-            placeholder="أدخل الاسم بالكامل">
+            <div class="form-group">
+                <label>رقم الهاتف</label>
+                <input type="text" id="phone" class="form-control" placeholder="01xxxxxxxxx" required>
+            </div>
 
-        </div>
-
-        <div class="form-group">
-
-            <label>الرقم القومي</label>
-
-            <input
-            type="text"
-            id="nationalId"
-            maxlength="14"
-            placeholder="14 رقم"
-            oninput="this.value = this.value.replace(/\D/g, '')">
-
-        </div>
-
-        <div class="form-group">
-
-            <label>رقم الهاتف</label>
-
-            <input
-            type="text"
-            id="phone"
-            placeholder="01xxxxxxxxx">
-
-        </div>
-
-        <!-- قائمة المهن المخصصة الجديدة للموبايل والكمبيوتر -->
-        <div class="form-group" style="margin-bottom: 25px;">
-
-            <label style="font-weight: bold; font-size: 16px; margin-bottom: 8px; display: block;">المهنة</label>
-
-            <div class="custom-select-wrapper" id="jobSelectWrapper">
-                <div class="custom-select-trigger" id="jobTrigger">-- اختر المهنة من القائمة --</div>
-                <input type="hidden" id="job">
-                <div class="custom-options">
-                    <div class="custom-option" data-value="نجار مسلح">نجار مسلح</div>
-                    <div class="custom-option" data-value="حداد مسلح">حداد مسلح</div>
-                    <div class="custom-option" data-value="شده معدنيه">شده معدنيه</div>
-                    <div class="custom-option" data-value="مساعدين">مساعدين</div>
-                    <div class="custom-option" data-value="فرمجي خرسانه">فرمجي خرسانه</div>
-                    <div class="custom-option" data-value="بحريه">بحريه</div>
-                    <div class="custom-option" data-value="عزل">عزل</div>
-                    <div class="custom-option" data-value="كهربائي">كهربائي</div>
-                    <div class="custom-option" data-value="حجار">حجار</div>
-                    <div class="custom-option" data-value="مساح">مساح</div>
-                    <div class="custom-option" data-value="مساعد مساح">مساعد مساح</div>
+            <!-- قائمة المهن المخصصة -->
+            <div class="form-group" style="margin-bottom: 25px;">
+                <label style="font-weight: bold; font-size: 16px; margin-bottom: 8px; display: block;">المهنة</label>
+                <div class="custom-select-wrapper" id="jobSelectWrapper">
+                    <div class="custom-select-trigger" id="jobTrigger">-- اختر المهنة من القائمة --</div>
+                    <input type="hidden" id="job" required>
+                    <div class="custom-options">
+                        <div class="custom-option" data-value="نجار مسلح">نجار مسلح</div>
+                        <div class="custom-option" data-value="حداد مسلح">حداد مسلح</div>
+                        <div class="custom-option" data-value="شده معدنيه">شده معدنيه</div>
+                        <div class="custom-option" data-value="مساعدين">مساعدين</div>
+                        <div class="custom-option" data-value="فرمجي خرسانه">فرمجي خرسانه</div>
+                        <div class="custom-option" data-value="بحريه">بحريه</div>
+                        <div class="custom-option" data-value="عزل">عزل</div>
+                        <div class="custom-option" data-value="كهربائي">كهربائي</div>
+                        <div class="custom-option" data-value="حجار">حجار</div>
+                        <div class="custom-option" data-value="مساح">مساح</div>
+                        <div class="custom-option" data-value="مساعد مساح">مساعد مساح</div>
+                    </div>
                 </div>
             </div>
 
+            <div class="form-group">
+                <label>اسم الشركة القديمة (اللي كنت شغال فيها)</label>
+                <input type="text" id="company" class="form-control" placeholder="أدخل اسم الشركة القديمة" required>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label>صورة البطاقة (الوجه)</label>
+                <input type="file" id="front" accept="image/*" class="form-control" required onchange="previewFront()">
+                <img id="frontPreview" class="preview-image" style="display:none;">
+            </div>
+
+            <div class="form-group">
+                <label>صورة البطاقة (الخلف)</label>
+                <input type="file" id="back" accept="image/*" class="form-control" required onchange="previewBack()">
+                <img id="backPreview" class="preview-image" style="display:none;">
+            </div>
+
+            <div class="form-group">
+                <label>صورة التصريح</label>
+                <input type="file" id="permit" accept="image/*" class="form-control" required onchange="previewPermit()">
+                <img id="permitPreview" class="preview-image" style="display:none;">
+            </div>
+
+            <div class="form-group">
+                <label style="color:red; font-weight:bold;">صورة الممانعة (مهم جداً - بدونها لن يتم القبول)</label>
+                <input type="file" id="clearance" accept="image/*" class="form-control" required onchange="previewClearance()">
+                <img id="clearancePreview" class="preview-image" style="display:none;">
+            </div>
+
+            <hr>
+
+            <button type="button" id="submitBtn" class="btn btn-success" style="width: 100%;" onclick="validateAndSave()">
+                💾 حفظ البيانات
+            </button>
+
+            <button type="button" class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="goHome()">
+                🏠 العودة للرئيسية
+            </button>
+        </form>
+
+        <div id="loading" style="display:none; text-align:center; margin-top:20px; color:#007bff; font-weight:bold;">
+            ⏳ جاري ضغط الصور وحفظ البيانات...
         </div>
-
-        <div class="form-group">
-
-            <label>اسم الشركة القديمه (اللي كنت شغال فيها)</label>
-
-            <input
-            type="text"
-            id="company"
-            placeholder="أدخل اسم الشركة القديمة أو اللي كنت شغال فيها">
-
-        </div>
-
-        <hr>
-
-        <h3> </h3>
-
-        <div class="form-group">
-
-            <label>صورة البطاقة (الوجه)</label>
-
-            <input
-            type="file"
-            id="front"
-            accept="image/*"
-            onchange="previewFront()">
-
-            <br><br>
-
-            <img
-            id="frontPreview"
-            class="preview-image"
-            style="display:none;">
-
-        </div>
-
-        <div class="form-group">
-
-            <label>صورة البطاقة (الخلف)</label>
-
-            <input
-            type="file"
-            id="back"
-            accept="image/*"
-            onchange="previewBack()">
-
-            <br><br>
-
-            <img
-            id="backPreview"
-            class="preview-image"
-            style="display:none;">
-
-        </div>
-
-        <div class="form-group">
-
-            <label>صورة التصريح</label>
-
-            <input
-            type="file"
-            id="permit"
-            accept="image/*"
-            onchange="previewPermit()">
-
-            <br><br>
-
-            <img
-            id="permitPreview"
-            class="preview-image"
-            style="display:none;">
-
-        </div>
-
-        <div class="form-group">
-
-            <label style="color:red;">صورة الممانعة ( مهم جدااا بدونها لن يتم القبول)</label>
-
-            <input
-            type="file"
-            id="clearance"
-            accept="image/*"
-            onchange="previewClearance()">
-
-            <br><br>
-
-            <img
-            id="clearancePreview"
-            class="preview-image"
-            style="display:none;">
-
-        </div>
-
-        <hr>
-
-        <button
-        type="button"
-        class="btn btn-success"
-        onclick="validateAndSave()">
-
-            💾 حفظ البيانات
-
-        </button>
-
-        <button
-        type="button"
-        class="btn btn-secondary"
-        onclick="window.top.location.href='<?= scriptUrl ?>?page=index'">
-
-            🏠 العودة للرئيسية
-
-        </button>
-
-        <div
-        id="loading"
-        style="display:none;text-align:center;margin-top:20px;">
-
-            ⏳ جاري حفظ البيانات...
-
-        </div>
-
     </div>
-
 </div>
 
 <?!= include("javascript"); ?>
@@ -362,8 +272,26 @@
       selectWrapper.classList.remove('open');
   });
 
-  // حجب الرسائل المنبثقة من المتصفح
-  window.alert = function() {};
+  // المعاينة المباشرة للصور
+  function previewImage(input, previewId) {
+      const preview = document.getElementById(previewId);
+      const file = input.files[0];
+      if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+              preview.src = e.target.result;
+              preview.style.display = 'block';
+          }
+          reader.readAsDataURL(file);
+      } else {
+          preview.style.display = 'none';
+      }
+  }
+
+  function previewFront() { previewImage(document.getElementById('front'), 'frontPreview'); }
+  function previewBack() { previewImage(document.getElementById('back'), 'backPreview'); }
+  function previewPermit() { previewImage(document.getElementById('permit'), 'permitPreview'); }
+  function previewClearance() { previewImage(document.getElementById('clearance'), 'clearancePreview'); }
 
   // إخفاء التنبيهات
   function hideErrorBanner() {
@@ -392,80 +320,148 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // التحقق قبل الحفظ
-  function validateAndSave() {
+  // ضغط وتصغير الصورة قبل تحويلها لـ Base64
+  function fileToBase64Optimized(file) {
+      return new Promise((resolve, reject) => {
+          if (!file) return resolve("");
+
+          const reader = new FileReader();
+          reader.onload = (e) => {
+              const img = new Image();
+              img.onload = () => {
+                  const canvas = document.createElement('canvas');
+                  let width = img.width;
+                  let height = img.height;
+                  const maxDim = 1000;
+
+                  if (width > maxDim || height > maxDim) {
+                      if (width > height) {
+                          height = Math.round((height * maxDim) / width);
+                          width = maxDim;
+                      } else {
+                          width = Math.round((width * maxDim) / height);
+                          height = maxDim;
+                      }
+                  }
+
+                  canvas.width = width;
+                  canvas.height = height;
+                  const ctx = canvas.getContext('2d');
+                  ctx.drawImage(img, 0, 0, width, height);
+                  resolve(canvas.toDataURL('image/jpeg', 0.70));
+              };
+              img.onerror = () => resolve(e.target.result);
+              img.src = e.target.result;
+          };
+          reader.onerror = error => reject(error);
+          reader.readAsDataURL(file);
+      });
+  }
+
+  // التحقق قبل الحفظ مع المعالجة اللاتزامية
+  async function validateAndSave() {
     hideErrorBanner();
-    var nationalId = document.getElementById('nationalId').value.trim();
-    
+
+    const name = document.getElementById('name').value.trim();
+    const nationalId = document.getElementById('nationalId').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const job = document.getElementById('job').value;
+    const company = document.getElementById('company').value.trim();
+
+    const frontFile = document.getElementById('front').files[0];
+    const backFile = document.getElementById('back').files[0];
+    const permitFile = document.getElementById('permit').files[0];
+    const clearanceFile = document.getElementById('clearance').files[0];
+
+    if (!name || !nationalId || !phone || !job || !company || !frontFile || !backFile || !permitFile || !clearanceFile) {
+        showErrorBanner('الرجاء إدخال جميع البيانات المطلوبة وإرفاق كافة الصور بما فيها الممانعة!');
+        return;
+    }
+
     if (nationalId.length !== 14) {
       showErrorBanner('الرقم القومي غير مكتمل! يجب أن يحتوي على 14 رقماً بالضبط.');
       return;
     }
 
-    var clearanceInput = document.getElementById('clearance');
-    if (!clearanceInput || clearanceInput.files.length === 0) {
-      showErrorBanner('رفع صورة الممانعة إلزامي');
-      return;
-    }
-    
-    // إرسال نوع التسجيل بالاسم الدقيق المتوافق مع الباك إند
-    if (typeof savePermit === 'function') {
-      savePermit("تقديم ومعايا تصريح شركة تانية");
-    } else if (typeof saveData === 'function') {
-      // احتياطي في حال استدعاء دالة عامة
-      var formData = {
-        type: "تقديم ومعايا تصريح شركة تانية",
-        name: document.getElementById('name').value,
-        nationalId: document.getElementById('nationalId').value,
-        phone: document.getElementById('phone').value,
-        job: document.getElementById('job').value,
-        company: document.getElementById('company').value,
-        frontImage: window.frontBase64 || "",
-        backImage: window.backBase64 || "",
-        permitImage: window.permitBase64 || ""
-      };
-      document.getElementById('loading').style.display = 'block';
-      google.script.run
-        .withSuccessHandler(handleServerResponse)
-        .withFailureHandler(function(err){
-           document.getElementById('loading').style.display = 'none';
-           showErrorBanner(err.message || 'حدث خطأ أثناء الحفظ');
-        })
-        .saveData(formData);
+    const submitBtn = document.getElementById('submitBtn');
+    const loading = document.getElementById('loading');
+
+    submitBtn.disabled = true;
+    loading.style.display = 'block';
+
+    try {
+        // ضغط الأربع صور معاً بالتوازي
+        const [frontBase64, backBase64, permitBase64, clearanceBase64] = await Promise.all([
+            fileToBase64Optimized(frontFile),
+            fileToBase64Optimized(backFile),
+            fileToBase64Optimized(permitFile),
+            fileToBase64Optimized(clearanceFile)
+        ]);
+
+        const formData = {
+            action: "saveData",
+            type: "تقديم ومعايا تصريح شركة تانية",
+            name: name,
+            nationalId: nationalId,
+            phone: phone,
+            job: job,
+            company: company,
+            frontImage: frontBase64,
+            backImage: backBase64,
+            permitImage: permitBase64,
+            clearanceImage: clearanceBase64
+        };
+
+        if (typeof google !== 'undefined' && google.script && google.script.run) {
+            google.script.run
+              .withSuccessHandler(handleServerResponse)
+              .withFailureHandler(function(err){
+                 loading.style.display = 'none';
+                 submitBtn.disabled = false;
+                 showErrorBanner(err.message || 'حدث خطأ أثناء الحفظ');
+              })
+              .saveData(formData);
+        } else if (typeof saveData === 'function') {
+            const res = await saveData(formData);
+            handleServerResponse(res);
+        } else if (typeof callApi === 'function') {
+            const res = await callApi(formData);
+            handleServerResponse(res);
+        } else {
+            loading.style.display = 'none';
+            submitBtn.disabled = false;
+            showErrorBanner('تعذر الاتصال بالخادم.');
+        }
+
+    } catch (err) {
+        loading.style.display = 'none';
+        submitBtn.disabled = false;
+        showErrorBanner('حدث خطأ أثناء معالجة الصور: ' + err.message);
     }
   }
 
   // الدالة التي تتلقى الرد بعد تنفيذ الحفظ من السيرفر
   function handleServerResponse(res) {
-    document.getElementById('loading').style.display = 'none';
-    if (res && res.status) {
+    const loading = document.getElementById('loading');
+    const submitBtn = document.getElementById('submitBtn');
+    if (loading) loading.style.display = 'none';
+    if (submitBtn) submitBtn.disabled = false;
+
+    if (res && (res.status === true || res.status === 'success')) {
       showSuccessBanner();
     } else {
-      showErrorBanner(res ? res.message : 'حدث خطأ غير متوقع');
+      showErrorBanner(res ? res.message : 'حدث خطأ غير متوقع أثناء الحفظ');
     }
   }
 
-  // دعم الاستدعاء المتوافق مع JavaScript.html
-  function showSuccessModal() {
-    showSuccessBanner();
-  }
-
   function resetFormFields() {
-    document.getElementById('name').value = '';
-    document.getElementById('nationalId').value = '';
-    document.getElementById('phone').value = '';
+    document.getElementById('permitForm').reset();
+
     document.getElementById('job').value = '';
     selectTrigger.textContent = '-- اختر المهنة من القائمة --';
     selectTrigger.style.color = '#333';
     optionsList.forEach(opt => opt.classList.remove('selected'));
     
-    document.getElementById('company').value = '';
-    
-    document.getElementById('front').value = '';
-    document.getElementById('back').value = '';
-    document.getElementById('permit').value = '';
-    document.getElementById('clearance').value = '';
-
     document.getElementById('frontPreview').style.display = 'none';
     document.getElementById('backPreview').style.display = 'none';
     document.getElementById('permitPreview').style.display = 'none';
@@ -473,10 +469,13 @@
   }
 
   function goHome() {
-    window.top.location.href = '<?= scriptUrl ?>?page=index';
+    if (typeof scriptUrl !== 'undefined') {
+      window.top.location.href = scriptUrl + '?page=index';
+    } else {
+      window.location.href = 'index.html';
+    }
   }
 </script>
 
 </body>
-
 </html>
