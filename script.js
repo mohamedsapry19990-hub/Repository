@@ -1,7 +1,7 @@
 // =========================================================================
 // 🔗 رابط تطبيق Google Apps Script
 // =========================================================================
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwXya1AqRpMiWzGciwltuwFfkwA6CBAoAaJ4lNEC3xoMa85BwgHMLRNNhAY_22qlBdo0g/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwg6kHBfYivLAuKOcn9bCw4LhlaHNfd00qyiIAPlpQpdPlQcAEMd6QtZx4b9pZ8XRjaeg/exec";
 
 // =========================================================================
 // 🌐 دالة إرسال البيانات عبر Fetch API
