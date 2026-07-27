@@ -216,6 +216,20 @@ function validateRegister(requirePermit = false, requireClearance = false){
     return true;
 }
 
+// دالة إرسال مضمونة تجتاز حظر CORS على الموبايل
+function sendApiRequest(payload) {
+    const params = new URLSearchParams();
+    params.append("payload", JSON.stringify(payload));
+
+    return fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+        },
+        body: params
+    }).then(res => res.json());
+}
+
 async function save(){
     if(!validateRegister(false, false)) return;
 
@@ -236,17 +250,15 @@ async function save(){
         cvImage: cvBase64
     };
 
-    fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(data)
-    })
-    .then(res => res.json())
+    sendApiRequest(data)
     .then(function(res){
         hideLoading();
         if(res && (res.status === true || res.status === "success")){
             hideErrorBanner();
             showSuccessBanner(res.message);
+            const form = document.querySelector("form");
+            if (form) form.reset();
+            document.querySelectorAll(".preview-image").forEach(img => img.style.display = "none");
         } else {
             const msg = (res && res.message) ? res.message : "حدث خطأ أثناء الحفظ";
             showErrorBanner(msg);
@@ -254,7 +266,7 @@ async function save(){
     })
     .catch(function(err){
         hideLoading();
-        showErrorBanner("خطأ: " + err);
+        showErrorBanner("خطأ في الاتصال بالخادم: " + err);
     });
 }
 
@@ -280,17 +292,15 @@ async function savePermit(typeTitle = "تقديم ومعايا تصريح شرك
         clearanceImage: clearanceBase64
     };
 
-    fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(data)
-    })
-    .then(res => res.json())
+    sendApiRequest(data)
     .then(function(res){
         hideLoading();
         if(res && (res.status === true || res.status === "success")){
             hideErrorBanner();
             showSuccessBanner(res.message);
+            const form = document.querySelector("form");
+            if (form) form.reset();
+            document.querySelectorAll(".preview-image").forEach(img => img.style.display = "none");
         } else {
             const msg = (res && res.message) ? res.message : "الرقم القومي مسجل بالفعل أو حدث خطأ!";
             showErrorBanner(msg);
@@ -322,17 +332,15 @@ async function saveRenewPermit(){
         cvImage: cvBase64
     };
 
-    fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(data)
-    })
-    .then(res => res.json())
+    sendApiRequest(data)
     .then(function(res){
         hideLoading();
         if(res && (res.status === true || res.status === "success")){
             hideErrorBanner();
             showSuccessBanner(res.message);
+            const form = document.querySelector("form");
+            if (form) form.reset();
+            document.querySelectorAll(".preview-image").forEach(img => img.style.display = "none");
         } else {
             const msg = (res && res.message) ? res.message : "الرقم القومي مسجل بالفعل أو حدث خطأ!";
             showErrorBanner(msg);
@@ -356,12 +364,7 @@ function searchRecord(){
     const resultEl = document.getElementById("result");
     if(resultEl) resultEl.innerHTML = "";
 
-    fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: "searchData", nationalId: nationalId })
-    })
-    .then(res => res.json())
+    sendApiRequest({ action: "searchData", nationalId: nationalId })
     .then(function(res){
         hideLoading();
         if(res && res.status === "success"){
