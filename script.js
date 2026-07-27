@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbylz_Dk9pDVMxXWicoZlHCrUrDActFqHTD9cgGfcOuv4Xzk0YLyq4iXfBoyzLZUPX3V3A/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwFSiuWR_Z7BYwsUQAgGcMV954QaHYSj5yQYKn9F1heSSCsAOASHHI286sZg8qwm-YV/exec";
 
 document.addEventListener("DOMContentLoaded", function() {
     document.body.style.overflowY = "auto";
