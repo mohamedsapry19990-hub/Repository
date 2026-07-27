@@ -1,5 +1,13 @@
-<style>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
 
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base target="_top">
+<title>تقديم ومعايا تصريح شركة ثانية</title>
+
+<style>
 /* ===========================
     القواعد المشتركة لكل الصفحات
 =========================== */
@@ -181,633 +189,6 @@ button {
     font-size: 14px;
 }
 
-/* ===========================
-   الصفحة الرئيسية فقط
-   لا يؤثر على باقي الصفحات
-=========================== */
-
-body.home-page {
-    min-height: 100vh;
-    min-height: 100dvh;
-    overflow-x: hidden;
-    color: #10275a;
-    background:
-        linear-gradient(rgba(2, 20, 70, .40), rgba(2, 20, 70, .68)),
-        url("https://images.unsplash.com/photo-1614279629245-d7a138f035f0?q=80&w=1548&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")
-        center center / cover no-repeat;
-}
-
-body.home-page::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    opacity: .28;
-    background:
-        radial-gradient(circle at 10% 75%, #69d7ff 0 2px, transparent 3px),
-        radial-gradient(circle at 90% 23%, #69d7ff 0 2px, transparent 3px);
-    background-size: 145px 165px, 190px 220px;
-}
-
-.home-page .container {
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
-    min-height: 100dvh;
-    align-items: center;
-    padding: 28px 16px 22px;
-}
-
-.home-shell {
-    width: min(100%, 700px);
-}
-
-.home-hero {
-    padding: 5px 12px 26px;
-    text-align: center;
-    color: #fff;
-}
-
-.hero-logo,
-.welcome-brand {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.logo-symbol,
-.welcome-logo,
-.footer-logo {
-    display: grid;
-    place-items: center;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    font-weight: 900;
-    line-height: 1;
-    background: linear-gradient(135deg, #129fff, #0056d9 55%, #02bf9c);
-    box-shadow: 0 8px 22px rgba(3, 126, 232, .30);
-}
-
-.logo-symbol {
-    width: 68px;
-    height: 68px;
-    margin-bottom: 7px;
-    border-radius: 23px 12px 23px 12px;
-    font-size: 42px;
-    transform: rotate(-8deg);
-}
-
-.hero-logo strong {
-    font: 800 31px Arial, sans-serif;
-    letter-spacing: 2px;
-}
-
-.hero-logo small {
-    margin-top: 3px;
-    color: #24d5ff;
-    font: 800 13px Arial, sans-serif;
-    letter-spacing: 4px;
-}
-
-.home-page .title {
-    margin: 25px 0 9px;
-    color: #fff;
-    font-size: clamp(25px, 6.6vw, 43px);
-    line-height: 1.35;
-    text-shadow: 0 3px 14px rgba(0, 21, 72, .24);
-}
-
-.hero-description {
-    color: #deecff;
-    font-size: clamp(15px, 3.8vw, 21px);
-    line-height: 1.7;
-}
-
-.hero-accent {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-    margin-top: 17px;
-}
-
-.hero-accent span {
-    width: 48px;
-    height: 5px;
-    border-radius: 50px;
-    background: linear-gradient(90deg, #00c5d9, #1664fb);
-}
-
-.hero-accent i {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #1468ff;
-}
-
-.home-page .card {
-    width: 100%;
-    padding: 28px 16px 18px;
-    border: 1px solid rgba(255, 255, 255, .78);
-    border-radius: 29px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(235, 244, 255, .86));
-    box-shadow: 0 18px 35px rgba(0, 16, 62, .34);
-}
-
-.welcome-logo {
-    width: 56px;
-    height: 56px;
-    margin-bottom: 13px;
-    border-radius: 18px 9px 18px 9px;
-    font-size: 33px;
-    transform: rotate(-8deg);
-}
-
-.welcome-brand p {
-    margin-bottom: 3px;
-    color: #354d80;
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.welcome-brand h2 {
-    margin: 0;
-    font: 800 clamp(26px, 7vw, 38px) Arial, sans-serif;
-    background: linear-gradient(90deg, #1554df, #00a9c3);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-}
-
-.home-page .subtitle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 11px;
-    margin: 13px 0 20px;
-    color: #2e477b;
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.home-page .subtitle::before,
-.home-page .subtitle::after {
-    content: "";
-    width: 39px;
-    height: 1px;
-    background: #91abe0;
-}
-
-.home-page .menu {
-    display: grid;
-    gap: 12px;
-}
-
-.home-page .menu .menu-item {
-    display: grid;
-    grid-template-columns: 72px 1fr 42px;
-    align-items: center;
-    gap: 10px;
-    min-height: 103px;
-    width: 100%;
-    margin: 0;
-    padding: 12px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, .9);
-    border-radius: 23px;
-    color: #183361;
-    text-align: right;
-    background: linear-gradient(120deg, rgba(255,255,255,.98), rgba(230,240,255,.88));
-    box-shadow: 0 10px 22px rgba(30, 74, 142, .10);
-}
-
-.home-page .menu .menu-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 13px 26px rgba(18, 69, 147, .20);
-}
-
-.home-page .menu .menu-item:active {
-    transform: scale(.985);
-}
-
-.service-icon {
-    display: grid;
-    place-items: center;
-    width: 72px;
-    height: 72px;
-    border-radius: 19px;
-    color: #fff;
-    font-family: Arial, sans-serif;
-    font-size: 48px;
-    font-weight: bold;
-    line-height: 1;
-    box-shadow: 0 9px 16px rgba(6, 70, 175, .25);
-}
-
-.service-copy {
-    min-width: 0;
-}
-
-.service-copy strong,
-.service-copy small {
-    display: block;
-}
-
-.service-copy strong {
-    margin-bottom: 7px;
-    font-size: clamp(19px, 5vw, 26px);
-    line-height: 1.2;
-}
-
-.service-copy small {
-    color: #344d7b;
-    font-size: clamp(12px, 3.25vw, 15px);
-    line-height: 1.45;
-}
-
-.service-arrow {
-    display: grid;
-    place-items: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: #fff;
-    color: #185ce4;
-    box-shadow: 0 5px 12px rgba(25, 69, 141, .17);
-    font-family: Arial, sans-serif;
-    font-size: 39px;
-    line-height: 1;
-}
-
-.home-page .btn-success .service-icon {
-    background: linear-gradient(135deg, #10c66a, #00984a);
-}
-
-.home-page .btn-success .service-copy strong,
-.home-page .btn-success .service-arrow {
-    color: #009b4d;
-}
-
-.home-page .btn-primary .service-icon {
-    background: linear-gradient(135deg, #2185ff, #0048df);
-}
-
-.home-page .btn-primary .service-copy strong {
-    color: #1158e4;
-}
-
-.home-page .btn-warning .service-icon {
-    background: linear-gradient(135deg, #ffc21a, #ff8700);
-}
-
-.home-page .btn-warning .service-copy strong,
-.home-page .btn-warning .service-arrow {
-    color: #f08b00;
-}
-
-.home-page .btn-info .service-icon {
-    background: linear-gradient(135deg, #506a9d, #112754);
-}
-
-.home-page .btn-info .service-copy strong,
-.home-page .btn-info .service-arrow {
-    color: #2c477d;
-}
-
-.home-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 18px;
-    margin-top: 22px;
-    padding: 18px 7px 0;
-    border-top: 1px solid rgba(111, 190, 255, .25);
-    color: #fff;
-}
-
-.footer-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.footer-logo {
-    width: 43px;
-    height: 43px;
-    border-radius: 14px 7px 14px 7px;
-    font-size: 25px;
-}
-
-.footer-brand strong,
-.footer-brand small {
-    display: block;
-}
-
-.footer-brand strong {
-    font: 700 15px Arial, sans-serif;
-}
-
-.footer-brand small {
-    margin-top: 4px;
-    color: #36d7f3;
-    font-size: 11px;
-}
-
-.home-footer p {
-    margin: 0;
-    font-size: 12px;
-    line-height: 1.8;
-    text-align: left;
-}
-
-@media (max-width: 768px) {
-    .card {
-        width: 100%;
-        padding: 20px;
-    }
-
-    button {
-        font-size: 15px;
-    }
-
-    .preview-image,
-    .result-image {
-        width: 100%;
-    }
-}
-
-@media (max-width: 390px) {
-    .home-page .container {
-        padding-right: 11px;
-        padding-left: 11px;
-    }
-
-    .home-page .card {
-        padding: 24px 11px 14px;
-        border-radius: 25px;
-    }
-
-    .home-page .menu .menu-item {
-        grid-template-columns: 61px 1fr 34px;
-        min-height: 91px;
-        gap: 7px;
-        padding: 10px;
-        border-radius: 19px;
-    }
-
-    .service-icon {
-        width: 61px;
-        height: 61px;
-        border-radius: 17px;
-        font-size: 42px;
-    }
-
-    .service-arrow {
-        width: 33px;
-        height: 33px;
-        font-size: 34px;
-    }
-
-    .home-footer {
-        gap: 10px;
-    }
-}
-
-/* =========================================
-   صفحة تسجيل موظف جديد فقط
-========================================= */
-
-body.register-page {
-    min-height: 100vh;
-    min-height: 100dvh;
-    overflow-x: hidden;
-    background:
-        linear-gradient(rgba(2, 14, 55, .46), rgba(2, 14, 55, .72)),
-        url("https://drive.google.com/thumbnail?id=1J8L55XgT49KP5beqo7jLtJAoBM3Y6TzQ&sz=w1600")
-        center center / cover no-repeat;
-    color: #17356d;
-}
-
-body.register-page::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background:
-        radial-gradient(circle at 8% 24%, rgba(38, 186, 255, .9) 0 2px, transparent 3px),
-        radial-gradient(circle at 92% 35%, rgba(38, 186, 255, .9) 0 2px, transparent 3px),
-        radial-gradient(circle at 18% 80%, rgba(38, 186, 255, .8) 0 2px, transparent 3px),
-        radial-gradient(circle at 84% 75%, rgba(38, 186, 255, .8) 0 2px, transparent 3px);
-    background-size: 170px 210px, 220px 260px, 190px 230px, 240px 280px;
-    opacity: .55;
-}
-
-.register-page .container {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 28px 16px 40px;
-}
-
-.register-page .container::before {
-    content: "نظام تسجيل الموظفين والتصاريح\A إدارة متكاملة وسهلة لموظفيك وتصاريحهم في مكان واحد";
-    white-space: pre-line;
-    display: block;
-    width: min(100%, 620px);
-    min-height: 190px;
-    padding: 122px 12px 22px;
-    margin-bottom: 4px;
-    text-align: center;
-    color: #fff;
-    font-size: clamp(14px, 3.6vw, 19px);
-    font-weight: 700;
-    line-height: 1.9;
-    text-shadow: 0 2px 12px rgba(0, 15, 61, .65);
-    background:
-        url("https://drive.google.com/thumbnail?id=1kGjUhjS3uuabfRTP-W4t0Sk9fEw4JsBb&sz=w1000")
-        center 4px / 175px 112px no-repeat;
-}
-
-.register-page .card {
-    width: min(100%, 610px);
-    padding: 26px 20px 22px;
-    border: 1px solid rgba(255, 255, 255, .9);
-    border-radius: 27px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(226, 239, 255, .88));
-    box-shadow: 0 18px 42px rgba(0, 14, 61, .38);
-    backdrop-filter: blur(10px);
-}
-
-.register-page .card .title {
-    position: relative;
-    margin-bottom: 22px;
-    padding: 0 0 17px;
-    color: #1465e9;
-    font-size: clamp(23px, 6vw, 31px);
-    line-height: 1.35;
-}
-
-.register-page .card .title::after {
-    content: "";
-    position: absolute;
-    right: 50%;
-    bottom: 0;
-    width: 120px;
-    height: 3px;
-    border-radius: 99px;
-    background: linear-gradient(90deg, #00c8e8, #1565eb);
-    transform: translateX(50%);
-}
-
-.register-page .card > hr,
-.register-page form > hr {
-    height: 1px;
-    margin: 20px 0;
-    border: 0;
-    background: #b7d1f6;
-}
-
-.register-page .form-group {
-    margin-bottom: 17px;
-}
-
-.register-page label {
-    margin-bottom: 8px;
-    color: #244274;
-    font-size: 15px;
-    font-weight: 800;
-}
-
-.register-page input[type=text],
-.register-page select,
-.register-page .custom-job-select {
-    width: 100%;
-    min-height: 52px;
-    padding: 12px 14px !important;
-    border: 1px solid #d5e2f8 !important;
-    border-radius: 11px !important;
-    color: #1e3767 !important;
-    font-size: 15px !important;
-    font-weight: 600 !important;
-    background: rgba(255, 255, 255, .92) !important;
-    box-shadow: 0 5px 13px rgba(40, 94, 175, .08) !important;
-}
-
-.register-page input[type=text]::placeholder {
-    color: #8a9bbc;
-}
-
-.register-page input[type=text]:focus,
-.register-page select:focus,
-.register-page .custom-job-select:focus {
-    border-color: #1685f2 !important;
-    box-shadow: 0 0 0 3px rgba(22, 133, 242, .16) !important;
-    outline: none;
-}
-
-.register-page input[type=file] {
-    width: 100%;
-    padding: 13px;
-    border: 1px dashed #78a9ef;
-    border-radius: 12px;
-    color: #3263a8;
-    background: rgba(248, 252, 255, .9);
-    cursor: pointer;
-}
-
-.register-page input[type=file]::file-selector-button {
-    margin-left: 10px;
-    padding: 8px 13px;
-    border: 0;
-    border-radius: 7px;
-    color: #fff;
-    font-family: Tahoma, Arial, sans-serif;
-    font-weight: bold;
-    background: linear-gradient(135deg, #1688f5, #1254db);
-    cursor: pointer;
-}
-
-.register-page #cvContainer {
-    border-color: #3c8dfa !important;
-    border-radius: 13px !important;
-    background: rgba(233, 244, 255, .86) !important;
-}
-
-.register-page .preview-img {
-    max-width: 100%;
-    max-height: 180px;
-    margin: 12px auto 0;
-    border: 1px solid #b7d4ff;
-    border-radius: 10px;
-    box-shadow: 0 7px 16px rgba(24, 86, 175, .12);
-}
-
-.register-page .alert-custom {
-    border-radius: 12px;
-    box-shadow: 0 7px 16px rgba(19, 59, 120, .1);
-}
-
-.register-page #submitBtn {
-    min-height: 54px;
-    margin-top: 10px !important;
-    border-radius: 10px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #11ba69, #07914c);
-    box-shadow: 0 8px 16px rgba(0, 136, 69, .22);
-}
-
-.register-page #submitBtn:hover {
-    background: linear-gradient(135deg, #0ba95e, #067c40);
-}
-
-.register-page .btn-secondary {
-    min-height: 50px;
-    border-radius: 10px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #224b89, #102c62);
-    box-shadow: 0 8px 16px rgba(7, 35, 83, .2);
-}
-
-.register-page .btn-secondary:hover {
-    background: linear-gradient(135deg, #183e78, #0b214c);
-}
-
-.register-page #loading {
-    color: #1565e5 !important;
-}
-
-@media (max-width: 480px) {
-    .register-page .container {
-        padding: 18px 11px 28px;
-    }
-
-    .register-page .container::before {
-        min-height: 164px;
-        padding-top: 105px;
-        margin-bottom: 0;
-        font-size: 14px;
-        background-size: 145px 94px;
-        background-position: center 2px;
-    }
-
-    .register-page .card {
-        padding: 22px 13px 17px;
-        border-radius: 22px;
-    }
-
-    .register-page .card .title {
-        font-size: 24px;
-    }
-
-    .register-page label {
-        font-size: 14px;
-    }
-}
-
 /* =========================================
    صفحة تصريح شركة ثانية فقط
 ========================================= */
@@ -973,12 +354,6 @@ body.permit-page::before {
     box-shadow: 0 7px 16px rgba(24, 86, 175, .12);
 }
 
-.permit-page .alert-banner,
-.permit-page .alert-banner-success {
-    border-radius: 12px;
-    box-shadow: 0 7px 16px rgba(19, 59, 120, .1);
-}
-
 .permit-page .btn-success {
     min-height: 54px;
     margin-top: 10px;
@@ -1004,429 +379,467 @@ body.permit-page::before {
     background: linear-gradient(135deg, #183e78, #0b214c);
 }
 
-.permit-page #loading {
-    color: #1565e5 !important;
-}
-
-@media (max-width: 480px) {
-    .permit-page .container {
-        padding: 18px 11px 28px;
-    }
-
-    .permit-page .container::before {
-        min-height: 164px;
-        padding-top: 105px;
-        margin-bottom: 0;
-        font-size: 14px;
-        background-size: 145px 94px;
-        background-position: center 2px;
-    }
-
-    .permit-page .card {
-        padding: 22px 13px 17px;
-        border-radius: 22px;
-    }
-
-    .permit-page .card .title {
-        font-size: 23px;
-    }
-
-    .permit-page label {
-        font-size: 14px;
-    }
-}
-
-/* =========================================
-   صفحة تجديد التصاريح فقط
-========================================= */
-
-body.renew-page {
-    min-height: 100vh;
-    min-height: 100dvh;
-    overflow-x: hidden;
-    background:
-        linear-gradient(rgba(2, 14, 55, .46), rgba(2, 14, 55, .72)),
-        url("https://drive.google.com/thumbnail?id=1J8L55XgT49KP5beqo7jLtJAoBM3Y6TzQ&sz=w1600")
-        center center / cover no-repeat;
-    color: #17356d;
-}
-
-body.renew-page::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    opacity: .55;
-    background:
-        radial-gradient(circle at 8% 24%, rgba(38, 186, 255, .9) 0 2px, transparent 3px),
-        radial-gradient(circle at 92% 35%, rgba(38, 186, 255, .9) 0 2px, transparent 3px),
-        radial-gradient(circle at 18% 80%, rgba(38, 186, 255, .8) 0 2px, transparent 3px),
-        radial-gradient(circle at 84% 75%, rgba(38, 186, 255, .8) 0 2px, transparent 3px);
-    background-size: 170px 210px, 220px 260px, 190px 230px, 240px 280px;
-}
-
-.renew-page .container {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 28px 16px 40px;
-}
-
-.renew-page .container::before {
-    content: "نظام تسجيل الموظفين والتصاريح\A إدارة متكاملة وسهلة لموظفيك وتصاريحهم في مكان واحد";
-    white-space: pre-line;
-    display: block;
-    width: min(100%, 620px);
-    min-height: 190px;
-    padding: 122px 12px 22px;
-    margin-bottom: 4px;
+/* تنسيق شريط التنبيه للأخطاء (أحمر) */
+.alert-banner {
+    display: none;
+    background-color: #f8d7da;
+    color: #842029;
+    border: 1px solid #f5c2c7;
+    border-radius: 12px;
+    padding: 12px 15px;
+    margin-bottom: 20px;
     text-align: center;
-    color: #fff;
-    font-size: clamp(14px, 3.6vw, 19px);
-    font-weight: 700;
-    line-height: 1.9;
-    text-shadow: 0 2px 12px rgba(0, 15, 61, .65);
-    background:
-        url("https://drive.google.com/thumbnail?id=1kGjUhjS3uuabfRTP-W4t0Sk9fEw4JsBb&sz=w1000")
-        center 4px / 175px 112px no-repeat;
-}
-
-.renew-page .card {
-    width: min(100%, 610px);
-    padding: 26px 20px 22px;
-    border: 1px solid rgba(255, 255, 255, .9);
-    border-radius: 27px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(226, 239, 255, .88));
-    box-shadow: 0 18px 42px rgba(0, 14, 61, .38);
-    backdrop-filter: blur(10px);
-}
-
-.renew-page .card .title {
-    position: relative;
-    margin-bottom: 22px;
-    padding: 0 0 17px;
-    color: #087f99;
-    font-size: clamp(23px, 5.8vw, 31px);
-    line-height: 1.35;
-}
-
-.renew-page .card .title::after {
-    content: "";
-    position: absolute;
-    right: 50%;
-    bottom: 0;
-    width: 120px;
-    height: 3px;
-    border-radius: 99px;
-    background: linear-gradient(90deg, #00c8e8, #087f99);
-    transform: translateX(50%);
-}
-
-.renew-page .card > hr {
-    height: 1px;
-    margin: 20px 0;
-    border: 0;
-    background: #b7d1f6;
-}
-
-.renew-page .form-group {
-    margin-bottom: 17px;
-}
-
-.renew-page label {
-    margin-bottom: 8px;
-    color: #244274;
+    font-weight: bold;
     font-size: 15px;
-    font-weight: 800;
+    box-shadow: 0 7px 16px rgba(19, 59, 120, .1);
 }
 
-.renew-page input[type=text],
-.renew-page select,
-.renew-page .custom-job-select {
-    width: 100%;
-    min-height: 52px;
-    padding: 12px 14px !important;
-    border: 1px solid #d5e2f8 !important;
-    border-radius: 11px !important;
-    color: #1e3767 !important;
-    font-size: 15px !important;
-    font-weight: 600 !important;
-    background: rgba(255, 255, 255, .92) !important;
-    box-shadow: 0 5px 13px rgba(40, 94, 175, .08) !important;
-}
-
-.renew-page input[type=text]::placeholder {
-    color: #8a9bbc;
-}
-
-.renew-page input[type=text]:focus,
-.renew-page select:focus,
-.renew-page .custom-job-select:focus {
-    border-color: #00a9c2 !important;
-    box-shadow: 0 0 0 3px rgba(0, 169, 194, .16) !important;
-    outline: none;
-}
-
-.renew-page input[type=file] {
-    width: 100%;
-    padding: 13px;
-    border: 1px dashed #78a9ef;
+/* تنسيق شريط التنبيه للنجاح (أخضر) */
+.alert-banner-success {
+    display: none;
+    background-color: #d1e7dd;
+    color: #0f5132;
+    border: 1px solid #badbcc;
     border-radius: 12px;
-    color: #3263a8;
-    background: rgba(248, 252, 255, .9);
-    cursor: pointer;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    text-align: center;
+    box-shadow: 0 7px 16px rgba(19, 59, 120, .1);
 }
 
-.renew-page input[type=file]::file-selector-button {
-    margin-left: 10px;
-    padding: 8px 13px;
-    border: 0;
-    border-radius: 7px;
-    color: #fff;
-    font-family: Tahoma, Arial, sans-serif;
+.alert-banner-success h4 {
+    margin: 0 0 5px 0;
+    font-size: 17px;
     font-weight: bold;
-    background: linear-gradient(135deg, #10b5ca, #087eaf);
-    cursor: pointer;
 }
 
-.renew-page .preview-image,
-.renew-page .preview-img {
-    max-width: 100%;
-    max-height: 180px;
-    margin: 12px auto 0;
-    border: 1px solid #b7d4ff;
-    border-radius: 10px;
-    box-shadow: 0 7px 16px rgba(24, 86, 175, .12);
+.alert-banner-success p {
+    margin: 0;
+    font-size: 13.5px;
 }
 
-.renew-page .btn-success {
-    min-height: 54px;
-    margin-top: 10px;
-    border-radius: 10px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #18b7c7, #087ea5);
-    box-shadow: 0 8px 16px rgba(0, 131, 156, .24);
-}
-
-.renew-page .btn-success:hover {
-    background: linear-gradient(135deg, #0fa6b6, #066b91);
-}
-
-.renew-page .btn-secondary {
-    min-height: 50px;
-    border-radius: 10px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #224b89, #102c62);
-    box-shadow: 0 8px 16px rgba(7, 35, 83, .2);
-}
-
-.renew-page .btn-secondary:hover {
-    background: linear-gradient(135deg, #183e78, #0b214c);
-}
-
-.renew-page #loading {
-    color: #087eaf !important;
-}
-
-@media (max-width: 480px) {
-    .renew-page .container {
-        padding: 18px 11px 28px;
-    }
-
-    .renew-page .container::before {
-        min-height: 164px;
-        padding-top: 105px;
-        margin-bottom: 0;
-        font-size: 14px;
-        background-size: 145px 94px;
-        background-position: center 2px;
-    }
-
-    .renew-page .card {
-        padding: 22px 13px 17px;
-        border-radius: 22px;
-    }
-
-    .renew-page .card .title {
-        font-size: 24px;
-    }
-
-    .renew-page label {
-        font-size: 14px;
-    }
-}
-
-/* =========================================
-   صفحة البحث عن موظف
-========================================= */
-
-body.search-page {
-    min-height: 100vh;
-    min-height: 100dvh;
-    overflow-x: hidden;
-    background:
-        linear-gradient(rgba(2,14,55,.45),rgba(2,14,55,.72)),
-        url("https://drive.google.com/thumbnail?id=1J8L55XgT49KP5beqo7jLtJAoBM3Y6TzQ&sz=w1600")
-        center center/cover no-repeat fixed;
-}
-
-body.search-page::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    opacity: .55;
-    background:
-        radial-gradient(circle at 8% 24%,rgba(38,186,255,.9) 0 2px,transparent 3px),
-        radial-gradient(circle at 92% 35%,rgba(38,186,255,.9) 0 2px,transparent 3px),
-        radial-gradient(circle at 18% 80%,rgba(38,186,255,.8) 0 2px,transparent 3px),
-        radial-gradient(circle at 84% 75%,rgba(38,186,255,.8) 0 2px,transparent 3px);
-    background-size: 170px 210px,220px 260px,190px 230px,240px 280px;
-    z-index: 0;
-}
-
-.search-page .container {
+/* قائمة منسدلة مخصصة للمهن متوافقة مع الموبايل والكمبيوتر */
+.custom-select-wrapper {
     position: relative;
-    z-index: 2;
-    max-width: 720px;
-    margin: auto;
-    padding: 30px 15px 40px;
-    min-height: 100vh;
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.search-page .container::before {
-    content: "";
-    display: block;
-    width: 170px;
-    height: 170px;
-    margin: 0 auto 15px;
-    background: url("https://drive.google.com/thumbnail?id=1kGjUhjS3uuabfRTP-W4t0Sk9fEw4JsBb&sz=w1000")
-    center/contain no-repeat;
-}
-
-.search-page .container::after {
-    content: "نظام تسجيل الموظفين والتصاريح\Aإدارة متكاملة وسهلة لموظفيك وتصاريحهم في مكان واحد";
-    white-space: pre-line;
-    display: block;
-    text-align: center;
-    color: #fff;
-    font-size: 18px;
-    font-weight: bold;
-    line-height: 1.9;
-    margin-bottom: 25px;
-    text-shadow: 0 2px 10px rgba(0,0,0,.5);
-}
-
-.search-page .card,
-.search-page .search-card,
-.search-page .result-card {
-    background: rgba(255,255,255,.92);
-    backdrop-filter: blur(14px);
-    border-radius: 28px;
-    border: 1px solid rgba(255,255,255,.7);
-    box-shadow: 0 18px 45px rgba(0,0,0,.35);
-    padding: 30px;
+    user-select: none;
     width: 100%;
 }
-
-.search-page input[type=text] {
-    height: 55px;
-    border-radius: 12px;
-    border: 1px solid #dbe6ff;
+.custom-select-trigger {
+    height: 52px;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 12px 14px;
+    border-radius: 11px;
+    border: 1px solid #d5e2f8;
+    background-color: rgba(255, 255, 255, .92);
+    color: #1e3767;
+    cursor: pointer;
+    box-shadow: 0 5px 13px rgba(40, 94, 175, .08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+}
+.custom-select-trigger:after {
+    content: "▼";
+    font-size: 12px;
+    color: #1685f2;
+    transition: transform 0.3s ease;
+}
+.custom-select-wrapper.open .custom-select-trigger:after {
+    transform: rotate(180deg);
+}
+.custom-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 5px;
     background: #fff;
-    font-size: 16px;
-    font-weight: bold;
+    border: 1px solid #d5e2f8;
+    border-radius: 11px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    max-height: 250px;
+    overflow-y: auto;
+    display: none;
+    z-index: 999;
 }
-
-.search-page input[type=text]:focus {
-    border-color: #1ea7ff;
-    box-shadow: 0 0 0 4px rgba(30,167,255,.15);
-}
-
-.search-page button,
-.search-page .btn {
-    border: none;
-    border-radius: 12px;
-    font-weight: bold;
-    transition: .3s;
-}
-
-.search-page .btn-primary {
-    background: linear-gradient(135deg,#1f8cff,#0066ff);
-}
-
-.search-page .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0,110,255,.3);
-}
-
-.search-page .btn-secondary {
-    background: linear-gradient(135deg,#455a80,#26395d);
-}
-
-.search-page img {
-    border-radius: 12px;
-    border: 2px solid #d8e7ff;
-    box-shadow: 0 10px 20px rgba(0,0,0,.15);
-}
-
-.search-page h2,
-.search-page h3 {
-    color: #1364dd;
-    font-weight: 800;
-}
-
-.search-page hr {
-    border-color: #d9e8ff;
-}
-
-@media(max-width:768px) {
-    .search-page .container::before {
-        width: 120px;
-        height: 120px;
-    }
-
-    .search-page .container::after {
-        font-size: 15px;
-    }
-
-    .search-page .card,
-    .search-page .search-card,
-    .search-page .result-card {
-        padding: 20px;
-        border-radius: 22px;
-    }
-}
-
-/* ===== Search Header ===== */
-
-.search-header {
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-.search-logo {
-    width: 170px;
-    max-width: 45vw;
+.custom-select-wrapper.open .custom-options {
     display: block;
-    margin: auto;
-    filter: drop-shadow(0 10px 25px rgba(0,180,255,.45));
 }
-
-.search-header h1 {
-    margin-top: 18px;
-    margin-bottom: 12px;
-    color: #fff;
-    font-size: 40px;
-    font-weight: 800;
+.custom-option {
+    padding: 12px 14px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e3767;
+    cursor: pointer;
+    border-bottom: 1px solid #f1f1f1;
+    transition: background 0.2s;
 }
-
+.custom-option:last-child {
+    border-bottom: none;
+}
+.custom-option:hover, .custom-option.selected {
+    background-color: #e7f1ff;
+    color: #1685f2;
+}
 </style>
+</head>
+
+<body class="permit-page">
+
+<div class="container">
+    <div class="card">
+        <h2 class="title">
+            📄 تقديم ومعايا تصريح شركة ثانية
+        </h2>
+
+        <!-- شريط التنبيه للنجاح (أخضر) -->
+        <div id="successBanner" class="alert-banner-success">
+          <h4>✅ تم حفظ البيانات بنجاح!</h4>
+          <p>بيانات حضرتك وصلت بنجاح وإن شاء الله محاضرتك في أقرب وقت.</p>
+        </div>
+
+        <!-- شريط التنبيه العلوي للأخطاء -->
+        <div id="errorBanner" class="alert-banner"></div>
+
+        <hr>
+
+        <div class="form-group">
+            <label>الاسم بالكامل</label>
+            <input type="text" id="name" placeholder="أدخل الاسم بالكامل">
+        </div>
+
+        <div class="form-group">
+            <label>الرقم القومي</label>
+            <input type="text" id="nationalId" maxlength="14" placeholder="14 رقم" oninput="this.value = this.value.replace(/\D/g, '')">
+        </div>
+
+        <div class="form-group">
+            <label>رقم الهاتف</label>
+            <input type="text" id="phone" placeholder="01xxxxxxxxx">
+        </div>
+
+        <!-- قائمة المهن المخصصة للموبايل والكمبيوتر -->
+        <div class="form-group" style="margin-bottom: 25px;">
+            <label>المهنة</label>
+            <div class="custom-select-wrapper" id="jobSelectWrapper">
+                <div class="custom-select-trigger" id="jobTrigger">-- اختر المهنة من القائمة --</div>
+                <input type="hidden" id="job">
+                <div class="custom-options">
+                    <div class="custom-option" data-value="نجار مسلح">نجار مسلح</div>
+                    <div class="custom-option" data-value="حداد مسلح">حداد مسلح</div>
+                    <div class="custom-option" data-value="شده معدنيه">شده معدنيه</div>
+                    <div class="custom-option" data-value="مساعدين">مساعدين</div>
+                    <div class="custom-option" data-value="فرمجي خرسانه">فرمجي خرسانه</div>
+                    <div class="custom-option" data-value="بحريه">بحريه</div>
+                    <div class="custom-option" data-value="عزل">عزل</div>
+                    <div class="custom-option" data-value="كهربائي">كهربائي</div>
+                    <div class="custom-option" data-value="حجار">حجار</div>
+                    <div class="custom-option" data-value="مساح">مساح</div>
+                    <div class="custom-option" data-value="مساعد مساح">مساعد مساح</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>اسم الشركة القديمه (اللي كنت شغال فيها)</label>
+            <input type="text" id="company" placeholder="أدخل اسم الشركة القديمة أو اللي كنت شغال فيها">
+        </div>
+
+        <hr>
+
+        <div class="form-group">
+            <label>صورة البطاقة (الوجه)</label>
+            <input type="file" id="front" accept="image/*" onchange="previewFront()">
+            <img id="frontPreview" class="preview-image" style="display:none;">
+        </div>
+
+        <div class="form-group">
+            <label>صورة البطاقة (الخلف)</label>
+            <input type="file" id="back" accept="image/*" onchange="previewBack()">
+            <img id="backPreview" class="preview-image" style="display:none;">
+        </div>
+
+        <div class="form-group">
+            <label>صورة التصريح</label>
+            <input type="file" id="permit" accept="image/*" onchange="previewPermit()">
+            <img id="permitPreview" class="preview-image" style="display:none;">
+        </div>
+
+        <div class="form-group">
+            <label style="color:#d9534f;">صورة الممانعة ( مهم جدااا بدونها لن يتم القبول)</label>
+            <input type="file" id="clearance" accept="image/*" onchange="previewClearance()">
+            <img id="clearancePreview" class="preview-image" style="display:none;">
+        </div>
+
+        <hr>
+
+        <button type="button" id="submitBtn" class="btn btn-success" onclick="validateAndSave()">
+            💾 حفظ البيانات
+        </button>
+
+        <button type="button" class="btn btn-secondary" onclick="goHome()">
+            🏠 العودة للرئيسية
+        </button>
+
+        <div id="loading">
+            ⏳ جاري معالجة وحفظ البيانات...
+        </div>
+    </div>
+</div>
+
+<script>
+  // تفعيل القائمة المنسدلة المخصصة للموبايل والكمبيوتر
+  const selectWrapper = document.getElementById('jobSelectWrapper');
+  const selectTrigger = document.getElementById('jobTrigger');
+  const jobInput = document.getElementById('job');
+  const optionsList = document.querySelectorAll('.custom-option');
+
+  selectTrigger.addEventListener('click', function (e) {
+      e.stopPropagation();
+      selectWrapper.classList.toggle('open');
+  });
+
+  optionsList.forEach(option => {
+      option.addEventListener('click', function () {
+          const value = this.getAttribute('data-value');
+          const text = this.textContent;
+          
+          selectTrigger.textContent = text;
+          selectTrigger.style.color = '#1e3767';
+          jobInput.value = value;
+          
+          selectWrapper.classList.remove('open');
+          
+          optionsList.forEach(opt => opt.classList.remove('selected'));
+          this.classList.add('selected');
+      });
+  });
+
+  window.addEventListener('click', function () {
+      selectWrapper.classList.remove('open');
+  });
+
+  // حجب الرسائل المنبثقة من المتصفح
+  window.alert = function() {};
+
+  // معاينة الصور
+  function previewImage(input, previewId) {
+      const preview = document.getElementById(previewId);
+      const file = input.files[0];
+      if (file) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+              preview.src = e.target.result;
+              preview.style.display = 'block';
+          }
+          reader.readAsDataURL(file);
+      } else {
+          preview.style.display = 'none';
+      }
+  }
+
+  function previewFront() { previewImage(document.getElementById('front'), 'frontPreview'); }
+  function previewBack() { previewImage(document.getElementById('back'), 'backPreview'); }
+  function previewPermit() { previewImage(document.getElementById('permit'), 'permitPreview'); }
+  function previewClearance() { previewImage(document.getElementById('clearance'), 'clearancePreview'); }
+
+  // إخفاء التنبيهات
+  function hideErrorBanner() {
+    var banner = document.getElementById('errorBanner');
+    var successBanner = document.getElementById('successBanner');
+    banner.style.display = 'none';
+    banner.innerText = '';
+    if (successBanner) successBanner.style.display = 'none';
+  }
+
+  // إظهار التنبيه أعلى الصفحة
+  function showErrorBanner(message) {
+    hideErrorBanner();
+    var banner = document.getElementById('errorBanner');
+    banner.innerText = '❌ ' + message;
+    banner.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // إظهار شريط النجاح الأخضر وتفريغ الحقول
+  function showSuccessBanner() {
+    hideErrorBanner();
+    var banner = document.getElementById('successBanner');
+    banner.style.display = 'block';
+    resetFormFields();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ضغط وتصغير الصورة قبل تحويلها لـ Base64 لتجنب الحجم الزائد والبطء
+  function fileToBase64Optimized(file) {
+      return new Promise((resolve, reject) => {
+          if (!file) return resolve("");
+          const reader = new FileReader();
+          reader.onload = (e) => {
+              const img = new Image();
+              img.onload = () => {
+                  const canvas = document.createElement('canvas');
+                  let width = img.width;
+                  let height = img.height;
+                  const maxDim = 1000;
+
+                  if (width > maxDim || height > maxDim) {
+                      if (width > height) {
+                          height = Math.round((height * maxDim) / width);
+                          width = maxDim;
+                      } else {
+                          width = Math.round((width * maxDim) / height);
+                          height = maxDim;
+                      }
+                  }
+
+                  canvas.width = width;
+                  canvas.height = height;
+                  const ctx = canvas.getContext('2d');
+                  ctx.drawImage(img, 0, 0, width, height);
+                  resolve(canvas.toDataURL('image/jpeg', 0.70));
+              };
+              img.onerror = () => resolve(e.target.result);
+              img.src = e.target.result;
+          };
+          reader.onerror = error => reject(error);
+          reader.readAsDataURL(file);
+      });
+  }
+
+  // التحقق قبل الحفظ ومعالجة الصور
+  async function validateAndSave() {
+    hideErrorBanner();
+
+    var name = document.getElementById('name').value.trim();
+    var nationalId = document.getElementById('nationalId').value.trim();
+    var phone = document.getElementById('phone').value.trim();
+    var job = document.getElementById('job').value;
+    var company = document.getElementById('company').value.trim();
+
+    if (!name || !nationalId || !phone || !job || !company) {
+      showErrorBanner('الرجاء إتمام إدخال كافة البيانات المطلوبة!');
+      return;
+    }
+
+    if (nationalId.length !== 14) {
+      showErrorBanner('الرقم القومي غير مكتمل! يجب أن يحتوي على 14 رقماً بالضبط.');
+      return;
+    }
+
+    var clearanceInput = document.getElementById('clearance');
+    if (!clearanceInput || clearanceInput.files.length === 0) {
+      showErrorBanner('رفع صورة الممانعة إلزامي');
+      return;
+    }
+
+    var submitBtn = document.getElementById('submitBtn');
+    var loading = document.getElementById('loading');
+
+    submitBtn.disabled = true;
+    loading.style.display = 'block';
+
+    try {
+        const frontFile = document.getElementById('front').files[0];
+        const backFile = document.getElementById('back').files[0];
+        const permitFile = document.getElementById('permit').files[0];
+        const clearanceFile = document.getElementById('clearance').files[0];
+
+        const [frontBase64, backBase64, permitBase64, clearanceBase64] = await Promise.all([
+            fileToBase64Optimized(frontFile),
+            fileToBase64Optimized(backFile),
+            fileToBase64Optimized(permitFile),
+            fileToBase64Optimized(clearanceFile)
+        ]);
+
+        var formData = {
+          action: "saveData",
+          type: "تقديم ومعايا تصريح شركة تانية",
+          name: name,
+          nationalId: nationalId,
+          phone: phone,
+          job: job,
+          company: company,
+          frontImage: frontBase64,
+          backImage: backBase64,
+          permitImage: permitBase64,
+          clearanceImage: clearanceBase64
+        };
+
+        if (typeof google !== 'undefined' && google.script && google.script.run) {
+            google.script.run
+              .withSuccessHandler(handleServerResponse)
+              .withFailureHandler(function(err){
+                   loading.style.display = 'none';
+                   submitBtn.disabled = false;
+                   showErrorBanner(err.message || 'حدث خطأ أثناء الحفظ');
+              })
+              .saveData(formData);
+        } else if (typeof saveData === 'function') {
+            const res = await saveData(formData);
+            handleServerResponse(res);
+        } else if (typeof callApi === 'function') {
+            const res = await callApi(formData);
+            handleServerResponse(res);
+        } else {
+            loading.style.display = 'none';
+            submitBtn.disabled = false;
+            showErrorBanner('تعذر الاتصال بالخادم.');
+        }
+
+    } catch (err) {
+        loading.style.display = 'none';
+        submitBtn.disabled = false;
+        showErrorBanner('حدث خطأ أثناء معالجة الصور: ' + err.message);
+    }
+  }
+
+  // الدالة التي تتلقى الرد بعد تنفيذ الحفظ من السيرفر
+  function handleServerResponse(res) {
+    var loading = document.getElementById('loading');
+    var submitBtn = document.getElementById('submitBtn');
+    if (loading) loading.style.display = 'none';
+    if (submitBtn) submitBtn.disabled = false;
+
+    if (res && (res.status === true || res.status === 'success')) {
+      showSuccessBanner();
+    } else {
+      showErrorBanner(res ? res.message : 'حدث خطأ غير متوقع');
+    }
+  }
+
+  function resetFormFields() {
+    document.getElementById('name').value = '';
+    document.getElementById('nationalId').value = '';
+    document.getElementById('phone').value = '';
+    document.getElementById('job').value = '';
+    selectTrigger.textContent = '-- اختر المهنة من القائمة --';
+    selectTrigger.style.color = '#1e3767';
+    optionsList.forEach(opt => opt.classList.remove('selected'));
+    
+    document.getElementById('company').value = '';
+    
+    document.getElementById('front').value = '';
+    document.getElementById('back').value = '';
+    document.getElementById('permit').value = '';
+    document.getElementById('clearance').value = '';
+
+    document.getElementById('frontPreview').style.display = 'none';
+    document.getElementById('backPreview').style.display = 'none';
+    document.getElementById('permitPreview').style.display = 'none';
+    document.getElementById('clearancePreview').style.display = 'none';
+  }
+
+  function goHome() {
+    if (typeof scriptUrl !== 'undefined') {
+      window.top.location.href = scriptUrl + '?page=index';
+    } else {
+      window.top.location.href = 'index.html';
+    }
+  }
+</script>
+
+</body>
+</html>
