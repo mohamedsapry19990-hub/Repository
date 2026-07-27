@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم الأدمن - GPS</title>
+    
+    <!-- ربط ملف التنسيق العام -->
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* أنماط خاصة بصفحة لوحة التحكم فقط */
+        .dashboard-page .card{
+            width: 800px;
+            max-width: 95%;
+            margin: 20px auto;
+        }
+
+        .dash-total{
+            text-align: center;
+            background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+            color: #fff;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(13, 110, 253, .25);
+        }
+
+        .dash-total strong{
+            display: block;
+            font-size: 36px;
+            margin-top: 6px;
+        }
+
+        .dash-category{
+            border: 1px solid #e2e6ea;
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-bottom: 20px;
+            background: #fbfcfe;
+        }
+
+        .dash-category-header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .dash-category-header h3{
+            color: #1364dd;
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .dash-badge{
+            background: #198754;
+            color: #fff;
+            font-weight: bold;
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .dash-job-row{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e2e6ea;
+            font-size: 14px;
+            gap: 10px;
+        }
+
+        .dash-job-row:last-child{
+            border-bottom: none;
+        }
+
+        .dash-job-name{
+            font-weight: bold;
+            color: #333;
+            flex: 1 1 auto;
+            min-width: 90px;
+        }
+
+        .dash-bar-wrap{
+            flex: 2 1 auto;
+            background: #eef2f7;
+            border-radius: 50px;
+            height: 8px;
+            overflow: hidden;
+        }
+
+        .dash-bar-fill{
+            height: 100%;
+            background: linear-gradient(90deg, #1f8cff, #0066ff);
+            border-radius: 50px;
+        }
+
+        .dash-job-count{
+            color: #0d6efd;
+            font-weight: bold;
+            min-width: 28px;
+            text-align: left;
+        }
+
+        .dash-empty{
+            text-align: center;
+            color: #999;
+            padding: 10px;
+        }
+
+        #dashError{
+            display: none;
+            background: #f8d7da;
+            color: #842029;
+            border: 1px solid #f5c2c7;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .dash-actions{
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .dash-actions button{
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body class="dashboard-page">
+
+    <div class="container">
+        <div class="card">
+
+            <h2 class="title">📊 لوحة تحكم الأدمن</h2>
+            <p class="subtitle">إحصائيات التسجيل والتصاريح</p>
+            <hr style="margin-bottom:20px;">
+
+            <!-- شاشة الدخول بكلمة السر -->
+            <div id="dashLoginBox">
+                <div id="dashError"></div>
+                <div class="form-group">
+                    <label>كلمة السر</label>
+                    <input type="password" id="dashPassword" placeholder="ادخل كلمة السر"
+                        onkeydown="if(event.key === 'Enter') loadDashboard(false)">
+                </div>
+                <button type="button" class="btn btn-primary" onclick="loadDashboard(false)">🔑 دخول</button>
+            </div>
+
+            <!-- محتوى لوحة التحكم -->
+            <div id="dashContent" style="display:none;">
+
+                <div class="dash-total">
+                    <span>إجمالي عدد التسجيلات</span>
+                    <strong id="dashTotalAll">0</strong>
+                </div>
+
+                <div id="dashCategories"></div>
+
+                <div class="dash-actions">
+                    <button type="button" class="btn btn-secondary" onclick="loadDashboard(true)">⟳ تحديث البيانات</button>
+                    <button type="button" class="btn btn-secondary" onclick="logoutDashboard()">🚪 تسجيل خروج</button>
+                </div>
+            </div>
+
+            <div id="loading" style="display:none;text-align:center;margin-top:20px;color:#0d6efd;font-weight:bold;">
+                ⏳ جاري تحميل البيانات...
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ربط ملف الجافاسكريبت الرئيسي -->
+    <script src="script.js"></script>
+
+    <script>
+        // كلمة السر تتخزن في الذاكرة المؤقتة فقط أثناء فتح الصفحة
+        let ADMIN_PASS = null;
+
+        function showDashError(msg){
+            const box = document.getElementById('dashError');
+            box.innerText = '❌ ' + msg;
+            box.style.display = 'block';
+        }
+
+        function hideDashError(){
+            const box = document.getElementById('dashError');
+            box.style.display = 'none';
+            box.innerText = '';
+        }
+
+        async function loadDashboard(isRefresh){
+            hideDashError();
+
+            const pass = isRefresh ? ADMIN_PASS : document.getElementById('dashPassword').value.trim();
+
+            if(!pass){
+                showDashError('من فضلك أدخل كلمة السر');
+                return;
+            }
+
+            document.getElementById('loading').style.display = 'block';
+
+            try {
+                // إرسال الطلب للخلفية عبر callApi الموجودة في script.js
+                const res = await callApi({ 
+                    action: "getDashboardStats", 
+                    password: pass 
+                });
+
+                document.getElementById('loading').style.display = 'none';
+
+                if(res && res.status){
+                    ADMIN_PASS = pass;
+                    document.getElementById('dashLoginBox').style.display = 'none';
+                    document.getElementById('dashContent').style.display = 'block';
+                    renderDashboard(res);
+                } else {
+                    showDashError(res && res.message ? res.message : 'كلمة السر غير صحيحة');
+                }
+            } catch (err) {
+                document.getElementById('loading').style.display = 'none';
+                showDashError('حدث خطأ في الاتصال: ' + err);
+            }
+        }
+
+        function renderDashboard(res){
+            document.getElementById('dashTotalAll').innerText = res.totalAll || 0;
+
+            const wrap = document.getElementById('dashCategories');
+            wrap.innerHTML = '';
+
+            let anyShown = false;
+
+            if(res.categories && Array.isArray(res.categories)){
+                res.categories.forEach(function(cat){
+                    if(cat.total === 0) return; // إخفاء أي تصنيف لا يتضمن بيانات
+                    anyShown = true;
+
+                    let jobsHtml = '';
+                    if(!cat.jobs || cat.jobs.length === 0){
+                        jobsHtml = '<div class="dash-empty">لا توجد بيانات مهن</div>';
+                    } else {
+                        cat.jobs.forEach(function(j){
+                            const percent = cat.total > 0 ? Math.round((j.count / cat.total) * 100) : 0;
+                            jobsHtml += ''
+                                + '<div class="dash-job-row">'
+                                +   '<span class="dash-job-name">' + j.job + '</span>'
+                                +   '<div class="dash-bar-wrap"><div class="dash-bar-fill" style="width:' + percent + '%;"></div></div>'
+                                +   '<span class="dash-job-count">' + j.count + '</span>'
+                                + '</div>';
+                        });
+                    }
+
+                    wrap.innerHTML += ''
+                        + '<div class="dash-category">'
+                        +   '<div class="dash-category-header">'
+                        +     '<h3>' + cat.label + '</h3>'
+                        +     '<span class="dash-badge">' + cat.total + ' تسجيل</span>'
+                        +   '</div>'
+                        +   jobsHtml
+                        + '</div>';
+                });
+            }
+
+            if(!anyShown){
+                wrap.innerHTML = '<div class="dash-empty">لا توجد أي بيانات مسجلة حتى الآن</div>';
+            }
+        }
+
+        function logoutDashboard(){
+            ADMIN_PASS = null;
+            document.getElementById('dashPassword').value = '';
+            document.getElementById('dashContent').style.display = 'none';
+            document.getElementById('dashLoginBox').style.display = 'block';
+            hideDashError();
+        }
+    </script>
+
+</body>
+</html>
