@@ -2,75 +2,92 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GPS COMPANY | الصفحة الرئيسية</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPS شركة</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="home-page">
 
     <main class="container">
-        <header class="header-hero">
-            <img src="https://drive.google.com/thumbnail?id=1kGjUhjS3uuabfRTP-W4t0Sk9fEw4JsBb&sz=w1000" alt="GPS COMPANY Logo" class="logo-img">
-            <h1 class="title">نظام تسجيل الموظفين والتصاريح</h1>
-            <p class="hero-description">إدارة متكاملة وسهلة لموظفيك وتصاريحهم في مكان واحد</p>
-            <div class="hero-accent"><span></span></div>
-        </header>
+        <div class="home-shell">
 
-        <section class="card">
-            <div style="text-align: center; margin-bottom: 15px;">
-                <p style="color: #354d80; font-size: 18px; font-weight: 700;">مرحبًا بك في</p>
-                <h2 style="font-size: 32px; font-weight: 900; background: linear-gradient(90deg, #1554df, #00a9c3); -webkit-background-clip: text; color: transparent;">GPS COMPANY</h2>
-                <p style="color: #2e477b; font-size: 16px; font-weight: 700; margin-top: 10px;">اختر الخدمة المطلوبة</p>
-            </div>
+            <header class="home-hero">
+                <div class="hero-logo" aria-label="GPS Company">
+                    <img src="https://drive.google.com/thumbnail?id=1kGjUhjS3uuabfRTP-W4t0Sk9fEw4JsBb&amp;sz=w1000" alt="GPS Company Logo" style="width:min(330px,82vw);height:180px;object-fit:cover;object-position:center;display:block;margin:-32px auto -6px;">
+                </div>
 
-            <div class="menu">
-                <a href="register.html" class="btn-action btn-success menu-item">
-                    <span class="service-icon">➕</span>
-                    <span class="service-copy">
-                        <strong>تسجيل موظف جديد</strong>
-                        <small>إضافة موظف جديد إلى النظام بسهولة</small>
-                    </span>
-                    <span class="service-arrow">‹</span>
-                </a>
+                <h1 class="title">نظام تسجيل الموظفين والتصاريح</h1>
 
-                <a href="search.html" class="btn-action btn-primary menu-item">
-                    <span class="service-icon">⌕</span>
-                    <span class="service-copy">
-                        <strong>البحث عن موظف</strong>
-                        <small>البحث عن موظف وعرض بياناته كاملة</small>
-                    </span>
-                    <span class="service-arrow">‹</span>
-                </a>
+                <p class="hero-description">
+                    إدارة متكاملة وسهلة لموظفيك وتصاريحهم في مكان واحد
+                </p>
 
-                <a href="permit.html" class="btn-action btn-warning menu-item">
-                    <span class="service-icon">▤</span>
-                    <span class="service-copy">
-                        <strong>تقديم تصريح شركة أخرى</strong>
-                        <small>تقديم تصريح انتقال من شركة أخرى إلى GPS</small>
-                    </span>
-                    <span class="service-arrow">‹</span>
-                </a>
+                <div class="hero-accent" aria-hidden="true">
+                    <span></span><i></i>
+                </div>
+            </header>
 
-                <a href="renew.html" class="btn-action btn-info menu-item">
-                    <span class="service-icon">⟳</span>
-                    <span class="service-copy">
-                        <strong>تجديد التصاريح</strong>
-                        <small>تجديد التصاريح المنتهية بسهولة</small>
-                    </span>
-                    <span class="service-arrow">‹</span>
-                </a>
-            </div>
-        </section>
+            <section class="card" aria-label="الخدمات المتاحة">
+                <div class="welcome-brand">
+                    <p>مرحبًا بك في</p>
+                    <h2>GPS COMPANY</h2>
+                </div>
 
-        <footer class="footer">
-            <strong>GPS COMPANY</strong>
-            <p>© 2026 جميع الحقوق محفوظة | gps-company.online</p>
-        </footer>
+                <p class="subtitle">اختر الخدمة المطلوبة</p>
+
+                <div class="menu">
+                    <button type="button" class="btn btn-success menu-item" onclick="location.href='register.html'">
+                        <span class="service-icon" aria-hidden="true">➕</span>
+                        <span class="service-copy">
+                            <strong>تسجيل موظف جديد</strong>
+                            <small>إضافة موظف جديد إلى النظام بسهولة</small>
+                        </span>
+                        <span class="service-arrow" aria-hidden="true">‹</span>
+                    </button>
+
+                    <button type="button" class="btn btn-primary menu-item" onclick="location.href='search.html'">
+                        <span class="service-icon" aria-hidden="true">⌕</span>
+                        <span class="service-copy">
+                            <strong>البحث عن موظف</strong>
+                            <small>البحث عن موظف وعرض بياناته كاملة</small>
+                        </span>
+                        <span class="service-arrow" aria-hidden="true">‹</span>
+                    </button>
+
+                    <button type="button" class="btn btn-warning menu-item" onclick="location.href='permit.html'">
+                        <span class="service-icon" aria-hidden="true">▤</span>
+                        <span class="service-copy">
+                            <strong>تقديم تصريح شركة أخرى</strong>
+                            <small>تقديم تصريح انتقال من شركة أخرى إلى GPS</small>
+                        </span>
+                        <span class="service-arrow" aria-hidden="true">‹</span>
+                    </button>
+
+                    <button type="button" class="btn btn-info menu-item" onclick="location.href='renew.html'">
+                        <span class="service-icon" aria-hidden="true">⟳</span>
+                        <span class="service-copy">
+                            <strong>تجديد التصاريح</strong>
+                            <small>تجديد التصاريح المنتهية بسهولة</small>
+                        </span>
+                        <span class="service-arrow" aria-hidden="true">‹</span>
+                    </button>
+                </div>
+            </section>
+
+            <footer class="home-footer">
+                <div class="footer-brand">
+                    <img src="https://drive.google.com/thumbnail?id=1kGjUhjS3uuabfRTP-W4t0Sk9fEw4JsBb&amp;sz=w1000" alt="GPS Company Logo" style="width:95px;height:70px;object-fit:cover;object-position:center;display:block;">
+                    <div>
+                        <strong>GPS COMPANY</strong>
+                        <small>نظام إدارة الموظفين والتصاريح</small>
+                    </div>
+                </div>
+
+                <p>© 2026 GPS Company<br>جميع الحقوق محفوظة</p>
+            </footer>
+        </div>
     </main>
 
+    <script src="script.js"></script>
 </body>
 </html>
