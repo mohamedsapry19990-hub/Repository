@@ -23,7 +23,6 @@
     font-weight: bold;
     font-size: 15px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    animation: fadeIn 0.4s ease-in-out;
   }
 
   /* تنسيق شريط التنبيه للنجاح (أخضر) */
@@ -37,7 +36,6 @@
     margin-bottom: 20px;
     text-align: center;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    animation: fadeIn 0.4s ease-in-out;
   }
 
   .alert-banner-success h4 {
@@ -51,7 +49,7 @@
     font-size: 13.5px;
   }
 
-  /* تنسيق القوائم المنسدلة المخصصة للموبايل والكمبيوتر */
+  /* حل نهائي لمشاكل الـ Select على الموبايل والكمبيوتر باستخدام قائمة مخصصة */
   .custom-select-wrapper {
       position: relative;
       user-select: none;
@@ -116,20 +114,6 @@
       background-color: #e7f1ff;
       color: #0056b3;
   }
-
-  .preview-image {
-      max-width: 100%;
-      max-height: 180px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      margin-top: 10px;
-      object-fit: contain;
-  }
-
-  @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-  }
 </style>
 </head>
 
@@ -152,88 +136,90 @@
 
         <hr>
 
-        <form id="permitForm">
-            <div class="form-group">
-                <label>الاسم بالكامل</label>
-                <input type="text" id="name" class="form-control" placeholder="أدخل الاسم بالكامل" required>
-            </div>
+        <div class="form-group">
+            <label>الاسم بالكامل</label>
+            <input type="text" id="name" placeholder="أدخل الاسم بالكامل">
+        </div>
 
-            <div class="form-group">
-                <label>الرقم القومي</label>
-                <input type="text" id="nationalId" class="form-control" maxlength="14" placeholder="14 رقم" required oninput="this.value = this.value.replace(/\D/g, '')">
-            </div>
+        <div class="form-group">
+            <label>الرقم القومي</label>
+            <input type="text" id="nationalId" maxlength="14" placeholder="14 رقم" oninput="this.value = this.value.replace(/\D/g, '')">
+        </div>
 
-            <div class="form-group">
-                <label>رقم الهاتف</label>
-                <input type="text" id="phone" class="form-control" placeholder="01xxxxxxxxx" required>
-            </div>
+        <div class="form-group">
+            <label>رقم الهاتف</label>
+            <input type="text" id="phone" placeholder="01xxxxxxxxx">
+        </div>
 
-            <!-- قائمة المهن المخصصة -->
-            <div class="form-group" style="margin-bottom: 25px;">
-                <label style="font-weight: bold; font-size: 16px; margin-bottom: 8px; display: block;">المهنة</label>
-                <div class="custom-select-wrapper" id="jobSelectWrapper">
-                    <div class="custom-select-trigger" id="jobTrigger">-- اختر المهنة من القائمة --</div>
-                    <input type="hidden" id="job" required>
-                    <div class="custom-options">
-                        <div class="custom-option" data-value="نجار مسلح">نجار مسلح</div>
-                        <div class="custom-option" data-value="حداد مسلح">حداد مسلح</div>
-                        <div class="custom-option" data-value="شده معدنيه">شده معدنيه</div>
-                        <div class="custom-option" data-value="مساعدين">مساعدين</div>
-                        <div class="custom-option" data-value="فرمجي خرسانه">فرمجي خرسانه</div>
-                        <div class="custom-option" data-value="بحريه">بحريه</div>
-                        <div class="custom-option" data-value="عزل">عزل</div>
-                        <div class="custom-option" data-value="كهربائي">كهربائي</div>
-                        <div class="custom-option" data-value="حجار">حجار</div>
-                        <div class="custom-option" data-value="مساح">مساح</div>
-                        <div class="custom-option" data-value="مساعد مساح">مساعد مساح</div>
-                    </div>
+        <!-- قائمة المهن المخصصة الجديدة للموبايل والكمبيوتر -->
+        <div class="form-group" style="margin-bottom: 25px;">
+            <label style="font-weight: bold; font-size: 16px; margin-bottom: 8px; display: block;">المهنة</label>
+            <div class="custom-select-wrapper" id="jobSelectWrapper">
+                <div class="custom-select-trigger" id="jobTrigger">-- اختر المهنة من القائمة --</div>
+                <input type="hidden" id="job">
+                <div class="custom-options">
+                    <div class="custom-option" data-value="نجار مسلح">نجار مسلح</div>
+                    <div class="custom-option" data-value="حداد مسلح">حداد مسلح</div>
+                    <div class="custom-option" data-value="شده معدنيه">شده معدنيه</div>
+                    <div class="custom-option" data-value="مساعدين">مساعدين</div>
+                    <div class="custom-option" data-value="فرمجي خرسانه">فرمجي خرسانه</div>
+                    <div class="custom-option" data-value="بحريه">بحريه</div>
+                    <div class="custom-option" data-value="عزل">عزل</div>
+                    <div class="custom-option" data-value="كهربائي">كهربائي</div>
+                    <div class="custom-option" data-value="حجار">حجار</div>
+                    <div class="custom-option" data-value="مساح">مساح</div>
+                    <div class="custom-option" data-value="مساعد مساح">مساعد مساح</div>
                 </div>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label>اسم الشركة القديمة (اللي كنت شغال فيها)</label>
-                <input type="text" id="company" class="form-control" placeholder="أدخل اسم الشركة القديمة" required>
-            </div>
+        <div class="form-group">
+            <label>اسم الشركة القديمه (اللي كنت شغال فيها)</label>
+            <input type="text" id="company" placeholder="أدخل اسم الشركة القديمة أو اللي كنت شغال فيها">
+        </div>
 
-            <hr>
+        <hr>
 
-            <div class="form-group">
-                <label>صورة البطاقة (الوجه)</label>
-                <input type="file" id="front" accept="image/*" class="form-control" required onchange="previewFront()">
-                <img id="frontPreview" class="preview-image" style="display:none;">
-            </div>
+        <div class="form-group">
+            <label>صورة البطاقة (الوجه)</label>
+            <input type="file" id="front" accept="image/*" onchange="previewFront()">
+            <br><br>
+            <img id="frontPreview" class="preview-image" style="display:none;">
+        </div>
 
-            <div class="form-group">
-                <label>صورة البطاقة (الخلف)</label>
-                <input type="file" id="back" accept="image/*" class="form-control" required onchange="previewBack()">
-                <img id="backPreview" class="preview-image" style="display:none;">
-            </div>
+        <div class="form-group">
+            <label>صورة البطاقة (الخلف)</label>
+            <input type="file" id="back" accept="image/*" onchange="previewBack()">
+            <br><br>
+            <img id="backPreview" class="preview-image" style="display:none;">
+        </div>
 
-            <div class="form-group">
-                <label>صورة التصريح</label>
-                <input type="file" id="permit" accept="image/*" class="form-control" required onchange="previewPermit()">
-                <img id="permitPreview" class="preview-image" style="display:none;">
-            </div>
+        <div class="form-group">
+            <label>صورة التصريح</label>
+            <input type="file" id="permit" accept="image/*" onchange="previewPermit()">
+            <br><br>
+            <img id="permitPreview" class="preview-image" style="display:none;">
+        </div>
 
-            <div class="form-group">
-                <label style="color:red; font-weight:bold;">صورة الممانعة (مهم جداً - بدونها لن يتم القبول)</label>
-                <input type="file" id="clearance" accept="image/*" class="form-control" required onchange="previewClearance()">
-                <img id="clearancePreview" class="preview-image" style="display:none;">
-            </div>
+        <div class="form-group">
+            <label style="color:red;">صورة الممانعة ( مهم جدااا بدونها لن يتم القبول)</label>
+            <input type="file" id="clearance" accept="image/*" onchange="previewClearance()">
+            <br><br>
+            <img id="clearancePreview" class="preview-image" style="display:none;">
+        </div>
 
-            <hr>
+        <hr>
 
-            <button type="button" id="submitBtn" class="btn btn-success" style="width: 100%;" onclick="validateAndSave()">
-                💾 حفظ البيانات
-            </button>
+        <button type="button" id="submitBtn" class="btn btn-success" onclick="validateAndSave()">
+            💾 حفظ البيانات
+        </button>
 
-            <button type="button" class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="goHome()">
-                🏠 العودة للرئيسية
-            </button>
-        </form>
+        <button type="button" class="btn btn-secondary" onclick="goHome()">
+            🏠 العودة للرئيسية
+        </button>
 
-        <div id="loading" style="display:none; text-align:center; margin-top:20px; color:#007bff; font-weight:bold;">
-            ⏳ جاري ضغط الصور وحفظ البيانات...
+        <div id="loading" style="display:none; text-align:center; margin-top:20px;">
+            ⏳ جاري معالجة وحفظ البيانات...
         </div>
     </div>
 </div>
@@ -272,7 +258,10 @@
       selectWrapper.classList.remove('open');
   });
 
-  // المعاينة المباشرة للصور
+  // حجب الرسائل المنبثقة من المتصفح
+  window.alert = function() {};
+
+  // معاينة الصور
   function previewImage(input, previewId) {
       const preview = document.getElementById(previewId);
       const file = input.files[0];
@@ -320,11 +309,10 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // ضغط وتصغير الصورة قبل تحويلها لـ Base64
+  // ضغط وتصغير الصورة قبل تحويلها لـ Base64 لتجنب مشاكل الحجم والبطء
   function fileToBase64Optimized(file) {
       return new Promise((resolve, reject) => {
           if (!file) return resolve("");
-
           const reader = new FileReader();
           reader.onload = (e) => {
               const img = new Image();
@@ -358,24 +346,19 @@
       });
   }
 
-  // التحقق قبل الحفظ مع المعالجة اللاتزامية
+  // التحقق قبل الحفظ مع معالجة الصور
   async function validateAndSave() {
     hideErrorBanner();
 
-    const name = document.getElementById('name').value.trim();
-    const nationalId = document.getElementById('nationalId').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const job = document.getElementById('job').value;
-    const company = document.getElementById('company').value.trim();
+    var name = document.getElementById('name').value.trim();
+    var nationalId = document.getElementById('nationalId').value.trim();
+    var phone = document.getElementById('phone').value.trim();
+    var job = document.getElementById('job').value;
+    var company = document.getElementById('company').value.trim();
 
-    const frontFile = document.getElementById('front').files[0];
-    const backFile = document.getElementById('back').files[0];
-    const permitFile = document.getElementById('permit').files[0];
-    const clearanceFile = document.getElementById('clearance').files[0];
-
-    if (!name || !nationalId || !phone || !job || !company || !frontFile || !backFile || !permitFile || !clearanceFile) {
-        showErrorBanner('الرجاء إدخال جميع البيانات المطلوبة وإرفاق كافة الصور بما فيها الممانعة!');
-        return;
+    if (!name || !nationalId || !phone || !job || !company) {
+      showErrorBanner('الرجاء إتمام إدخال كافة البيانات المطلوبة!');
+      return;
     }
 
     if (nationalId.length !== 14) {
@@ -383,14 +366,24 @@
       return;
     }
 
-    const submitBtn = document.getElementById('submitBtn');
-    const loading = document.getElementById('loading');
+    var clearanceInput = document.getElementById('clearance');
+    if (!clearanceInput || clearanceInput.files.length === 0) {
+      showErrorBanner('رفع صورة الممانعة إلزامي');
+      return;
+    }
+
+    var submitBtn = document.getElementById('submitBtn');
+    var loading = document.getElementById('loading');
 
     submitBtn.disabled = true;
     loading.style.display = 'block';
 
     try {
-        // ضغط الأربع صور معاً بالتوازي
+        const frontFile = document.getElementById('front').files[0];
+        const backFile = document.getElementById('back').files[0];
+        const permitFile = document.getElementById('permit').files[0];
+        const clearanceFile = document.getElementById('clearance').files[0];
+
         const [frontBase64, backBase64, permitBase64, clearanceBase64] = await Promise.all([
             fileToBase64Optimized(frontFile),
             fileToBase64Optimized(backFile),
@@ -398,27 +391,27 @@
             fileToBase64Optimized(clearanceFile)
         ]);
 
-        const formData = {
-            action: "saveData",
-            type: "تقديم ومعايا تصريح شركة تانية",
-            name: name,
-            nationalId: nationalId,
-            phone: phone,
-            job: job,
-            company: company,
-            frontImage: frontBase64,
-            backImage: backBase64,
-            permitImage: permitBase64,
-            clearanceImage: clearanceBase64
+        var formData = {
+          action: "saveData",
+          type: "تقديم ومعايا تصريح شركة تانية",
+          name: name,
+          nationalId: nationalId,
+          phone: phone,
+          job: job,
+          company: company,
+          frontImage: frontBase64,
+          backImage: backBase64,
+          permitImage: permitBase64,
+          clearanceImage: clearanceBase64
         };
 
         if (typeof google !== 'undefined' && google.script && google.script.run) {
             google.script.run
               .withSuccessHandler(handleServerResponse)
               .withFailureHandler(function(err){
-                 loading.style.display = 'none';
-                 submitBtn.disabled = false;
-                 showErrorBanner(err.message || 'حدث خطأ أثناء الحفظ');
+                   loading.style.display = 'none';
+                   submitBtn.disabled = false;
+                   showErrorBanner(err.message || 'حدث خطأ أثناء الحفظ');
               })
               .saveData(formData);
         } else if (typeof saveData === 'function') {
@@ -442,26 +435,38 @@
 
   // الدالة التي تتلقى الرد بعد تنفيذ الحفظ من السيرفر
   function handleServerResponse(res) {
-    const loading = document.getElementById('loading');
-    const submitBtn = document.getElementById('submitBtn');
+    var loading = document.getElementById('loading');
+    var submitBtn = document.getElementById('submitBtn');
     if (loading) loading.style.display = 'none';
     if (submitBtn) submitBtn.disabled = false;
 
     if (res && (res.status === true || res.status === 'success')) {
       showSuccessBanner();
     } else {
-      showErrorBanner(res ? res.message : 'حدث خطأ غير متوقع أثناء الحفظ');
+      showErrorBanner(res ? res.message : 'حدث خطأ غير متوقع');
     }
   }
 
-  function resetFormFields() {
-    document.getElementById('permitForm').reset();
+  function showSuccessModal() {
+    showSuccessBanner();
+  }
 
+  function resetFormFields() {
+    document.getElementById('name').value = '';
+    document.getElementById('nationalId').value = '';
+    document.getElementById('phone').value = '';
     document.getElementById('job').value = '';
     selectTrigger.textContent = '-- اختر المهنة من القائمة --';
     selectTrigger.style.color = '#333';
     optionsList.forEach(opt => opt.classList.remove('selected'));
     
+    document.getElementById('company').value = '';
+    
+    document.getElementById('front').value = '';
+    document.getElementById('back').value = '';
+    document.getElementById('permit').value = '';
+    document.getElementById('clearance').value = '';
+
     document.getElementById('frontPreview').style.display = 'none';
     document.getElementById('backPreview').style.display = 'none';
     document.getElementById('permitPreview').style.display = 'none';
@@ -472,10 +477,11 @@
     if (typeof scriptUrl !== 'undefined') {
       window.top.location.href = scriptUrl + '?page=index';
     } else {
-      window.location.href = 'index.html';
+      window.top.location.href = 'index.html';
     }
   }
 </script>
 
 </body>
+
 </html>
