@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل موظف جديد</title>
+    
+    <!-- ربط ملف التنسيق العام -->
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .alert-custom {
+            display: none;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .alert-success-custom {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .alert-danger-custom {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .preview-img {
+            max-width: 100%;
+            max-height: 180px;
+            margin-top: 10px;
+            border-radius: 8px;
+            display: none;
+            border: 1px solid #ddd;
+        }
+        
+        /* القائمة المنسدلة المخصصة للموبايل */
+        .custom-select-wrapper {
+            position: relative;
+            user-select: none;
+            width: 100%;
+        }
+        .custom-select-trigger {
+            height: 52px;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 2px solid #007bff;
+            background-color: #f8f9fa;
+            color: #333;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+        .custom-select-trigger:after {
+            content: "▼";
+            font-size: 12px;
+            color: #007bff;
+            transition: transform 0.3s ease;
+        }
+        .custom-select-wrapper.open .custom-select-trigger:after {
+            transform: rotate(180deg);
+        }
+        .custom-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 5px;
+            background: #fff;
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            max-height: 250px;
+            overflow-y: auto;
+            display: none;
+            z-index: 999;
+        }
+        .custom-select-wrapper.open .custom-options {
+            display: block;
+        }
+        .custom-option {
+            padding: 12px 15px;
+            font-size: 15px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f1f1;
+            transition: background 0.2s;
+        }
+        .custom-option:last-child {
+            border-bottom: none;
+        }
+        .custom-option:hover, .custom-option.selected {
+            background-color: #e7f1ff;
+            color: #0056b3;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="register-page">
+
+<div class="container">
+    <div class="card">
+        <h2 class="title">➕ تسجيل موظف جديد</h2>
+        <hr>
+
+        <!-- منطقة إظهار رسائل النجاح أو الخطأ -->
+        <div id="alertBox" class="alert-custom"></div>
+
+        <form id="registerForm">
+            <input type="hidden" name="type" value="تسجيل موظف جديد">
+
+            <div class="form-group">
+                <label>الاسم بالكامل</label>
+                <input type="text" name="name" id="name" class="form-control" placeholder="أدخل الاسم الرباعي" required>
+            </div>
+
+            <div class="form-group">
+                <label>الرقم القومي</label>
+                <input type="text" name="nationalId" id="nationalId" class="form-control" maxlength="14" placeholder="14 رقم" required oninput="this.value = this.value.replace(/\D/g, '')">
+            </div>
+
+            <div class="form-group">
+                <label>رقم الهاتف</label>
+                <input type="text" name="phone" id="phone" class="form-control" placeholder="01xxxxxxxxx" required>
+            </div>
+
+            <!-- قائمة المهن المنسدلة المخصصة -->
+            <div class="form-group" style="margin-bottom: 25px;">
+                <label style="font-weight: bold; font-size: 16px; margin-bottom: 8px; display: block;">المهنة</label>
+                
+                <div class="custom-select-wrapper" id="jobSelectWrapper">
+                    <div class="custom-select-trigger" id="jobTrigger">-- اختر المهنة من القائمة --</div>
+                    <input type="hidden" name="job" id="jobValue" required>
+                    <div class="custom-options">
+                        <div class="custom-option" data-value="نجار مسلح">نجار مسلح</div>
+                        <div class="custom-option" data-value="حداد مسلح">حداد مسلح</div>
+                        <div class="custom-option" data-value="شده معدنيه">شده معدنيه</div>
+                        <div class="custom-option" data-value="مساعدين">مساعدين</div>
+                        <div class="custom-option" data-value="فرمجي خرسانه">فرمجي خرسانه</div>
+                        <div class="custom-option" data-value="بحريه">بحريه</div>
+                        <div class="custom-option" data-value="عزل">عزل</div>
+                        <div class="custom-option" data-value="كهربائي">كهربائي</div>
+                        <div class="custom-option" data-value="حجار">حجار</div>
+                        <div class="custom-option" data-value="مساح">مساح</div>
+                        <div class="custom-option" data-value="مساعد مساح">مساعد مساح</div>
+                        <div class="custom-option" data-value="مشرف شدة">مشرف شدة</div>
+                        <div class="custom-option" data-value="مشرف لحام">مشرف لحام</div>
+                        <div class="custom-option" data-value="مشرف عام">مشرف عام</div>
+                        <div class="custom-option" data-value="مشرف إنشائي">مشرف إنشائي</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- حقل رفع الـ CV (يظهر للمشرفين) -->
+            <div class="form-group" id="cvContainer" style="display: none; background: #eef2f7; padding: 15px; border-radius: 8px; border: 1px dashed #007bff; margin-bottom: 25px;">
+                <label style="color: #0056b3; font-weight: bold;">رفع ملف الـ CV بصيغة PDF فقط (إلزامي للمشرفين)</label>
+                <input type="file" id="cvInput" accept="application/pdf,.pdf" class="form-control" onchange="handleCvFile(this)">
+                <div id="cvFileName" style="margin-top:8px; font-size:14px; color:#0056b3; font-weight:bold; display:none;"></div>
+            </div>
+
+            <hr style="margin-bottom: 25px;">
+
+            <div class="form-group">
+                <label>صورة البطاقة (الوجه الأمامي)</label>
+                <input type="file" id="frontInput" accept="image/*" class="form-control" required onchange="previewFile(this, 'frontPreview')">
+                <img id="frontPreview" class="preview-img" alt="معاينة الوجه الأمامي">
+            </div>
+
+            <div class="form-group">
+                <label>صورة البطاقة (الوجه الخلفي)</label>
+                <input type="file" id="backInput" accept="image/*" class="form-control" required onchange="previewFile(this, 'backPreview')">
+                <img id="backPreview" class="preview-img" alt="معاينة الوجه الخلفي">
+            </div>
+
+            <button type="submit" id="submitBtn" class="btn btn-success" style="width: 100%; margin-top: 15px;">
+                💾 حفظ البيانات
+            </button>
+
+            <button type="button" class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="goToMain()">
+                🏠 العودة للرئيسية
+            </button>
+        </form>
+
+        <div id="loading" style="display: none; text-align: center; margin-top: 15px; color: #007bff; font-weight: bold;">
+            ⏳ جاري حفظ البيانات ......
+        </div>
+    </div>
+</div>
+
+<!-- ربط ملف الجافاسكريبت الخارجي -->
+<script src="script.js"></script>
+
+<script>
+    // تفعيل القائمة المنسدلة المخصصة
+    const selectWrapper = document.getElementById('jobSelectWrapper');
+    const selectTrigger = document.getElementById('jobTrigger');
+    const jobInput = document.getElementById('jobValue');
+    const optionsList = document.querySelectorAll('.custom-option');
+
+    selectTrigger.addEventListener('click', function (e) {
+        e.stopPropagation();
+        selectWrapper.classList.toggle('open');
+    });
+
+    optionsList.forEach(option => {
+        option.addEventListener('click', function () {
+            const value = this.getAttribute('data-value');
+            const text = this.textContent;
+            
+            selectTrigger.textContent = text;
+            selectTrigger.style.color = '#333';
+            jobInput.value = value;
+            
+            selectWrapper.classList.remove('open');
+            
+            optionsList.forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+
+            toggleCvField();
+        });
+    });
+
+    window.addEventListener('click', function () {
+        selectWrapper.classList.remove('open');
+    });
+
+    // التحكم في ظهور إدخال الـ CV
+    function toggleCvField() {
+        const jobValue = jobInput.value;
+        const cvContainer = document.getElementById('cvContainer');
+        const cvInput = document.getElementById('cvInput');
+        const supervisorsList = ['مشرف شدة', 'مشرف لحام', 'مشرف عام', 'مشرف إنشائي'];
+        
+        if (supervisorsList.includes(jobValue)) {
+            cvContainer.style.display = 'block';
+            cvInput.required = true;
+        } else {
+            cvContainer.style.display = 'none';
+            cvInput.required = false;
+            cvInput.value = '';
+            const cvFileName = document.getElementById('cvFileName');
+            cvFileName.style.display = 'none';
+            cvFileName.innerText = '';
+        }
+    }
+
+    // التحقق من ملف الـ CV
+    function handleCvFile(input) {
+        const cvFileName = document.getElementById('cvFileName');
+        const file = input.files[0];
+
+        if (!file) {
+            cvFileName.style.display = 'none';
+            cvFileName.innerText = '';
+            return;
+        }
+
+        const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+
+        if (!isPdf) {
+            input.value = '';
+            cvFileName.style.display = 'block';
+            cvFileName.style.color = '#dc3545';
+            cvFileName.innerText = '❌ الملف يجب أن يكون بصيغة PDF فقط';
+            return;
+        }
+
+        cvFileName.style.display = 'block';
+        cvFileName.style.color = '#0056b3';
+        cvFileName.innerText = '📄 ' + file.name;
+    }
+
+    // معاينة الصور
+    function previewFile(input, previewId) {
+        const preview = document.getElementById(previewId);
+        const file = input.files[0];
+        if (file) {
+            if (file.type === "application/pdf") {
+                preview.style.display = 'none';
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        } else {
+            preview.style.display = 'none';
+        }
+    }
+
+    // تحويل الملف لصيغة Base64
+    function getBase64(file) {
+        return new Promise((resolve, reject) => {
+            if (!file) resolve("");
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    // إرسال البيانات عبر API الـ Backend
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const alertBox = document.getElementById('alertBox');
+        const submitBtn = document.getElementById('submitBtn');
+        const loading = document.getElementById('loading');
+
+        alertBox.style.display = 'none';
+
+        const nationalIdValue = document.getElementById('nationalId').value.trim();
+        if (nationalIdValue.length !== 14) {
+            alertBox.className = 'alert-custom alert-danger-custom';
+            alertBox.innerHTML = '❌ الرقم القومي غير مكتمل! يجب أن يحتوي على 14 رقماً بالضبط.';
+            alertBox.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
+        submitBtn.disabled = true;
+        loading.style.display = 'block';
+
+        try {
+            const frontFile = document.getElementById('frontInput').files[0];
+            const backFile = document.getElementById('backInput').files[0];
+            
+            const jobValue = jobInput.value;
+            const supervisorsList = ['مشرف شدة', 'مشرف لحام', 'مشرف عام', 'مشرف إنشائي'];
+            let cvBase64 = "";
+            
+            if (supervisorsList.includes(jobValue)) {
+                const cvFile = document.getElementById('cvInput').files[0];
+
+                if (!cvFile) {
+                    loading.style.display = 'none';
+                    submitBtn.disabled = false;
+                    alertBox.className = 'alert-custom alert-danger-custom';
+                    alertBox.innerHTML = '❌ رفع ملف الـ CV بصيغة PDF إلزامي للمشرفين';
+                    alertBox.style.display = 'block';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
+                }
+
+                const isPdf = cvFile.type === 'application/pdf' || cvFile.name.toLowerCase().endsWith('.pdf');
+                if (!isPdf) {
+                    loading.style.display = 'none';
+                    submitBtn.disabled = false;
+                    alertBox.className = 'alert-custom alert-danger-custom';
+                    alertBox.innerHTML = '❌ ملف الـ CV يجب أن يكون بصيغة PDF فقط';
+                    alertBox.style.display = 'block';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
+                }
+
+                cvBase64 = await getBase64(cvFile);
+            }
+
+            const frontBase64 = await getBase64(frontFile);
+            const backBase64 = await getBase64(backFile);
+
+            const payload = {
+                type: "تسجيل موظف جديد",
+                name: document.getElementById('name').value,
+                nationalId: nationalIdValue,
+                phone: document.getElementById('phone').value,
+                job: jobValue,
+                company: "-",
+                frontImage: frontBase64,
+                backImage: backBase64,
+                cvImage: cvBase64
+            };
+
+            // الاتصال بالـ Backend من خلال الدالة المعرفة في script.js
+            if (typeof saveData === 'function') {
+                saveData(payload).then(response => {
+                    loading.style.display = 'none';
+                    submitBtn.disabled = false;
+
+                    if (response && response.status) {
+                        alertBox.className = 'alert-custom alert-success-custom';
+                        alertBox.innerHTML = '✅ <strong>تم حفظ البيانات بنجاح!</strong><br><small>بيانات حضرتك وصلت بنجاح وإن شاء الله تصريح حضرتك يطلع في أقرب وقت.</small>';
+                        alertBox.style.display = 'block';
+
+                        document.getElementById('registerForm').reset();
+                        selectTrigger.textContent = '-- اختر المهنة من القائمة --';
+                        selectTrigger.style.color = '#333';
+                        jobInput.value = '';
+                        optionsList.forEach(opt => opt.classList.remove('selected'));
+
+                        document.getElementById('frontPreview').style.display = 'none';
+                        document.getElementById('backPreview').style.display = 'none';
+                        document.getElementById('cvFileName').style.display = 'none';
+                        document.getElementById('cvFileName').innerText = '';
+                        document.getElementById('cvContainer').style.display = 'none';
+                        
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    } else {
+                        alertBox.className = 'alert-custom alert-danger-custom';
+                        alertBox.innerHTML = '❌ ' + (response ? response.message : 'حدث خطأ أثناء حفظ البيانات');
+                        alertBox.style.display = 'block';
+                    }
+                }).catch(err => {
+                    loading.style.display = 'none';
+                    submitBtn.disabled = false;
+                    alertBox.className = 'alert-custom alert-danger-custom';
+                    alertBox.innerHTML = '❌ حدث خطأ أثناء الاتصال بالخادم: ' + err.message;
+                    alertBox.style.display = 'block';
+                });
+            } else {
+                throw new Error("دالة saveData غير معرفة في script.js");
+            }
+
+        } catch (err) {
+            loading.style.display = 'none';
+            submitBtn.disabled = false;
+            alertBox.className = 'alert-custom alert-danger-custom';
+            alertBox.innerHTML = '❌ حدث خطأ في معالجة الصور أو الملفات: ' + err.message;
+            alertBox.style.display = 'block';
+        }
+    });
+
+    // العودة للصفحة الرئيسية
+    function goToMain() {
+        window.location.href = 'index.html';
+    }
+</script>
+
+</body>
+</html>
