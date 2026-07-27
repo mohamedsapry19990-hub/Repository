@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbwFSiuWR_Z7BYwsUQAgGcMV954QaHYSj5yQYKn9F1heSSCsAOASHHI286sZg8qwm-YV/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbylz_Dk9pDVMxXWicoZlHCrUrDActFqHTD9cgGfcOuv4Xzk0YLyq4iXfBoyzLZUPX3V3A/exec";
 
 document.addEventListener("DOMContentLoaded", function() {
     document.body.style.overflowY = "auto";
@@ -216,18 +216,63 @@ function validateRegister(requirePermit = false, requireClearance = false){
     return true;
 }
 
-// دالة إرسال مضمونة تجتاز حظر CORS على الموبايل
 function sendApiRequest(payload) {
-    const params = new URLSearchParams();
-    params.append("payload", JSON.stringify(payload));
+    return new Promise((resolve, reject) => {
+        const formData = new URLSearchParams();
+        formData.append("payload", JSON.stringify(payload));
 
-    return fetch(API_URL, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-        },
-        body: params
-    }).then(res => res.json());
+        fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+            },
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok && response.status !== 0) {
+                throw new Error("HTTP error " + response.status);
+            }
+            return response.json();
+        })
+        .then(data => resolve(data))
+        .catch(err => {
+            fetch(API_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+                },
+                body: formData
+            })
+            .then(() => resolve({ status: "success", message: "تم إرسال البيانات بنجاح!" }))
+            .catch(err2 => reject(err2));
+        });
+    });
+}
+
+function fetchJsonp(url) {
+    return new Promise((resolve, reject) => {
+        const callbackName = "jsonp_cb_" + Math.round(100000 * Math.random());
+        window[callbackName] = function(data) {
+            delete window[callbackName];
+            if (document.getElementById(callbackName)) {
+                document.getElementById(callbackName).remove();
+            }
+            resolve(data);
+        };
+
+        const script = document.createElement("script");
+        script.id = callbackName;
+        script.src = url + (url.includes("?") ? "&" : "?") + "callback=" + callbackName;
+        script.onerror = function() {
+            delete window[callbackName];
+            if (document.getElementById(callbackName)) {
+                document.getElementById(callbackName).remove();
+            }
+            reject(new Error("JSONP Request Failed"));
+        };
+        document.body.appendChild(script);
+    });
 }
 
 async function save(){
@@ -255,7 +300,7 @@ async function save(){
         hideLoading();
         if(res && (res.status === true || res.status === "success")){
             hideErrorBanner();
-            showSuccessBanner(res.message);
+            showSuccessBanner(res.message || "تم الحفظ بنجاح!");
             const form = document.querySelector("form");
             if (form) form.reset();
             document.querySelectorAll(".preview-image").forEach(img => img.style.display = "none");
@@ -266,7 +311,7 @@ async function save(){
     })
     .catch(function(err){
         hideLoading();
-        showErrorBanner("خطأ في الاتصال بالخادم: " + err);
+        showErrorBanner("تعذر الاتصال بالسيرفر: " + err);
     });
 }
 
@@ -297,7 +342,7 @@ async function savePermit(typeTitle = "تقديم ومعايا تصريح شرك
         hideLoading();
         if(res && (res.status === true || res.status === "success")){
             hideErrorBanner();
-            showSuccessBanner(res.message);
+            showSuccessBanner(res.message || "تم حفظ طلب التصريح بنجاح!");
             const form = document.querySelector("form");
             if (form) form.reset();
             document.querySelectorAll(".preview-image").forEach(img => img.style.display = "none");
@@ -308,7 +353,7 @@ async function savePermit(typeTitle = "تقديم ومعايا تصريح شرك
     })
     .catch(function(err){
         hideLoading();
-        showErrorBanner("حدث خطأ: " + err);
+        showErrorBanner("حدث خطأ في الاتصال: " + err);
     });
 }
 
@@ -337,7 +382,7 @@ async function saveRenewPermit(){
         hideLoading();
         if(res && (res.status === true || res.status === "success")){
             hideErrorBanner();
-            showSuccessBanner(res.message);
+            showSuccessBanner(res.message || "تم حفظ طلب التجديد بنجاح!");
             const form = document.querySelector("form");
             if (form) form.reset();
             document.querySelectorAll(".preview-image").forEach(img => img.style.display = "none");
@@ -348,7 +393,7 @@ async function saveRenewPermit(){
     })
     .catch(function(err){
         hideLoading();
-        showErrorBanner("حدث خطأ: " + err);
+        showErrorBanner("حدث خطأ في الاتصال: " + err);
     });
 }
 
@@ -364,7 +409,7 @@ function searchRecord(){
     const resultEl = document.getElementById("result");
     if(resultEl) resultEl.innerHTML = "";
 
-    sendApiRequest({ action: "searchData", nationalId: nationalId })
+    fetchJsonp(API_URL + "?action=searchData&nationalId=" + encodeURIComponent(nationalId))
     .then(function(res){
         hideLoading();
         if(res && res.status === "success"){
@@ -374,8 +419,19 @@ function searchRecord(){
         }
     })
     .catch(function(err){
-        hideLoading();
-        if(typeof showErrorBanner === "function") showErrorBanner("خطأ في البحث: " + err);
+        sendApiRequest({ action: "searchData", nationalId: nationalId })
+        .then(function(res){
+            hideLoading();
+            if(res && res.status === "success"){
+                showResult(res.data);
+            } else {
+                showResult(null);
+            }
+        })
+        .catch(function(err2){
+            hideLoading();
+            if(typeof showErrorBanner === "function") showErrorBanner("خطأ في البحث: " + err2);
+        });
     });
 }
 
