@@ -1,104 +1,156 @@
-/* ============================================================================
-   GPS COMPANY - Shared API & Form Script
-   ============================================================================ */
+const API_URL = "https://script.google.com/macros/s/AKfycbylz_Dk9pDVMxXWicoZlHCrUrDActFqHTD9cgGfcOuv4Xzk0YLyq4iXfBoyzLZUPX3V3A/exec";
 
-const API_URL = "https://script.google.com/macros/s/AKfycbxZ5kcxWINfIEGjHwl_5e0u_GhlX4ukUqi66LAnLZhtWIZeGWWLnt6VDVtbewitabysTg/exec";
+document.addEventListener("DOMContentLoaded", function() {
+    document.body.style.overflowY = "auto";
+    document.body.style.paddingBottom = "100px";
+    if(document.documentElement) document.documentElement.style.overflowY = "auto";
 
-function checkSupervisor(selectId, cvGroupId) {
-    const jobVal = document.getElementById(selectId).value;
-    const supervisors = ['مشرف شدة', 'مشرف لحام', 'مشرف عام', 'مشرف إنشائي'];
-    const cvGroup = document.getElementById(cvGroupId);
-    if (cvGroup) {
-        cvGroup.style.display = supervisors.includes(jobVal) ? 'block' : 'none';
-    }
-}
+    const clearanceInput = document.getElementById("clearance");
+    if (clearanceInput) {
+        const uploadIds = ["front", "back", "permit", "clearance"];
+        const uploadSections = [];
 
-function previewImage(input, imageId) {
-    if (!input || !input.files || !input.files[0]) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        const img = document.getElementById(imageId);
-        if (img) {
-            img.src = e.target.result;
-            img.style.display = 'block';
-        }
-    };
-    reader.readAsDataURL(input.files[0]);
-}
-
-function fileToBase64(file) {
-    return new Promise(function(resolve, reject) {
-        if (!file) { resolve(""); return; }
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            if (file.type && file.type.startsWith('image/')) {
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.createElement('canvas');
-                    let width = img.width;
-                    let height = img.height;
-                    const maxDim = 1200;
-
-                    if (width > maxDim || height > maxDim) {
-                        if (width > height) {
-                            height = Math.round((height * maxDim) / width);
-                            width = maxDim;
-                        } else {
-                            width = Math.round((width * maxDim) / height);
-                            height = maxDim;
-                        }
+        uploadIds.forEach(function(id) {
+            const input = document.getElementById(id);
+            if (input) {
+                let wrapper = input.closest(".form-group, .card, .mb-3, fieldset, .upload-section, .col");
+                if (!wrapper) {
+                    wrapper = input.parentElement;
+                    while (wrapper && wrapper !== document.body && wrapper.children.length <= 3 && !wrapper.querySelector("input[type='text'], select, textarea")) {
+                        wrapper = wrapper.parentElement;
                     }
-
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    resolve(canvas.toDataURL('image/jpeg', 0.75));
-                };
-                img.onerror = function() { resolve(e.target.result); };
-                img.src = e.target.result;
-            } else {
-                resolve(e.target.result);
+                }
+                if (wrapper) uploadSections.push(wrapper);
             }
+        });
+
+        if (uploadSections.length >= 2) {
+            const grid = document.createElement("div");
+            grid.className = "image-upload-grid";
+            const firstSection = uploadSections[0];
+            if (firstSection && firstSection.parentElement) {
+                firstSection.parentElement.insertBefore(grid, firstSection);
+                uploadSections.forEach(function(section) {
+                    grid.appendChild(section);
+                });
+            }
+        }
+    }
+});
+
+function formatImageUrl(url) {
+    if (!url) return '';
+    var fileId = '';
+    if (url.indexOf('id=') !== -1) {
+        var match = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+        if (match && match[1]) fileId = match[1];
+    } else if (url.indexOf('/d/') !== -1) {
+        var match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+        if (match && match[1]) fileId = match[1];
+    }
+    if (fileId) {
+        return 'https://lh3.googleusercontent.com/d/' + fileId;
+    }
+    return url;
+}
+
+function fileToBase64(file){
+    return new Promise(function(resolve, reject){
+        if(!file){
+            resolve("");
+            return;
+        }
+
+        if (!file.type || !file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e){ resolve(e.target.result); };
+            reader.onerror = function(){ reject("Error reading file"); };
+            reader.readAsDataURL(file);
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e){
+            const img = new Image();
+            img.onload = function(){
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                const maxDim = 1200;
+
+                if (width > maxDim || height > maxDim) {
+                    if (width > height) {
+                        height = Math.round((height * maxDim) / width);
+                        width = maxDim;
+                    } else {
+                        width = Math.round((width * maxDim) / height);
+                        height = maxDim;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
+                resolve(compressedDataUrl);
+            };
+            img.onerror = function(){
+                resolve(e.target.result);
+            };
+            img.src = e.target.result;
         };
-        reader.onerror = function() { reject("خطأ في قراءة الملف"); };
+        reader.onerror = function(){ reject("Error reading file"); };
         reader.readAsDataURL(file);
     });
 }
 
-function showLoading() {
-    const el = document.getElementById('loading');
-    if (el) el.style.display = 'block';
-}
-
-function hideLoading() {
-    const el = document.getElementById('loading');
-    if (el) el.style.display = 'none';
-}
-
-function showError(msg) {
-    const el = document.getElementById('errorBanner');
-    if (el) {
-        el.innerText = msg;
-        el.style.display = 'block';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+function showLoading(){
+    const loading = document.getElementById("loading");
+    if(loading) {
+        loading.style.display = "block";
+        loading.style.position = "static";
+        loading.style.textAlign = "center";
+        loading.style.margin = "15px auto";
+        loading.style.color = "#0d6efd";
+        loading.style.fontSize = "18px";
+        loading.style.fontWeight = "bold";
     }
 }
 
-function showSuccess(msg) {
-    const el = document.getElementById('successBanner');
-    if (el) {
-        el.innerText = msg;
-        el.style.display = 'block';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+function hideLoading(){
+    const loading = document.getElementById("loading");
+    if(loading) loading.style.display = "none";
 }
 
-function hideBanners() {
-    const err = document.getElementById('errorBanner');
-    const succ = document.getElementById('successBanner');
-    if (err) err.style.display = 'none';
-    if (succ) succ.style.display = 'none';
+function showErrorBanner(msg) {
+    let errBanner = document.getElementById("errorBanner");
+    if (!errBanner) {
+        errBanner = document.createElement("div");
+        errBanner.id = "errorBanner";
+        errBanner.style.background = "#ffe6e6";
+        errBanner.style.color = "#dc3545";
+        errBanner.style.padding = "12px";
+        errBanner.style.borderRadius = "8px";
+        errBanner.style.margin = "10px 0";
+        errBanner.style.textAlign = "center";
+        errBanner.style.fontWeight = "bold";
+        const form = document.querySelector("form") || document.body;
+        form.insertBefore(errBanner, form.firstChild);
+    }
+    errBanner.innerText = msg;
+    errBanner.style.display = "block";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function hideErrorBanner() {
+    const errBanner = document.getElementById("errorBanner");
+    if (errBanner) errBanner.style.display = "none";
+}
+
+function showSuccessBanner(msg) {
+    alert(msg || "تم الحفظ بنجاح!");
 }
 
 function getInputValue(id) {
@@ -111,149 +163,234 @@ function getFileInput(id) {
     return (el && el.files && el.files.length > 0) ? el.files[0] : null;
 }
 
-async function submitFormData(event, typeTitle) {
-    event.preventDefault();
-    hideBanners();
+function validateRegister(requirePermit = false, requireClearance = false){
+    if(typeof hideErrorBanner === "function") hideErrorBanner();
 
-    const name = getInputValue("name");
+    if(!getInputValue("name")){
+        if(typeof showErrorBanner === "function") showErrorBanner("أدخل الاسم بالكامل");
+        return false;
+    }
+
     const nationalId = getInputValue("nationalId");
-    const phone = getInputValue("phone");
-    const job = getInputValue("job");
-    const company = getInputValue("company") || "GPS COMPANY";
+    if(nationalId.length !== 14){
+        if(typeof showErrorBanner === "function") showErrorBanner("الرقم القومي يجب أن يتكون من 14 رقم بالضبط");
+        return false;
+    }
 
-    if (!name) { showError("أدخل الاسم بالكامل"); return; }
-    if (nationalId.length !== 14) { showError("الرقم القومي يجب أن يتكون من 14 رقم بالضبط"); return; }
-    if (!phone) { showError("أدخل رقم الهاتف"); return; }
-    if (!job) { showError("أدخل المهنة من القائمة"); return; }
+    if(!getInputValue("phone")){
+        if(typeof showErrorBanner === "function") showErrorBanner("أدخل رقم الهاتف");
+        return false;
+    }
+    
+    const jobVal = getInputValue("job");
+    if(!jobVal){
+        if(typeof showErrorBanner === "function") showErrorBanner("أدخل المهنة من القائمة");
+        return false;
+    }
 
     const supervisorsList = ['مشرف شدة', 'مشرف لحام', 'مشرف عام', 'مشرف إنشائي'];
-    if (supervisorsList.includes(job) && !getFileInput("cvInput")) {
-        showError("رفع ملف أو صورة السيرة الذاتية (CV) إلزامي للمشرفين");
-        return;
-    }
-
-    if (!getFileInput("front")) { showError("اختر صورة البطاقة (الوجه الأمامي)"); return; }
-    if (!getFileInput("back")) { showError("اختر صورة البطاقة (الوجه الخلفي)"); return; }
-
-    if (typeTitle.includes("تصريح شركة") && !getFileInput("permit")) {
-        showError("اختر صورة التصريح");
-        return;
-    }
-    if (typeTitle.includes("تصريح شركة") && !getFileInput("clearance")) {
-        showError("رفع صورة الممانعة إلزامي جداً للقبول");
-        return;
-    }
-    if (typeTitle.includes("تجديد") && !getFileInput("permit")) {
-        showError("اختر صورة التصريح السابق المنتهي");
-        return;
-    }
-
-    showLoading();
-
-    try {
-        const payload = {
-            action: "saveData",
-            type: typeTitle,
-            name: name,
-            nationalId: nationalId,
-            phone: phone,
-            job: job,
-            company: company,
-            frontImage: await fileToBase64(getFileInput("front")),
-            backImage: await fileToBase64(getFileInput("back")),
-            permitImage: await fileToBase64(getFileInput("permit")),
-            cvImage: await fileToBase64(getFileInput("cvInput")),
-            clearanceImage: await fileToBase64(getFileInput("clearance"))
-        };
-
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify(payload)
-        });
-
-        const res = await response.json();
-        hideLoading();
-
-        if (res && (res.status === true || res.status === "success")) {
-            showSuccess("✅ " + (res.message || "تم حفظ البيانات بنجاح!"));
-            event.target.reset();
-            document.querySelectorAll('.preview-img').forEach(img => img.style.display = 'none');
-        } else {
-            showError("❌ " + (res && res.message ? res.message : "حدث خطأ أثناء الحفظ"));
+    if(supervisorsList.includes(jobVal)){
+        if(!getFileInput("cvInput")){
+            if(typeof showErrorBanner === "function") showErrorBanner("رفع ملف أو صورة الـ CV إلزامي للمشرفين");
+            return false;
         }
-
-    } catch (err) {
-        hideLoading();
-        showError("حدث خطأ في الاتصال بالخادم: " + err.toString());
     }
+
+    if(!getFileInput("front")){
+        if(typeof showErrorBanner === "function") showErrorBanner("اختر صورة البطاقة (الوجه الأمامي)");
+        return false;
+    }
+    if(!getFileInput("back")){
+        if(typeof showErrorBanner === "function") showErrorBanner("اختر صورة البطاقة (الوجه الخلفي)");
+        return false;
+    }
+    if(requirePermit && !getFileInput("permit")){
+        if(typeof showErrorBanner === "function") showErrorBanner("اختر صورة التصريح");
+        return false;
+    }
+    if(requireClearance && !getFileInput("clearance")){
+        if(typeof showErrorBanner === "function") showErrorBanner("رفع صورة الممانعة إلزامي جداً للقبول");
+        return false;
+    }
+
+    return true;
 }
 
-async function searchRecord() {
-    hideBanners();
-    const searchId = getInputValue("searchId");
-    const resultEl = document.getElementById("result");
-    if (resultEl) resultEl.innerHTML = "";
+async function save(){
+    if(!validateRegister(false, false)) return;
 
-    if (!searchId || searchId.length !== 14) {
-        showError("أدخل رقم قومي صحيح مكون من 14 رقم للبحث");
+    showLoading();
+    let cvBase64 = await fileToBase64(getFileInput("cvInput"));
+
+    const data = {
+        action: "saveData",
+        type: "تسجيل موظف جديد",
+        name: getInputValue("name"),
+        nationalId: getInputValue("nationalId"),
+        phone: getInputValue("phone"),
+        job: getInputValue("job"),
+        company: getInputValue("company"),
+        frontImage: await fileToBase64(getFileInput("front")),
+        backImage: await fileToBase64(getFileInput("back")),
+        permitImage: "",
+        cvImage: cvBase64
+    };
+
+    fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(function(res){
+        hideLoading();
+        if(res && (res.status === true || res.status === "success")){
+            hideErrorBanner();
+            showSuccessBanner(res.message);
+        } else {
+            const msg = (res && res.message) ? res.message : "حدث خطأ أثناء الحفظ";
+            showErrorBanner(msg);
+        }
+    })
+    .catch(function(err){
+        hideLoading();
+        showErrorBanner("خطأ: " + err);
+    });
+}
+
+async function savePermit(typeTitle = "تقديم ومعايا تصريح شركة ثانية"){
+    if(!validateRegister(true, true)) return;
+
+    showLoading();
+    let cvBase64 = await fileToBase64(getFileInput("cvInput"));
+    let clearanceBase64 = await fileToBase64(getFileInput("clearance"));
+
+    const data = {
+        action: "saveData",
+        type: typeTitle,
+        name: getInputValue("name"),
+        nationalId: getInputValue("nationalId"),
+        phone: getInputValue("phone"),
+        job: getInputValue("job"),
+        company: getInputValue("company"),
+        frontImage: await fileToBase64(getFileInput("front")),
+        backImage: await fileToBase64(getFileInput("back")),
+        permitImage: await fileToBase64(getFileInput("permit")),
+        cvImage: cvBase64,
+        clearanceImage: clearanceBase64
+    };
+
+    fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(function(res){
+        hideLoading();
+        if(res && (res.status === true || res.status === "success")){
+            hideErrorBanner();
+            showSuccessBanner(res.message);
+        } else {
+            const msg = (res && res.message) ? res.message : "الرقم القومي مسجل بالفعل أو حدث خطأ!";
+            showErrorBanner(msg);
+        }
+    })
+    .catch(function(err){
+        hideLoading();
+        showErrorBanner("حدث خطأ: " + err);
+    });
+}
+
+async function saveRenewPermit(){
+    if(!validateRegister(true, false)) return;
+
+    showLoading();
+    let cvBase64 = await fileToBase64(getFileInput("cvInput"));
+
+    const data = {
+        action: "saveData",
+        type: "تجديد تصريح",
+        name: getInputValue("name"),
+        nationalId: getInputValue("nationalId"),
+        phone: getInputValue("phone"),
+        job: getInputValue("job"),
+        company: getInputValue("company"),
+        frontImage: await fileToBase64(getFileInput("front")),
+        backImage: await fileToBase64(getFileInput("back")),
+        permitImage: await fileToBase64(getFileInput("permit")),
+        cvImage: cvBase64
+    };
+
+    fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(function(res){
+        hideLoading();
+        if(res && (res.status === true || res.status === "success")){
+            hideErrorBanner();
+            showSuccessBanner(res.message);
+        } else {
+            const msg = (res && res.message) ? res.message : "الرقم القومي مسجل بالفعل أو حدث خطأ!";
+            showErrorBanner(msg);
+        }
+    })
+    .catch(function(err){
+        hideLoading();
+        showErrorBanner("حدث خطأ: " + err);
+    });
+}
+
+function searchRecord(){
+    const nationalId = getInputValue("searchId");
+
+    if(!nationalId){
+        if(typeof showErrorBanner === "function") showErrorBanner("أدخل الرقم القومي للبحث");
         return;
     }
 
     showLoading();
+    const resultEl = document.getElementById("result");
+    if(resultEl) resultEl.innerHTML = "";
 
-    try {
-        const payload = {
-            action: "searchData",
-            nationalId: searchId
-        };
-
-        const response = await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify(payload)
-        });
-
-        const res = await response.json();
+    fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: "searchData", nationalId: nationalId })
+    })
+    .then(res => res.json())
+    .then(function(res){
         hideLoading();
-
-        if (res && res.status === "success" && res.data) {
+        if(res && res.status === "success"){
             showResult(res.data);
         } else {
-            if (resultEl) {
-                resultEl.innerHTML = `<div class="result-card" style="text-align:center; color:red; font-weight:bold;">❌ ${res.message || 'لا يوجد موظف مسجل بهذا الرقم القومي'}</div>`;
-            }
+            showResult(null);
         }
-
-    } catch (err) {
+    })
+    .catch(function(err){
         hideLoading();
-        showError("خطأ في البحث: " + err.toString());
-    }
+        if(typeof showErrorBanner === "function") showErrorBanner("خطأ في البحث: " + err);
+    });
 }
 
-function formatImageUrl(url) {
-    if (!url) return '';
-    let fileId = '';
-    if (url.indexOf('id=') !== -1) {
-        const match = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-        if (match && match[1]) fileId = match[1];
-    } else if (url.indexOf('/d/') !== -1) {
-        const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-        if (match && match[1]) fileId = match[1];
-    }
-    return fileId ? 'https://lh3.googleusercontent.com/d/' + fileId : url;
-}
-
-function showResult(data) {
+function showResult(data){
     const result = document.getElementById("result");
-    if (!result) return;
+    if(!result) return;
+
+    if(!data){
+        result.innerHTML = `<div style="text-align:center; color:red; font-weight:bold; font-size:18px; padding:15px;">❌ لا يوجد موظف مسجل بهذا الرقم القومي</div>`;
+        return;
+    }
 
     let permitHtml = "";
     const permitSrc = data.permit || data.permitImage;
-    if (permitSrc) {
+    if(permitSrc){
         permitHtml = `
-            <hr style="margin:15px 0;">
-            <h4>التصريح:</h4>
+            <hr>
+            <h4 style="margin-top:10px;">التصريح:</h4>
             <a href="${permitSrc}" target="_blank">
                 <img src="${formatImageUrl(permitSrc)}" class="result-image" alt="صورة التصريح">
             </a>
@@ -261,12 +398,12 @@ function showResult(data) {
     }
 
     let cvHtml = "";
-    if (data.cv || data.cvImage) {
+    if(data.cv || data.cvImage){
         const cvSrc = data.cv || data.cvImage;
         cvHtml = `
-            <hr style="margin:15px 0;">
-            <h4>السيرة الذاتية (CV):</h4>
-            <a href="${cvSrc}" target="_blank" class="btn-action btn-search" style="display:inline-flex; width:auto; padding:8px 20px; font-size:14px; text-decoration:none; margin-top:8px;">📄 عرض أو تحميل ملف الـ CV</a>
+            <hr>
+            <h4 style="margin-top:10px;">السيرة الذاتية (CV):</h4>
+            <a href="${cvSrc}" target="_blank" class="btn btn-sm btn-info" style="display:inline-block; margin-top:5px; text-decoration:none;">📄 عرض أو تحميل ملف الـ CV</a>
         `;
     }
 
@@ -277,13 +414,19 @@ function showResult(data) {
     let finalStatus = statusVal !== "" ? statusVal : "لم يتم القبول بعد";
     let finalLecture = lectureVal !== "" ? lectureVal : "لم يحدد بعد";
 
-    let statusHtml = (finalStatus.includes("تم القبول") || finalStatus.includes("مقبول")) && !finalStatus.includes("لم")
-        ? `<span style="color: #28a745; font-weight:bold;">${finalStatus} ✅</span>`
-        : `<span style="color: #dc3545; font-weight:bold;">${finalStatus} ❌</span>`;
+    let statusHtml = "";
+    if ((finalStatus.includes("تم القبول") || finalStatus.includes("مقبول")) && !finalStatus.includes("لم")) {
+        statusHtml = '<span style="color: #28a745;">' + finalStatus + ' ✅</span>';
+    } else {
+        statusHtml = '<span style="color: #dc3545;">' + finalStatus + ' ❌</span>';
+    }
 
-    let lectureHtml = finalLecture.includes("محدد") && !finalLecture.includes("لم")
-        ? `<span style="color: #28a745; font-weight:bold;">${finalLecture} ✅</span>`
-        : `<span style="color: #dc3545; font-weight:bold;">${finalLecture} ❌</span>`;
+    let lectureHtml = "";
+    if (finalLecture.includes("محدد") && !finalLecture.includes("لم")) {
+        lectureHtml = '<span style="color: #28a745;">' + finalLecture + ' ✅</span>';
+    } else {
+        lectureHtml = '<span style="color: #dc3545;">' + finalLecture + ' ❌</span>';
+    }
 
     const frontSrc = data.front || data.frontImage || "";
     const backSrc = data.back || data.backImage || "";
@@ -305,12 +448,14 @@ function showResult(data) {
                 <div><b>موعد التسليم:</b> ${lectureHtml}</div>
             </div>
 
-            <h4 style="margin-top:10px;">الوجه الأمامي للبطاقة:</h4>
+            <hr>
+            <h4>الوجه الأمامي:</h4>
             <a href="${frontSrc}" target="_blank">
                 <img src="${formatImageUrl(frontSrc)}" class="result-image" alt="وجه البطاقة">
             </a>
 
-            <h4 style="margin-top:10px;">الوجه الخلفي للبطاقة:</h4>
+            <hr>
+            <h4>الوجه الخلفي:</h4>
             <a href="${backSrc}" target="_blank">
                 <img src="${formatImageUrl(backSrc)}" class="result-image" alt="خلف البطاقة">
             </a>
@@ -319,4 +464,33 @@ function showResult(data) {
             ${cvHtml}
         </div>
     `;
+}
+
+function previewImage(input, imageId){
+    if(!input || !input.files || !input.files[0]) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e){
+        const img = document.getElementById(imageId);
+        if(img){
+            img.src = e.target.result;
+            img.style.display = "block";
+            img.style.maxWidth = "100%";
+            img.style.maxHeight = "50px";
+            img.style.objectFit = "contain";
+            img.style.margin = "3px auto";
+            img.style.borderRadius = "4px";
+            img.style.border = "1px solid #0d6efd";
+        }
+    };
+    reader.readAsDataURL(input.files[0]);
+}
+
+function previewFront(){ previewImage(document.getElementById("front"), "frontPreview"); }
+function previewBack(){ previewImage(document.getElementById("back"), "backPreview"); }
+function previewPermit(){ previewImage(document.getElementById("permit"), "permitPreview"); }
+function previewClearance(){ previewImage(document.getElementById("clearance"), "clearancePreview"); }
+function previewCv(){ 
+    const cvEl = document.getElementById("cvInput") || document.getElementById("cv");
+    previewImage(cvEl, "cvPreview"); 
 }
