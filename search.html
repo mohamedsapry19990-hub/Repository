@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البحث عن موظف</title>
+    
+    <!-- ربط ملف التنسيق الخارجي -->
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .result-card {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            text-align: right;
+        }
+        .info-item {
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #333;
+        }
+        .img-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .img-box {
+            text-align: center;
+            flex: 1;
+            min-width: 130px;
+        }
+        .img-box img {
+            width: 100%;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-top: 5px;
+        }
+        .alert-custom {
+            display: none;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        /* تنسيق خانة الحالة والمحاضرة أو موعد الاستلام أسفل الصور المرفقة */
+        .permit-status-box {
+            margin-top: 20px;
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 6px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body class="search-page">
+
+<div class="container">
+
+    <div class="card">
+        <h2 class="title">🔍 البحث عن موظف</h2>
+        <hr>
+
+        <form id="searchForm">
+            <div class="form-group">
+                <label>الرقم القومي</label>
+                <input type="text" id="nationalIdInput" class="form-control" placeholder="أدخل الرقم القومي المكون من 14 رقم" maxlength="14" required oninput="this.value = this.value.replace(/\D/g, '')">
+            </div>
+
+            <button type="submit" id="searchBtn" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+                🔍 بحث
+            </button>
+
+            <button type="button" class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="goToMain()">
+                🏠 العودة للرئيسية
+            </button>
+        </form>
+
+        <div id="loading" style="display: none; text-align: center; margin-top: 15px; color: #007bff; font-weight: bold;">
+            ⏳ جاري البحث في قاعدة البيانات...
+        </div>
+
+        <div id="errorAlert" class="alert-custom alert-danger"></div>
+
+        <!-- كارت عرض النتائج عند العثور على الموظف -->
+        <div id="resultCard" class="result-card">
+            <h3 style="color: #28a745; text-align: center; margin-bottom: 15px;">✅ تم العثور على البيانات</h3>
+            <hr>
+            <div class="info-item"><span class="info-label">نوع التسجيل:</span> <span id="resType"></span></div>
+            <div class="info-item"><span class="info-label">الاسم بالكامل:</span> <span id="resName"></span></div>
+            <div class="info-item"><span class="info-label">الرقم القومي:</span> <span id="resNationalId"></span></div>
+            <div class="info-item"><span class="info-label">رقم الهاتف:</span> <span id="resPhone"></span></div>
+            <div class="info-item"><span class="info-label">المهنة:</span> <span id="resJob"></span></div>
+            <div class="info-item"><span class="info-label" id="companyLabel">الشركة:</span> <span id="resCompany"></span></div>
+            <div class="info-item" id="newCompanyItem" style="display: none;"><span class="info-label">الشركة الجديدة:</span> <span id="resNewCompany"></span></div>
+            <div class="info-item"><span class="info-label">تاريخ التسجيل:</span> <span id="resDate"></span></div>
+
+            <hr>
+            <div class="img-container">
+                <div class="img-box" id="frontBox">
+                    <span class="info-label">الوجه الأمامي</span><br>
+                    <a id="frontLink" target="_blank"><img id="resFront" src="" alt="الوجه الأمامي"></a>
+                </div>
+                <div class="img-box" id="backBox">
+                    <span class="info-label">الوجه الخلفي</span><br>
+                    <a id="backLink" target="_blank"><img id="resBack" src="" alt="الوجه الخلفي"></a>
+                </div>
+                <div class="img-box" id="permitBox" style="display: none;">
+                    <span class="info-label">التصريح</span><br>
+                    <a id="permitLink" target="_blank"><img id="resPermit" src="" alt="التصريح"></a>
+                </div>
+            </div>
+
+            <!-- خانة الحالة والمحاضرة أو موعد الاستلام أسفل الصور المرفقة -->
+            <div id="permitStatusBox" class="permit-status-box" style="display: none;">
+                <div><span id="labelStatusTitle">الحالة:</span> <span id="resPermitStatus"></span></div>
+                <div id="lectureStatusContainer"><span id="labelSecondTitle">المحاضرة:</span> <span id="resLectureStatus"></span></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- ربط ملف الجافاسكريبت الخارجي -->
+<script src="script.js"></script>
+
+<script>
+    // دالة للتحقق من نوع الرابط وتحويل روابط جوجل درايف لصور مباشرة
+    function formatImageUrl(url) {
+        if (!url) return '';
+        var fileId = '';
+        
+        if (url.indexOf('id=') !== -1) {
+            var match = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+            if (match && match[1]) fileId = match[1];
+        } else if (url.indexOf('/d/') !== -1) {
+            var match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+            if (match && match[1]) fileId = match[1];
+        }
+
+        if (fileId) {
+            return 'https://lh3.googleusercontent.com/d/' + fileId;
+        }
+
+        return url;
+    }
+
+    document.getElementById('searchForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const nationalId = document.getElementById('nationalIdInput').value.trim();
+        const searchBtn = document.getElementById('searchBtn');
+        const loading = document.getElementById('loading');
+        const errorAlert = document.getElementById('errorAlert');
+        const resultCard = document.getElementById('resultCard');
+
+        if (nationalId.length !== 14) {
+            errorAlert.innerText = '❌ يرجى أدخال رقم قومي صحيح مكون من 14 رقماً.';
+            errorAlert.style.display = 'block';
+            return;
+        }
+
+        // إخفاء النتائج والرسائل القديمة
+        errorAlert.style.display = 'none';
+        resultCard.style.display = 'none';
+        
+        searchBtn.disabled = true;
+        loading.style.display = 'block';
+
+        // استدعاء دالة البحث المعرفة في script.js أو جلب البيانات عبر API
+        if (typeof searchEmployeeData === 'function') {
+            searchEmployeeData(nationalId)
+                .then(renderSearchResult)
+                .catch(handleSearchError);
+        } else {
+            // حل بديل في حال استدعاء دالة عامة fetchData من script.js
+            fetchData('search', { nationalId: nationalId })
+                .then(renderSearchResult)
+                .catch(handleSearchError);
+        }
+    });
+
+    function renderSearchResult(data) {
+        const searchBtn = document.getElementById('searchBtn');
+        const loading = document.getElementById('loading');
+        const errorAlert = document.getElementById('errorAlert');
+        const resultCard = document.getElementById('resultCard');
+
+        loading.style.display = 'none';
+        searchBtn.disabled = false;
+
+        if (data && data.status !== false && (data.name || data.nationalId)) {
+            // تعبئة البيانات في النتائج
+            const regType = (data.type || "").trim();
+            document.getElementById('resType').innerText = data.type || '-';
+            document.getElementById('resName').innerText = data.name || '-';
+            document.getElementById('resNationalId').innerText = data.nationalId || '-';
+            document.getElementById('resPhone').innerText = data.phone || '-';
+            document.getElementById('resJob').innerText = data.job || '-';
+            document.getElementById('resDate').innerText = data.date || '-';
+
+            // التعامل مع اسم الشركة القديمة والجديدة بناءً على نوع التسجيل
+            const companyLabel = document.getElementById('companyLabel');
+            const newCompanyItem = document.getElementById('newCompanyItem');
+
+            if (regType.includes("تصريح شركة تانية") || regType.includes("تقديم ومعايا تصريح")) {
+                companyLabel.innerText = "الشركة القديمة:";
+                document.getElementById('resCompany').innerText = data.company || '-';
+                document.getElementById('resNewCompany').innerText = data.newCompany || '-';
+                newCompanyItem.style.display = 'block';
+            } else {
+                companyLabel.innerText = "الشركة:";
+                document.getElementById('resCompany').innerText = data.company || '-';
+                newCompanyItem.style.display = 'none';
+            }
+
+            // عرض الصور وإعداد الروابط
+            if(data.front) {
+                document.getElementById('resFront').src = formatImageUrl(data.front);
+                document.getElementById('frontLink').href = data.front;
+                document.getElementById('frontBox').style.display = 'block';
+            } else {
+                document.getElementById('frontBox').style.display = 'none';
+            }
+
+            if(data.back) {
+                document.getElementById('resBack').src = formatImageUrl(data.back);
+                document.getElementById('backLink').href = data.back;
+                document.getElementById('backBox').style.display = 'block';
+            } else {
+                document.getElementById('backBox').style.display = 'none';
+            }
+
+            if(data.permit) {
+                document.getElementById('resPermit').src = formatImageUrl(data.permit);
+                document.getElementById('permitLink').href = data.permit;
+                document.getElementById('permitBox').style.display = 'block';
+            } else {
+                document.getElementById('permitBox').style.display = 'none';
+            }
+
+            // قراءة حالة التصريح والمحاضرة أو موعد الاستلام وعرضها
+            const permitStatusBox = document.getElementById('permitStatusBox');
+            const labelStatusTitle = document.getElementById('labelStatusTitle');
+            const labelSecondTitle = document.getElementById('labelSecondTitle');
+            
+            if (regType.includes("تسجيل موظف جديد") || regType.includes("تصريح شركة تانية") || regType.includes("تقديم ومعايا تصريح") || regType.includes("تجديد التصريح")) {
+                
+                const statusSpan = document.getElementById('resPermitStatus');
+                const lectureSpan = document.getElementById('resLectureStatus');
+                
+                // تخصيص العرض في حالة "تجديد التصريح"
+                if (regType.includes("تجديد التصريح")) {
+                    labelStatusTitle.innerText = "الحالة:";
+                    labelSecondTitle.innerText = "موعد الاستلام:";
+
+                    const statusVal = (data.permitStatus || "").replace(/[✅❌]/g, '').trim();
+                    const lectureVal = (data.lectureStatus || "").replace(/[✅❌]/g, '').trim();
+
+                    let finalStatus = statusVal !== "" ? statusVal : "لم يتم القبول بعد";
+                    let finalLecture = lectureVal !== "" ? lectureVal : "لم يحدد بعد";
+
+                    if ((finalStatus.includes("تم القبول") || finalStatus.includes("مقبول")) && !finalStatus.includes("لم")) {
+                        statusSpan.innerHTML = '<span style="color: #28a745;">' + finalStatus + ' ✅</span>';
+                    } else {
+                        statusSpan.innerHTML = '<span style="color: #dc3545;">' + finalStatus + ' ❌</span>';
+                    }
+
+                    if (finalLecture.includes("لم")) {
+                        lectureSpan.innerHTML = '<span style="color: #dc3545;">' + finalLecture + ' ❌</span>';
+                    } else {
+                        lectureSpan.innerHTML = '<span style="color: #28a745;">' + finalLecture + ' ✅</span>';
+                    }
+
+                } else {
+                    // الحالات الأخرى (تسجيل جديد وتصريح شركة تانية)
+                    labelStatusTitle.innerText = "الحالة:";
+                    labelSecondTitle.innerText = "المحاضرة:";
+
+                    const statusVal = (data.permitStatus || "").replace(/[✅❌]/g, '').trim();
+                    let defaultStatusText = regType.includes("تسجيل موظف جديد") ? "لم يتم الحصول علي تصريح" : "لم يتم القبول بعد";
+                    let finalStatus = statusVal !== "" ? statusVal : defaultStatusText;
+
+                    if (finalStatus.includes("لم")) {
+                        statusSpan.innerHTML = '<span style="color: #dc3545;">' + finalStatus + ' ❌</span>';
+                    } else {
+                        statusSpan.innerHTML = '<span style="color: #28a745;">' + finalStatus + ' ✅</span>';
+                    }
+
+                    const lectureVal = (data.lectureStatus || "").replace(/[✅❌]/g, '').replace('المحاضرة:', '').trim();
+                    let defaultLectureText = regType.includes("تسجيل موظف جديد") ? "لم يتم تحديد بعد" : "لم تحدد بعد";
+                    let finalLecture = lectureVal !== "" ? lectureVal : defaultLectureText;
+
+                    if (finalLecture.includes("لم")) {
+                        lectureSpan.innerHTML = '<span style="color: #dc3545;">' + finalLecture + ' ❌</span>';
+                    } else {
+                        lectureSpan.innerHTML = '<span style="color: #28a745;">' + finalLecture + ' ✅</span>';
+                    }
+                }
+
+                permitStatusBox.style.display = 'flex';
+            } else {
+                permitStatusBox.style.display = 'none';
+            }
+
+            resultCard.style.display = 'block';
+        } else {
+            errorAlert.innerText = (data && data.message) ? '❌ ' + data.message : '❌ عذراً، لم يتم العثور على أي موظف بهذا الرقم القومي.';
+            errorAlert.style.display = 'block';
+        }
+    }
+
+    function handleSearchError(err) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('searchBtn').disabled = false;
+        const errorAlert = document.getElementById('errorAlert');
+        errorAlert.innerText = '❌ حدث خطأ في عملية البحث: ' + (err.message || err);
+        errorAlert.style.display = 'block';
+    }
+
+    // العودة للرئيسية
+    function goToMain() {
+        window.location.href = 'index.html';
+    }
+</script>
+
+</body>
+</html>
