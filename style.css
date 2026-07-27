@@ -1,9 +1,10 @@
 <style>
-/* ==========================================================================
-   1. القواعد العامة المشتركة لكل الصفحات (Global Styles)
-   ========================================================================== */
 
-*, *::before, *::after {
+/* ===========================
+    القواعد المشتركة لكل الصفحات
+=========================== */
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -11,14 +12,11 @@
 }
 
 body {
-    direction: rtl;
     background: #f5f7fa;
+    direction: rtl;
     color: #333;
-    min-height: 100dvh;
-    overflow-x: hidden;
 }
 
-/* الحاوية الرئيسية */
 .container {
     width: 100%;
     display: flex;
@@ -27,14 +25,13 @@ body {
     padding: 40px 15px;
 }
 
-/* الكروت والتصميم الأساسي */
 .card {
     width: 700px;
     max-width: 100%;
-    background: #ffffff;
+    background: #fff;
     border-radius: 12px;
     padding: 30px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, .15);
 }
 
 .title {
@@ -49,7 +46,6 @@ body {
     margin-bottom: 25px;
 }
 
-/* النماذج وعناصر الإدخال */
 .form-group {
     margin-bottom: 18px;
 }
@@ -60,74 +56,92 @@ label {
     font-weight: bold;
 }
 
-input[type="text"],
-select,
-.custom-job-select {
+input[type=text] {
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 15px;
-    transition: all 0.3s ease;
 }
 
-input[type="text"]:focus,
-select:focus,
-.custom-job-select:focus {
+input[type=text]:focus {
     border-color: #0d6efd;
     outline: none;
 }
 
-input[type="file"] {
+input[type=file] {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
 }
 
-/* الأزرار العامة */
-button, .btn {
-    display: inline-block;
+button {
     width: 100%;
     padding: 14px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
     margin-top: 10px;
-    transition: all 0.3s ease;
+    transition: .3s;
 }
 
-.btn-success { background: #198754; color: #fff; }
-.btn-success:hover { background: #157347; }
+.btn-success {
+    background: #198754;
+    color: #fff;
+}
 
-.btn-primary { background: #0d6efd; color: #fff; }
-.btn-primary:hover { background: #0b5ed7; }
+.btn-success:hover {
+    background: #157347;
+}
 
-.btn-warning { background: #ffc107; color: #000; }
-.btn-warning:hover { background: #e0a800; }
+.btn-primary {
+    background: #0d6efd;
+    color: #fff;
+}
 
-.btn-secondary { background: #6c757d; color: #fff; }
-.btn-secondary:hover { background: #565e64; }
+.btn-primary:hover {
+    background: #0b5ed7;
+}
 
-.menu button { margin-bottom: 15px; }
+.btn-warning {
+    background: #ffc107;
+    color: #000;
+}
 
-/* المعاينة والجداول */
-.preview-image,
-.preview-img,
-.result-image {
+.btn-warning:hover {
+    background: #e0a800;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background: #565e64;
+}
+
+.menu button {
+    margin-bottom: 15px;
+}
+
+.preview-image {
     width: 220px;
-    max-width: 100%;
     display: block;
     margin: 15px auto;
     border: 2px solid #ddd;
     border-radius: 10px;
 }
 
-.result-image { width: 280px; }
+.result-image {
+    width: 280px;
+    display: block;
+    margin: 15px auto;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+}
 
 .table {
     width: 100%;
@@ -140,7 +154,9 @@ button, .btn {
     padding: 10px;
 }
 
-.table tr:nth-child(even) { background: #f8f8f8; }
+.table tr:nth-child(even) {
+    background: #f8f8f8;
+}
 
 .result-card {
     margin-top: 20px;
@@ -165,176 +181,15 @@ button, .btn {
     font-size: 14px;
 }
 
-
-/* ==========================================================================
-   2. الخلفيات والقواعد الموحدة لصفحات النموذج (Register, Permit, Renew, Search)
-   ========================================================================== */
-
-body.register-page,
-body.permit-page,
-body.renew-page,
-body.search-page {
-    color: #17356d;
-    background:
-        linear-gradient(rgba(2, 14, 55, .46), rgba(2, 14, 55, .72)),
-        url("https://drive.google.com/thumbnail?id=1J8L55XgT49KP5beqo7jLtJAoBM3Y6TzQ&sz=w1600")
-        center center / cover no-repeat fixed;
-}
-
-body.register-page::before,
-body.permit-page::before,
-body.renew-page::before,
-body.search-page::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    opacity: .55;
-    background:
-        radial-gradient(circle at 8% 24%, rgba(38, 186, 255, .9) 0 2px, transparent 3px),
-        radial-gradient(circle at 92% 35%, rgba(38, 186, 255, .9) 0 2px, transparent 3px),
-        radial-gradient(circle at 18% 80%, rgba(38, 186, 255, .8) 0 2px, transparent 3px),
-        radial-gradient(circle at 84% 75%, rgba(38, 186, 255, .8) 0 2px, transparent 3px);
-    background-size: 170px 210px, 220px 260px, 190px 230px, 240px 280px;
-}
-
-/* تنسيق الهيدر العلوي لصفحات (Register, Permit, Renew) */
-.register-page .container::before,
-.permit-page .container::before,
-.renew-page .container::before {
-    content: "نظام تسجيل الموظفين والتصاريح\A إدارة متكاملة وسهلة لموظفيك وتصاريحهم في مكان واحد";
-    white-space: pre-line;
-    display: block;
-    width: min(100%, 620px);
-    min-height: 190px;
-    padding: 122px 12px 22px;
-    margin-bottom: 4px;
-    text-align: center;
-    color: #fff;
-    font-size: clamp(14px, 3.6vw, 19px);
-    font-weight: 700;
-    line-height: 1.9;
-    text-shadow: 0 2px 12px rgba(0, 15, 61, .65);
-    background:
-        url("https://drive.google.com/thumbnail?id=1kGjUhjS3uuabfRTP-W4t0Sk9fEw4JsBb&sz=w1000")
-        center 4px / 175px 112px no-repeat;
-}
-
-/* تنسيق الكروت الزجاجية (Glassmorphism Cards) */
-.register-page .card,
-.permit-page .card,
-.renew-page .card,
-.search-page .card,
-.search-page .search-card,
-.search-page .result-card {
-    position: relative;
-    z-index: 1;
-    width: min(100%, 610px);
-    padding: 26px 20px 22px;
-    border: 1px solid rgba(255, 255, 255, .9);
-    border-radius: 27px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(226, 239, 255, .88));
-    box-shadow: 0 18px 42px rgba(0, 14, 61, .38);
-    backdrop-filter: blur(10px);
-}
-
-/* الحقول والنصوص داخل الكروت الخاصة بالنماذج */
-.register-page label,
-.permit-page label,
-.renew-page label {
-    margin-bottom: 8px;
-    color: #244274;
-    font-size: 15px;
-    font-weight: 800;
-}
-
-.register-page input[type=text],
-.register-page select,
-.register-page .custom-job-select,
-.permit-page input[type=text],
-.permit-page select,
-.permit-page .custom-job-select,
-.renew-page input[type=text],
-.renew-page select,
-.renew-page .custom-job-select {
-    width: 100%;
-    min-height: 52px;
-    padding: 12px 14px !important;
-    border: 1px solid #d5e2f8 !important;
-    border-radius: 11px !important;
-    color: #1e3767 !important;
-    font-size: 15px !important;
-    font-weight: 600 !important;
-    background: rgba(255, 255, 255, .92) !important;
-    box-shadow: 0 5px 13px rgba(40, 94, 175, .08) !important;
-}
-
-.register-page input[type=text]::placeholder,
-.permit-page input[type=text]::placeholder,
-.renew-page input[type=text]::placeholder {
-    color: #8a9bbc;
-}
-
-.register-page input[type=file],
-.permit-page input[type=file],
-.renew-page input[type=file] {
-    width: 100%;
-    padding: 13px;
-    border: 1px dashed #78a9ef;
-    border-radius: 12px;
-    color: #3263a8;
-    background: rgba(248, 252, 255, .9);
-    cursor: pointer;
-}
-
-.register-page input[type=file]::file-selector-button,
-.permit-page input[type=file]::file-selector-button,
-.renew-page input[type=file]::file-selector-button {
-    margin-left: 10px;
-    padding: 8px 13px;
-    border: 0;
-    border-radius: 7px;
-    color: #fff;
-    font-family: Tahoma, Arial, sans-serif;
-    font-weight: bold;
-    background: linear-gradient(135deg, #1688f5, #1254db);
-    cursor: pointer;
-}
-
-.register-page .card > hr,
-.permit-page .card > hr,
-.renew-page .card > hr,
-.register-page form > hr {
-    height: 1px;
-    margin: 20px 0;
-    border: 0;
-    background: #b7d1f6;
-}
-
-.register-page .btn-secondary,
-.permit-page .btn-secondary,
-.renew-page .btn-secondary {
-    min-height: 50px;
-    border-radius: 10px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #224b89, #102c62);
-    box-shadow: 0 8px 16px rgba(7, 35, 83, .2);
-}
-
-.register-page .btn-secondary:hover,
-.permit-page .btn-secondary:hover,
-.renew-page .btn-secondary:hover {
-    background: linear-gradient(135deg, #183e78, #0b214c);
-}
-
-
-/* ==========================================================================
-   3. الصفحة الرئيسية (Home Page)
-   ========================================================================== */
+/* ===========================
+   الصفحة الرئيسية فقط
+   لا يؤثر على باقي الصفحات
+=========================== */
 
 body.home-page {
+    min-height: 100vh;
     min-height: 100dvh;
+    overflow-x: hidden;
     color: #10275a;
     background:
         linear-gradient(rgba(2, 20, 70, .40), rgba(2, 20, 70, .68)),
@@ -358,6 +213,7 @@ body.home-page::before {
 .home-page .container {
     position: relative;
     z-index: 1;
+    min-height: 100vh;
     min-height: 100dvh;
     align-items: center;
     padding: 28px 16px 22px;
@@ -584,20 +440,40 @@ body.home-page::before {
     line-height: 1;
 }
 
-.home-page .btn-success .service-icon { background: linear-gradient(135deg, #10c66a, #00984a); }
+.home-page .btn-success .service-icon {
+    background: linear-gradient(135deg, #10c66a, #00984a);
+}
+
 .home-page .btn-success .service-copy strong,
-.home-page .btn-success .service-arrow { color: #009b4d; }
+.home-page .btn-success .service-arrow {
+    color: #009b4d;
+}
 
-.home-page .btn-primary .service-icon { background: linear-gradient(135deg, #2185ff, #0048df); }
-.home-page .btn-primary .service-copy strong { color: #1158e4; }
+.home-page .btn-primary .service-icon {
+    background: linear-gradient(135deg, #2185ff, #0048df);
+}
 
-.home-page .btn-warning .service-icon { background: linear-gradient(135deg, #ffc21a, #ff8700); }
+.home-page .btn-primary .service-copy strong {
+    color: #1158e4;
+}
+
+.home-page .btn-warning .service-icon {
+    background: linear-gradient(135deg, #ffc21a, #ff8700);
+}
+
 .home-page .btn-warning .service-copy strong,
-.home-page .btn-warning .service-arrow { color: #f08b00; }
+.home-page .btn-warning .service-arrow {
+    color: #f08b00;
+}
 
-.home-page .btn-info .service-icon { background: linear-gradient(135deg, #506a9d, #112754); }
+.home-page .btn-info .service-icon {
+    background: linear-gradient(135deg, #506a9d, #112754);
+}
+
 .home-page .btn-info .service-copy strong,
-.home-page .btn-info .service-arrow { color: #2c477d; }
+.home-page .btn-info .service-arrow {
+    color: #2c477d;
+}
 
 .home-footer {
     display: flex;
@@ -624,9 +500,19 @@ body.home-page::before {
 }
 
 .footer-brand strong,
-.footer-brand small { display: block; }
-.footer-brand strong { font: 700 15px Arial, sans-serif; }
-.footer-brand small { margin-top: 4px; color: #36d7f3; font-size: 11px; }
+.footer-brand small {
+    display: block;
+}
+
+.footer-brand strong {
+    font: 700 15px Arial, sans-serif;
+}
+
+.footer-brand small {
+    margin-top: 4px;
+    color: #36d7f3;
+    font-size: 11px;
+}
 
 .home-footer p {
     margin: 0;
@@ -635,310 +521,13 @@ body.home-page::before {
     text-align: left;
 }
 
-
-/* ==========================================================================
-   4. صفحة تسجيل موظف جديد (Register Page)
-   ========================================================================== */
-
-.register-page .container {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 28px 16px 40px;
-}
-
-.register-page .card .title {
-    position: relative;
-    margin-bottom: 22px;
-    padding: 0 0 17px;
-    color: #1465e9;
-    font-size: clamp(23px, 6vw, 31px);
-    line-height: 1.35;
-}
-
-.register-page .card .title::after {
-    content: "";
-    position: absolute;
-    right: 50%;
-    bottom: 0;
-    width: 120px;
-    height: 3px;
-    border-radius: 99px;
-    background: linear-gradient(90deg, #00c8e8, #1565eb);
-    transform: translateX(50%);
-}
-
-.register-page input[type=text]:focus,
-.register-page select:focus,
-.register-page .custom-job-select:focus {
-    border-color: #1685f2 !important;
-    box-shadow: 0 0 0 3px rgba(22, 133, 242, .16) !important;
-    outline: none;
-}
-
-.register-page #cvContainer {
-    border-color: #3c8dfa !important;
-    border-radius: 13px !important;
-    background: rgba(233, 244, 255, .86) !important;
-}
-
-.register-page .alert-custom {
-    border-radius: 12px;
-    box-shadow: 0 7px 16px rgba(19, 59, 120, .1);
-}
-
-.register-page #submitBtn {
-    min-height: 54px;
-    margin-top: 10px !important;
-    border-radius: 10px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #11ba69, #07914c);
-    box-shadow: 0 8px 16px rgba(0, 136, 69, .22);
-}
-
-.register-page #submitBtn:hover {
-    background: linear-gradient(135deg, #0ba95e, #067c40);
-}
-
-.register-page #loading { color: #1565e5 !important; }
-
-
-/* ==========================================================================
-   5. صفحة تصريح شركة ثانية (Permit Page)
-   ========================================================================== */
-
-.permit-page .container {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 28px 16px 40px;
-}
-
-.permit-page .card .title {
-    position: relative;
-    margin-bottom: 22px;
-    padding: 0 0 17px;
-    color: #f18c00;
-    font-size: clamp(22px, 5.7vw, 30px);
-    line-height: 1.35;
-}
-
-.permit-page .card .title::after {
-    content: "";
-    position: absolute;
-    right: 50%;
-    bottom: 0;
-    width: 120px;
-    height: 3px;
-    border-radius: 99px;
-    background: linear-gradient(90deg, #ffb300, #f27c00);
-    transform: translateX(50%);
-}
-
-.permit-page input[type=text]:focus,
-.permit-page select:focus,
-.permit-page .custom-job-select:focus {
-    border-color: #1685f2 !important;
-    box-shadow: 0 0 0 3px rgba(22, 133, 242, .16) !important;
-    outline: none;
-}
-
-.permit-page .alert-banner,
-.permit-page .alert-banner-success {
-    border-radius: 12px;
-    box-shadow: 0 7px 16px rgba(19, 59, 120, .1);
-}
-
-.permit-page .btn-success {
-    min-height: 54px;
-    margin-top: 10px;
-    border-radius: 10px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #11ba69, #07914c);
-    box-shadow: 0 8px 16px rgba(0, 136, 69, .22);
-}
-
-.permit-page .btn-success:hover {
-    background: linear-gradient(135deg, #0ba95e, #067c40);
-}
-
-.permit-page #loading { color: #1565e5 !important; }
-
-
-/* ==========================================================================
-   6. صفحة تجديد التصاريح (Renew Page)
-   ========================================================================== */
-
-.renew-page .container {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 28px 16px 40px;
-}
-
-.renew-page .card .title {
-    position: relative;
-    margin-bottom: 22px;
-    padding: 0 0 17px;
-    color: #087f99;
-    font-size: clamp(23px, 5.8vw, 31px);
-    line-height: 1.35;
-}
-
-.renew-page .card .title::after {
-    content: "";
-    position: absolute;
-    right: 50%;
-    bottom: 0;
-    width: 120px;
-    height: 3px;
-    border-radius: 99px;
-    background: linear-gradient(90deg, #00c8e8, #087f99);
-    transform: translateX(50%);
-}
-
-.renew-page input[type=text]:focus,
-.renew-page select:focus,
-.renew-page .custom-job-select:focus {
-    border-color: #00a9c2 !important;
-    box-shadow: 0 0 0 3px rgba(0, 169, 194, .16) !important;
-    outline: none;
-}
-
-.renew-page input[type=file]::file-selector-button {
-    background: linear-gradient(135deg, #10b5ca, #087eaf);
-}
-
-.renew-page .btn-success {
-    min-height: 54px;
-    margin-top: 10px;
-    border-radius: 10px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #18b7c7, #087ea5);
-    box-shadow: 0 8px 16px rgba(0, 131, 156, .24);
-}
-
-.renew-page .btn-success:hover {
-    background: linear-gradient(135deg, #0fa6b6, #066b91);
-}
-
-.renew-page #loading { color: #087eaf !important; }
-
-
-/* ==========================================================================
-   7. صفحة البحث (Search Page)
-   ========================================================================== */
-
-.search-page .container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 35px 15px 40px;
-    max-width: 720px;
-    margin: auto;
-}
-
-.search-header {
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-.search-logo {
-    width: 170px;
-    max-width: 45vw;
-    display: block;
-    margin: auto;
-    filter: drop-shadow(0 10px 25px rgba(0, 180, 255, .45));
-}
-
-.search-header h1 {
-    margin-top: 18px;
-    margin-bottom: 12px;
-    color: #fff;
-    font-size: 40px;
-    font-weight: 800;
-    text-shadow: 0 3px 15px rgba(0, 0, 0, .55);
-}
-
-.search-header p {
-    color: #eaf6ff;
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 20px;
-}
-
-.header-line {
-    width: 90px;
-    height: 5px;
-    border-radius: 50px;
-    margin: auto;
-    background: linear-gradient(90deg, #00d5ff, #1d7dff);
-}
-
-.search-page input[type=text] {
-    height: 55px;
-    border-radius: 12px;
-    border: 1px solid #dbe6ff;
-    background: #fff;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.search-page input[type=text]:focus {
-    border-color: #1ea7ff;
-    box-shadow: 0 0 0 4px rgba(30, 167, 255, .15);
-}
-
-.search-page .btn-primary {
-    background: linear-gradient(135deg, #1f8cff, #0066ff);
-}
-
-.search-page .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0, 110, 255, .3);
-}
-
-.search-page .btn-secondary {
-    background: linear-gradient(135deg, #455a80, #26395d);
-}
-
-.search-page img {
-    border-radius: 12px;
-    border: 2px solid #d8e7ff;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, .15);
-}
-
-.search-page h2,
-.search-page h3 {
-    color: #1364dd;
-    font-weight: 800;
-}
-
-.search-page hr {
-    border-color: #d9e8ff;
-}
-
-
-/* ==========================================================================
-   8. التجاوب مع مختلف الشاشات (Responsive Design / Media Queries)
-   ========================================================================== */
-
-/* الشاشات المتوسطة (Tablets) */
 @media (max-width: 768px) {
     .card {
         width: 100%;
         padding: 20px;
     }
 
-    button, .btn {
+    button {
         font-size: 15px;
     }
 
@@ -946,70 +535,8 @@ body.home-page::before {
     .result-image {
         width: 100%;
     }
-
-    .search-logo {
-        width: 120px;
-    }
-
-    .search-header h1 {
-        font-size: 30px;
-    }
-
-    .search-header p {
-        font-size: 16px;
-    }
-
-    .search-page .card,
-    .search-page .search-card,
-    .search-page .result-card {
-        padding: 20px;
-        border-radius: 22px;
-    }
 }
 
-/* الشاشات الصغيرة (Mobile - 480px and below) */
-@media (max-width: 480px) {
-    .register-page .container,
-    .permit-page .container,
-    .renew-page .container {
-        padding: 18px 11px 28px;
-    }
-
-    .register-page .container::before,
-    .permit-page .container::before,
-    .renew-page .container::before {
-        min-height: 164px;
-        padding-top: 105px;
-        margin-bottom: 0;
-        font-size: 14px;
-        background-size: 145px 94px;
-        background-position: center 2px;
-    }
-
-    .register-page .card,
-    .permit-page .card,
-    .renew-page .card {
-        padding: 22px 13px 17px;
-        border-radius: 22px;
-    }
-
-    .register-page .card .title,
-    .renew-page .card .title {
-        font-size: 24px;
-    }
-
-    .permit-page .card .title {
-        font-size: 23px;
-    }
-
-    .register-page label,
-    .permit-page label,
-    .renew-page label {
-        font-size: 14px;
-    }
-}
-
-/* الشاشات الصغيرة جدًا (Small Mobile - 390px and below) */
 @media (max-width: 390px) {
     .home-page .container {
         padding-right: 11px;
@@ -1046,4 +573,860 @@ body.home-page::before {
         gap: 10px;
     }
 }
+
+/* =========================================
+   صفحة تسجيل موظف جديد فقط
+========================================= */
+
+body.register-page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    background:
+        linear-gradient(rgba(2, 14, 55, .46), rgba(2, 14, 55, .72)),
+        url("https://drive.google.com/thumbnail?id=1J8L55XgT49KP5beqo7jLtJAoBM3Y6TzQ&sz=w1600")
+        center center / cover no-repeat;
+    color: #17356d;
+}
+
+body.register-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 8% 24%, rgba(38, 186, 255, .9) 0 2px, transparent 3px),
+        radial-gradient(circle at 92% 35%, rgba(38, 186, 255, .9) 0 2px, transparent 3px),
+        radial-gradient(circle at 18% 80%, rgba(38, 186, 255, .8) 0 2px, transparent 3px),
+        radial-gradient(circle at 84% 75%, rgba(38, 186, 255, .8) 0 2px, transparent 3px);
+    background-size: 170px 210px, 220px 260px, 190px 230px, 240px 280px;
+    opacity: .55;
+}
+
+.register-page .container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 16px 40px;
+}
+
+.register-page .container::before {
+    content: "نظام تسجيل الموظفين والتصاريح\A إدارة متكاملة وسهلة لموظفيك وتصاريحهم في مكان واحد";
+    white-space: pre-line;
+    display: block;
+    width: min(100%, 620px);
+    min-height: 190px;
+    padding: 122px 12px 22px;
+    margin-bottom: 4px;
+    text-align: center;
+    color: #fff;
+    font-size: clamp(14px, 3.6vw, 19px);
+    font-weight: 700;
+    line-height: 1.9;
+    text-shadow: 0 2px 12px rgba(0, 15, 61, .65);
+    background:
+        url("https://drive.google.com/thumbnail?id=1kGjUhjS3uuabfRTP-W4t0Sk9fEw4JsBb&sz=w1000")
+        center 4px / 175px 112px no-repeat;
+}
+
+.register-page .card {
+    width: min(100%, 610px);
+    padding: 26px 20px 22px;
+    border: 1px solid rgba(255, 255, 255, .9);
+    border-radius: 27px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(226, 239, 255, .88));
+    box-shadow: 0 18px 42px rgba(0, 14, 61, .38);
+    backdrop-filter: blur(10px);
+}
+
+.register-page .card .title {
+    position: relative;
+    margin-bottom: 22px;
+    padding: 0 0 17px;
+    color: #1465e9;
+    font-size: clamp(23px, 6vw, 31px);
+    line-height: 1.35;
+}
+
+.register-page .card .title::after {
+    content: "";
+    position: absolute;
+    right: 50%;
+    bottom: 0;
+    width: 120px;
+    height: 3px;
+    border-radius: 99px;
+    background: linear-gradient(90deg, #00c8e8, #1565eb);
+    transform: translateX(50%);
+}
+
+.register-page .card > hr,
+.register-page form > hr {
+    height: 1px;
+    margin: 20px 0;
+    border: 0;
+    background: #b7d1f6;
+}
+
+.register-page .form-group {
+    margin-bottom: 17px;
+}
+
+.register-page label {
+    margin-bottom: 8px;
+    color: #244274;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.register-page input[type=text],
+.register-page select,
+.register-page .custom-job-select {
+    width: 100%;
+    min-height: 52px;
+    padding: 12px 14px !important;
+    border: 1px solid #d5e2f8 !important;
+    border-radius: 11px !important;
+    color: #1e3767 !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    background: rgba(255, 255, 255, .92) !important;
+    box-shadow: 0 5px 13px rgba(40, 94, 175, .08) !important;
+}
+
+.register-page input[type=text]::placeholder {
+    color: #8a9bbc;
+}
+
+.register-page input[type=text]:focus,
+.register-page select:focus,
+.register-page .custom-job-select:focus {
+    border-color: #1685f2 !important;
+    box-shadow: 0 0 0 3px rgba(22, 133, 242, .16) !important;
+    outline: none;
+}
+
+.register-page input[type=file] {
+    width: 100%;
+    padding: 13px;
+    border: 1px dashed #78a9ef;
+    border-radius: 12px;
+    color: #3263a8;
+    background: rgba(248, 252, 255, .9);
+    cursor: pointer;
+}
+
+.register-page input[type=file]::file-selector-button {
+    margin-left: 10px;
+    padding: 8px 13px;
+    border: 0;
+    border-radius: 7px;
+    color: #fff;
+    font-family: Tahoma, Arial, sans-serif;
+    font-weight: bold;
+    background: linear-gradient(135deg, #1688f5, #1254db);
+    cursor: pointer;
+}
+
+.register-page #cvContainer {
+    border-color: #3c8dfa !important;
+    border-radius: 13px !important;
+    background: rgba(233, 244, 255, .86) !important;
+}
+
+.register-page .preview-img {
+    max-width: 100%;
+    max-height: 180px;
+    margin: 12px auto 0;
+    border: 1px solid #b7d4ff;
+    border-radius: 10px;
+    box-shadow: 0 7px 16px rgba(24, 86, 175, .12);
+}
+
+.register-page .alert-custom {
+    border-radius: 12px;
+    box-shadow: 0 7px 16px rgba(19, 59, 120, .1);
+}
+
+.register-page #submitBtn {
+    min-height: 54px;
+    margin-top: 10px !important;
+    border-radius: 10px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #11ba69, #07914c);
+    box-shadow: 0 8px 16px rgba(0, 136, 69, .22);
+}
+
+.register-page #submitBtn:hover {
+    background: linear-gradient(135deg, #0ba95e, #067c40);
+}
+
+.register-page .btn-secondary {
+    min-height: 50px;
+    border-radius: 10px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #224b89, #102c62);
+    box-shadow: 0 8px 16px rgba(7, 35, 83, .2);
+}
+
+.register-page .btn-secondary:hover {
+    background: linear-gradient(135deg, #183e78, #0b214c);
+}
+
+.register-page #loading {
+    color: #1565e5 !important;
+}
+
+@media (max-width: 480px) {
+    .register-page .container {
+        padding: 18px 11px 28px;
+    }
+
+    .register-page .container::before {
+        min-height: 164px;
+        padding-top: 105px;
+        margin-bottom: 0;
+        font-size: 14px;
+        background-size: 145px 94px;
+        background-position: center 2px;
+    }
+
+    .register-page .card {
+        padding: 22px 13px 17px;
+        border-radius: 22px;
+    }
+
+    .register-page .card .title {
+        font-size: 24px;
+    }
+
+    .register-page label {
+        font-size: 14px;
+    }
+}
+
+/* =========================================
+   صفحة تصريح شركة ثانية فقط
+========================================= */
+
+body.permit-page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    background:
+        linear-gradient(rgba(2, 14, 55, .46), rgba(2, 14, 55, .72)),
+        url("https://drive.google.com/thumbnail?id=1J8L55XgT49KP5beqo7jLtJAoBM3Y6TzQ&sz=w1600")
+        center center / cover no-repeat;
+    color: #17356d;
+}
+
+body.permit-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: .55;
+    background:
+        radial-gradient(circle at 8% 24%, rgba(38, 186, 255, .9) 0 2px, transparent 3px),
+        radial-gradient(circle at 92% 35%, rgba(38, 186, 255, .9) 0 2px, transparent 3px),
+        radial-gradient(circle at 18% 80%, rgba(38, 186, 255, .8) 0 2px, transparent 3px),
+        radial-gradient(circle at 84% 75%, rgba(38, 186, 255, .8) 0 2px, transparent 3px);
+    background-size: 170px 210px, 220px 260px, 190px 230px, 240px 280px;
+}
+
+.permit-page .container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 16px 40px;
+}
+
+.permit-page .container::before {
+    content: "نظام تسجيل الموظفين والتصاريح\A إدارة متكاملة وسهلة لموظفيك وتصاريحهم في مكان واحد";
+    white-space: pre-line;
+    display: block;
+    width: min(100%, 620px);
+    min-height: 190px;
+    padding: 122px 12px 22px;
+    margin-bottom: 4px;
+    text-align: center;
+    color: #fff;
+    font-size: clamp(14px, 3.6vw, 19px);
+    font-weight: 700;
+    line-height: 1.9;
+    text-shadow: 0 2px 12px rgba(0, 15, 61, .65);
+    background:
+        url("https://drive.google.com/thumbnail?id=1kGjUhjS3uuabfRTP-W4t0Sk9fEw4JsBb&sz=w1000")
+        center 4px / 175px 112px no-repeat;
+}
+
+.permit-page .card {
+    width: min(100%, 610px);
+    padding: 26px 20px 22px;
+    border: 1px solid rgba(255, 255, 255, .9);
+    border-radius: 27px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(226, 239, 255, .88));
+    box-shadow: 0 18px 42px rgba(0, 14, 61, .38);
+    backdrop-filter: blur(10px);
+}
+
+.permit-page .card .title {
+    position: relative;
+    margin-bottom: 22px;
+    padding: 0 0 17px;
+    color: #f18c00;
+    font-size: clamp(22px, 5.7vw, 30px);
+    line-height: 1.35;
+}
+
+.permit-page .card .title::after {
+    content: "";
+    position: absolute;
+    right: 50%;
+    bottom: 0;
+    width: 120px;
+    height: 3px;
+    border-radius: 99px;
+    background: linear-gradient(90deg, #ffb300, #f27c00);
+    transform: translateX(50%);
+}
+
+.permit-page .card > hr {
+    height: 1px;
+    margin: 20px 0;
+    border: 0;
+    background: #b7d1f6;
+}
+
+.permit-page .form-group {
+    margin-bottom: 17px;
+}
+
+.permit-page label {
+    margin-bottom: 8px;
+    color: #244274;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.permit-page input[type=text],
+.permit-page select,
+.permit-page .custom-job-select {
+    width: 100%;
+    min-height: 52px;
+    padding: 12px 14px !important;
+    border: 1px solid #d5e2f8 !important;
+    border-radius: 11px !important;
+    color: #1e3767 !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    background: rgba(255, 255, 255, .92) !important;
+    box-shadow: 0 5px 13px rgba(40, 94, 175, .08) !important;
+}
+
+.permit-page input[type=text]::placeholder {
+    color: #8a9bbc;
+}
+
+.permit-page input[type=text]:focus,
+.permit-page select:focus,
+.permit-page .custom-job-select:focus {
+    border-color: #1685f2 !important;
+    box-shadow: 0 0 0 3px rgba(22, 133, 242, .16) !important;
+    outline: none;
+}
+
+.permit-page input[type=file] {
+    width: 100%;
+    padding: 13px;
+    border: 1px dashed #78a9ef;
+    border-radius: 12px;
+    color: #3263a8;
+    background: rgba(248, 252, 255, .9);
+    cursor: pointer;
+}
+
+.permit-page input[type=file]::file-selector-button {
+    margin-left: 10px;
+    padding: 8px 13px;
+    border: 0;
+    border-radius: 7px;
+    color: #fff;
+    font-family: Tahoma, Arial, sans-serif;
+    font-weight: bold;
+    background: linear-gradient(135deg, #1688f5, #1254db);
+    cursor: pointer;
+}
+
+.permit-page .preview-image {
+    max-width: 100%;
+    max-height: 180px;
+    margin: 12px auto 0;
+    border: 1px solid #b7d4ff;
+    border-radius: 10px;
+    box-shadow: 0 7px 16px rgba(24, 86, 175, .12);
+}
+
+.permit-page .alert-banner,
+.permit-page .alert-banner-success {
+    border-radius: 12px;
+    box-shadow: 0 7px 16px rgba(19, 59, 120, .1);
+}
+
+.permit-page .btn-success {
+    min-height: 54px;
+    margin-top: 10px;
+    border-radius: 10px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #11ba69, #07914c);
+    box-shadow: 0 8px 16px rgba(0, 136, 69, .22);
+}
+
+.permit-page .btn-success:hover {
+    background: linear-gradient(135deg, #0ba95e, #067c40);
+}
+
+.permit-page .btn-secondary {
+    min-height: 50px;
+    border-radius: 10px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #224b89, #102c62);
+    box-shadow: 0 8px 16px rgba(7, 35, 83, .2);
+}
+
+.permit-page .btn-secondary:hover {
+    background: linear-gradient(135deg, #183e78, #0b214c);
+}
+
+.permit-page #loading {
+    color: #1565e5 !important;
+}
+
+@media (max-width: 480px) {
+    .permit-page .container {
+        padding: 18px 11px 28px;
+    }
+
+    .permit-page .container::before {
+        min-height: 164px;
+        padding-top: 105px;
+        margin-bottom: 0;
+        font-size: 14px;
+        background-size: 145px 94px;
+        background-position: center 2px;
+    }
+
+    .permit-page .card {
+        padding: 22px 13px 17px;
+        border-radius: 22px;
+    }
+
+    .permit-page .card .title {
+        font-size: 23px;
+    }
+
+    .permit-page label {
+        font-size: 14px;
+    }
+}
+
+/* =========================================
+   صفحة تجديد التصاريح فقط
+========================================= */
+
+body.renew-page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    background:
+        linear-gradient(rgba(2, 14, 55, .46), rgba(2, 14, 55, .72)),
+        url("https://drive.google.com/thumbnail?id=1J8L55XgT49KP5beqo7jLtJAoBM3Y6TzQ&sz=w1600")
+        center center / cover no-repeat;
+    color: #17356d;
+}
+
+body.renew-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: .55;
+    background:
+        radial-gradient(circle at 8% 24%, rgba(38, 186, 255, .9) 0 2px, transparent 3px),
+        radial-gradient(circle at 92% 35%, rgba(38, 186, 255, .9) 0 2px, transparent 3px),
+        radial-gradient(circle at 18% 80%, rgba(38, 186, 255, .8) 0 2px, transparent 3px),
+        radial-gradient(circle at 84% 75%, rgba(38, 186, 255, .8) 0 2px, transparent 3px);
+    background-size: 170px 210px, 220px 260px, 190px 230px, 240px 280px;
+}
+
+.renew-page .container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 16px 40px;
+}
+
+.renew-page .container::before {
+    content: "نظام تسجيل الموظفين والتصاريح\A إدارة متكاملة وسهلة لموظفيك وتصاريحهم في مكان واحد";
+    white-space: pre-line;
+    display: block;
+    width: min(100%, 620px);
+    min-height: 190px;
+    padding: 122px 12px 22px;
+    margin-bottom: 4px;
+    text-align: center;
+    color: #fff;
+    font-size: clamp(14px, 3.6vw, 19px);
+    font-weight: 700;
+    line-height: 1.9;
+    text-shadow: 0 2px 12px rgba(0, 15, 61, .65);
+    background:
+        url("https://drive.google.com/thumbnail?id=1kGjUhjS3uuabfRTP-W4t0Sk9fEw4JsBb&sz=w1000")
+        center 4px / 175px 112px no-repeat;
+}
+
+.renew-page .card {
+    width: min(100%, 610px);
+    padding: 26px 20px 22px;
+    border: 1px solid rgba(255, 255, 255, .9);
+    border-radius: 27px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, .96), rgba(226, 239, 255, .88));
+    box-shadow: 0 18px 42px rgba(0, 14, 61, .38);
+    backdrop-filter: blur(10px);
+}
+
+.renew-page .card .title {
+    position: relative;
+    margin-bottom: 22px;
+    padding: 0 0 17px;
+    color: #087f99;
+    font-size: clamp(23px, 5.8vw, 31px);
+    line-height: 1.35;
+}
+
+.renew-page .card .title::after {
+    content: "";
+    position: absolute;
+    right: 50%;
+    bottom: 0;
+    width: 120px;
+    height: 3px;
+    border-radius: 99px;
+    background: linear-gradient(90deg, #00c8e8, #087f99);
+    transform: translateX(50%);
+}
+
+.renew-page .card > hr {
+    height: 1px;
+    margin: 20px 0;
+    border: 0;
+    background: #b7d1f6;
+}
+
+.renew-page .form-group {
+    margin-bottom: 17px;
+}
+
+.renew-page label {
+    margin-bottom: 8px;
+    color: #244274;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.renew-page input[type=text],
+.renew-page select,
+.renew-page .custom-job-select {
+    width: 100%;
+    min-height: 52px;
+    padding: 12px 14px !important;
+    border: 1px solid #d5e2f8 !important;
+    border-radius: 11px !important;
+    color: #1e3767 !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    background: rgba(255, 255, 255, .92) !important;
+    box-shadow: 0 5px 13px rgba(40, 94, 175, .08) !important;
+}
+
+.renew-page input[type=text]::placeholder {
+    color: #8a9bbc;
+}
+
+.renew-page input[type=text]:focus,
+.renew-page select:focus,
+.renew-page .custom-job-select:focus {
+    border-color: #00a9c2 !important;
+    box-shadow: 0 0 0 3px rgba(0, 169, 194, .16) !important;
+    outline: none;
+}
+
+.renew-page input[type=file] {
+    width: 100%;
+    padding: 13px;
+    border: 1px dashed #78a9ef;
+    border-radius: 12px;
+    color: #3263a8;
+    background: rgba(248, 252, 255, .9);
+    cursor: pointer;
+}
+
+.renew-page input[type=file]::file-selector-button {
+    margin-left: 10px;
+    padding: 8px 13px;
+    border: 0;
+    border-radius: 7px;
+    color: #fff;
+    font-family: Tahoma, Arial, sans-serif;
+    font-weight: bold;
+    background: linear-gradient(135deg, #10b5ca, #087eaf);
+    cursor: pointer;
+}
+
+.renew-page .preview-image,
+.renew-page .preview-img {
+    max-width: 100%;
+    max-height: 180px;
+    margin: 12px auto 0;
+    border: 1px solid #b7d4ff;
+    border-radius: 10px;
+    box-shadow: 0 7px 16px rgba(24, 86, 175, .12);
+}
+
+.renew-page .btn-success {
+    min-height: 54px;
+    margin-top: 10px;
+    border-radius: 10px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #18b7c7, #087ea5);
+    box-shadow: 0 8px 16px rgba(0, 131, 156, .24);
+}
+
+.renew-page .btn-success:hover {
+    background: linear-gradient(135deg, #0fa6b6, #066b91);
+}
+
+.renew-page .btn-secondary {
+    min-height: 50px;
+    border-radius: 10px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #224b89, #102c62);
+    box-shadow: 0 8px 16px rgba(7, 35, 83, .2);
+}
+
+.renew-page .btn-secondary:hover {
+    background: linear-gradient(135deg, #183e78, #0b214c);
+}
+
+.renew-page #loading {
+    color: #087eaf !important;
+}
+
+@media (max-width: 480px) {
+    .renew-page .container {
+        padding: 18px 11px 28px;
+    }
+
+    .renew-page .container::before {
+        min-height: 164px;
+        padding-top: 105px;
+        margin-bottom: 0;
+        font-size: 14px;
+        background-size: 145px 94px;
+        background-position: center 2px;
+    }
+
+    .renew-page .card {
+        padding: 22px 13px 17px;
+        border-radius: 22px;
+    }
+
+    .renew-page .card .title {
+        font-size: 24px;
+    }
+
+    .renew-page label {
+        font-size: 14px;
+    }
+}
+
+/* =========================================
+   صفحة البحث عن موظف
+========================================= */
+
+body.search-page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    background:
+        linear-gradient(rgba(2,14,55,.45),rgba(2,14,55,.72)),
+        url("https://drive.google.com/thumbnail?id=1J8L55XgT49KP5beqo7jLtJAoBM3Y6TzQ&sz=w1600")
+        center center/cover no-repeat fixed;
+}
+
+body.search-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: .55;
+    background:
+        radial-gradient(circle at 8% 24%,rgba(38,186,255,.9) 0 2px,transparent 3px),
+        radial-gradient(circle at 92% 35%,rgba(38,186,255,.9) 0 2px,transparent 3px),
+        radial-gradient(circle at 18% 80%,rgba(38,186,255,.8) 0 2px,transparent 3px),
+        radial-gradient(circle at 84% 75%,rgba(38,186,255,.8) 0 2px,transparent 3px);
+    background-size: 170px 210px,220px 260px,190px 230px,240px 280px;
+    z-index: 0;
+}
+
+.search-page .container {
+    position: relative;
+    z-index: 2;
+    max-width: 720px;
+    margin: auto;
+    padding: 30px 15px 40px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-page .container::before {
+    content: "";
+    display: block;
+    width: 170px;
+    height: 170px;
+    margin: 0 auto 15px;
+    background: url("https://drive.google.com/thumbnail?id=1kGjUhjS3uuabfRTP-W4t0Sk9fEw4JsBb&sz=w1000")
+    center/contain no-repeat;
+}
+
+.search-page .container::after {
+    content: "نظام تسجيل الموظفين والتصاريح\Aإدارة متكاملة وسهلة لموظفيك وتصاريحهم في مكان واحد";
+    white-space: pre-line;
+    display: block;
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 1.9;
+    margin-bottom: 25px;
+    text-shadow: 0 2px 10px rgba(0,0,0,.5);
+}
+
+.search-page .card,
+.search-page .search-card,
+.search-page .result-card {
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(14px);
+    border-radius: 28px;
+    border: 1px solid rgba(255,255,255,.7);
+    box-shadow: 0 18px 45px rgba(0,0,0,.35);
+    padding: 30px;
+    width: 100%;
+}
+
+.search-page input[type=text] {
+    height: 55px;
+    border-radius: 12px;
+    border: 1px solid #dbe6ff;
+    background: #fff;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.search-page input[type=text]:focus {
+    border-color: #1ea7ff;
+    box-shadow: 0 0 0 4px rgba(30,167,255,.15);
+}
+
+.search-page button,
+.search-page .btn {
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    transition: .3s;
+}
+
+.search-page .btn-primary {
+    background: linear-gradient(135deg,#1f8cff,#0066ff);
+}
+
+.search-page .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,110,255,.3);
+}
+
+.search-page .btn-secondary {
+    background: linear-gradient(135deg,#455a80,#26395d);
+}
+
+.search-page img {
+    border-radius: 12px;
+    border: 2px solid #d8e7ff;
+    box-shadow: 0 10px 20px rgba(0,0,0,.15);
+}
+
+.search-page h2,
+.search-page h3 {
+    color: #1364dd;
+    font-weight: 800;
+}
+
+.search-page hr {
+    border-color: #d9e8ff;
+}
+
+@media(max-width:768px) {
+    .search-page .container::before {
+        width: 120px;
+        height: 120px;
+    }
+
+    .search-page .container::after {
+        font-size: 15px;
+    }
+
+    .search-page .card,
+    .search-page .search-card,
+    .search-page .result-card {
+        padding: 20px;
+        border-radius: 22px;
+    }
+}
+
+/* ===== Search Header ===== */
+
+.search-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.search-logo {
+    width: 170px;
+    max-width: 45vw;
+    display: block;
+    margin: auto;
+    filter: drop-shadow(0 10px 25px rgba(0,180,255,.45));
+}
+
+.search-header h1 {
+    margin-top: 18px;
+    margin-bottom: 12px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: 800;
+}
+
 </style>
