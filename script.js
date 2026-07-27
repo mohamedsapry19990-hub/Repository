@@ -24,7 +24,7 @@
 // =========================================================================
 // 🔗 رابط تطبيق Google Apps Script (استبدل هذا الرابط برابط الـ Web App الخاص بك)
 // =========================================================================
-const SCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2dMvVYPBC-C6bJNdLA0bNYqRpA-4scruM6ldlCwxscwqyBNog61e8mDYdyifzftvZVw/exec";
 
 // =========================================================================
 // 🌐 دالة عامة لإرسال البيانات إلى Google Apps Script عبر Fetch API
