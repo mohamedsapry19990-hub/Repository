@@ -44,7 +44,7 @@
 // =========================================================================
 // 🔗 رابط تطبيق Google Apps Script
 // =========================================================================
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2dMvVYPBC-C6bJNdLA0bNYqRpA-4scruM6ldlCwxscwqyBNog61e8mDYdyifzftvZVw/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwDdQjd6boQ7DBBUnsVwE-D9dk9u3qoZypUdVn4vkLJ-k87rFz39unIFharr0KwNosu1g/exec";
 
 // =========================================================================
 // 🌐 دالة إرسال البيانات عبر Fetch API
