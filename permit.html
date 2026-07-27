@@ -2,24 +2,20 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>GPS COMPANY | تقديم تصريح شركة أخرى</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقديم تصريح شركة أخرى | GPS COMPANY</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="permit-page">
 
     <main class="container">
-        <div id="errorBanner" class="alert-banner alert-error"></div>
-        <div id="successBanner" class="alert-banner alert-success"></div>
-
         <section class="card">
-            <h2 class="card-title">تقديم تصريح شركة أخرى</h2>
+            <h2 class="title">تقديم تصريح شركة أخرى</h2>
 
-            <form onsubmit="submitFormData(event, 'تقديم ومعايا تصريح شركة ثانية')">
+            <div id="errorBanner" style="display:none;"></div>
+            <div id="loading">جاري تقديم البيانات... يرجى الانتظار</div>
+
+            <form id="permitForm" onsubmit="event.preventDefault(); savePermit('تقديم ومعايا تصريح شركة ثانية');">
                 <div class="form-group">
                     <label for="name">الاسم بالكامل *</label>
                     <input type="text" id="name" placeholder="أدخل الاسم الرباعي" required>
@@ -37,7 +33,7 @@
 
                 <div class="form-group">
                     <label for="job">المهنة *</label>
-                    <select id="job" onchange="checkSupervisor('job', 'cvContainer')" required>
+                    <select id="job" required>
                         <option value="">اختر المهنة...</option>
                         <option value="فني">فني</option>
                         <option value="عامل">عامل</option>
@@ -51,13 +47,10 @@
                     </select>
                 </div>
 
-                <div class="form-group" id="cvContainer" style="display: none;">
+                <div class="form-group" id="cvContainer">
                     <label for="cvInput">ملف / صورة السيرة الذاتية (CV) * للمشرفين</label>
-                    <div class="file-upload-wrapper">
-                        <input type="file" id="cvInput" accept="image/*,.pdf" onchange="previewImage(this, 'cvPreview')">
-                        <div class="file-upload-btn">📄 اختر ملف الـ CV</div>
-                    </div>
-                    <img id="cvPreview" class="preview-img" alt="معاينة CV">
+                    <input type="file" id="cvInput" accept="image/*,.pdf" onchange="previewCv()">
+                    <img id="cvPreview" class="preview-image" style="display:none;" alt="معاينة الـ CV">
                 </div>
 
                 <div class="form-group">
@@ -65,60 +58,34 @@
                     <input type="text" id="company" placeholder="أدخل اسم الشركة">
                 </div>
 
-                <div class="form-group image-upload-grid">
-                    <div>
-                        <label for="front">وجه البطاقة *</label>
-                        <div class="file-upload-wrapper">
-                            <input type="file" id="front" accept="image/*" onchange="previewImage(this, 'frontPreview')" required>
-                            <div class="file-upload-btn">📷 الوجه الأمامي</div>
-                        </div>
-                        <img id="frontPreview" class="preview-img" alt="وجه البطاقة">
-                    </div>
-
-                    <div>
-                        <label for="back">ظهر البطاقة *</label>
-                        <div class="file-upload-wrapper">
-                            <input type="file" id="back" accept="image/*" onchange="previewImage(this, 'backPreview')" required>
-                            <div class="file-upload-btn">📷 الوجه الخلفي</div>
-                        </div>
-                        <img id="backPreview" class="preview-img" alt="ظهر البطاقة">
-                    </div>
+                <div class="form-group">
+                    <label for="front">صورة وجه البطاقة *</label>
+                    <input type="file" id="front" accept="image/*" onchange="previewFront()" required>
+                    <img id="frontPreview" class="preview-image" style="display:none;" alt="وجه البطاقة">
                 </div>
 
-                <div class="form-group image-upload-grid">
-                    <div>
-                        <label for="permit">صورة التصريح *</label>
-                        <div class="file-upload-wrapper">
-                            <input type="file" id="permit" accept="image/*" onchange="previewImage(this, 'permitPreview')" required>
-                            <div class="file-upload-btn">📑 صورة التصريح</div>
-                        </div>
-                        <img id="permitPreview" class="preview-img" alt="التصريح">
-                    </div>
-
-                    <div>
-                        <label for="clearance">صورة خطابات الممانعة *</label>
-                        <div class="file-upload-wrapper">
-                            <input type="file" id="clearance" accept="image/*" onchange="previewImage(this, 'clearancePreview')" required>
-                            <div class="file-upload-btn">✔ صورة الممانعة</div>
-                        </div>
-                        <img id="clearancePreview" class="preview-img" alt="الممانعة">
-                    </div>
+                <div class="form-group">
+                    <label for="back">صورة ظهر البطاقة *</label>
+                    <input type="file" id="back" accept="image/*" onchange="previewBack()" required>
+                    <img id="backPreview" class="preview-image" style="display:none;" alt="ظهر البطاقة">
                 </div>
 
-                <div id="loading">
-                    <div class="spinner"></div>
-                    جاري تقديم طلب التصريح... يرجى الانتظار
+                <div class="form-group">
+                    <label for="permit">صورة التصريح *</label>
+                    <input type="file" id="permit" accept="image/*" onchange="previewPermit()" required>
+                    <img id="permitPreview" class="preview-image" style="display:none;" alt="صورة التصريح">
                 </div>
 
-                <button type="submit" class="btn-action btn-submit">📩 تقديم طلب التصريح</button>
-                <a href="index.html" class="btn-action btn-back">⬅ العودة للقائمة الرئيسية</a>
+                <div class="form-group">
+                    <label for="clearance">صورة خطابات الممانعة *</label>
+                    <input type="file" id="clearance" accept="image/*" onchange="previewClearance()" required>
+                    <img id="clearancePreview" class="preview-image" style="display:none;" alt="صورة الممانعة">
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn btn-success">تقديم طلب التصريح</button>
+                <button type="button" class="btn btn-secondary" onclick="location.href='index.html'">العودة للقائمة الرئيسية</button>
             </form>
         </section>
-
-        <footer class="footer">
-            <strong>GPS COMPANY</strong>
-            <p>© 2026 جميع الحقوق محفوظة</p>
-        </footer>
     </main>
 
     <script src="script.js"></script>
