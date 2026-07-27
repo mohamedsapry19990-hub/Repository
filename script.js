@@ -1,46 +1,3 @@
-<style>
-/* تنسيق شبكة رفع الصور */
-.image-upload-grid {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 8px !important;
-    padding: 5px 0 !important;
-}
-.image-upload-grid > * {
-    margin: 0 !important;
-    padding: 5px !important;
-}
-.image-upload-grid label,
-.image-upload-grid .form-label {
-    font-size: 13px !important;
-    margin-bottom: 2px !important;
-}
-.image-upload-grid img {
-    max-width: 100% !important;
-    height: auto !important;
-}
-
-/* شريط التنبيهات المدمج للخطأ والنجاح */
-.system-toast-banner {
-    position: fixed;
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 999999;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 15px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    transition: all 0.3s ease;
-    text-align: center;
-    max-width: 90%;
-}
-.system-toast-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-.system-toast-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-</style>
-
-<script>
 // =========================================================================
 // 🔗 رابط تطبيق Google Apps Script
 // =========================================================================
@@ -50,12 +7,18 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwDdQjd6boQ7DBBUnsVw
 // 🌐 دالة إرسال البيانات عبر Fetch API
 // =========================================================================
 async function callApi(payload) {
-    const response = await fetch(SCRIPT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(payload)
-    });
-    return await response.json();
+    try {
+        const response = await fetch(SCRIPT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload)
+        });
+        const resJson = await response.json();
+        return resJson;
+    } catch (err) {
+        console.error("API Call Error:", err);
+        return { status: false, message: "تعذر الاتصال بالسيرفر: " + err.message };
+    }
 }
 
 // =========================================================================
@@ -88,7 +51,7 @@ function triggerSuccess(msg = "تمت العملية بنجاح! ✅") {
 }
 
 //======================================
-// إدارة حالة التحميل وتعطيل الأزرار لمنع الـ Lag والتكرار
+// إدارة حالة التحميل وتعطيل الأزرار لمنع التكرار
 //======================================
 function setUIState(isLoading) {
     const loadingEl = document.getElementById("loading");
@@ -119,6 +82,32 @@ document.addEventListener("DOMContentLoaded", function() {
     document.body.style.overflowY = "auto";
     document.body.style.paddingBottom = "100px";
     if (document.documentElement) document.documentElement.style.overflowY = "auto";
+
+    // حقن ستايلات التنبيهات والشبكة تلقائياً
+    if (!document.getElementById("custom-dynamic-styles")) {
+        const style = document.createElement("style");
+        style.id = "custom-dynamic-styles";
+        style.innerHTML = `
+            .image-upload-grid {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 8px !important;
+                padding: 5px 0 !important;
+            }
+            .image-upload-grid > * { margin: 0 !important; padding: 5px !important; }
+            .image-upload-grid label, .image-upload-grid .form-label { font-size: 13px !important; margin-bottom: 2px !important; }
+            .image-upload-grid img { max-width: 100% !important; height: auto !important; }
+            .system-toast-banner {
+                position: fixed; top: 15px; left: 50%; transform: translateX(-50%);
+                z-index: 999999; padding: 12px 24px; border-radius: 8px;
+                font-weight: bold; font-size: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                transition: all 0.3s ease; text-align: center; max-width: 90%;
+            }
+            .system-toast-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+            .system-toast-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        `;
+        document.head.appendChild(style);
+    }
 
     // ترتيب خانات الصور في شبكة من عمودين
     const clearanceInput = document.getElementById("clearance");
@@ -193,7 +182,7 @@ function fileToBase64(file) {
                 const canvas = document.createElement('canvas');
                 let width = img.width;
                 let height = img.height;
-                const maxDim = 1000; // أبعاد مثالية للسرعة ووضوح البيانات
+                const maxDim = 1000;
 
                 if (width > maxDim || height > maxDim) {
                     if (width > height) {
@@ -287,7 +276,6 @@ async function save(e) {
     showLoading();
 
     try {
-        // ضغط ومعالجة الصور بالتوازي لزيادة السرعة 3x
         const [frontImg, backImg, cvImg] = await Promise.all([
             fileToBase64(getFileInput("front")),
             fileToBase64(getFileInput("back")),
@@ -322,7 +310,6 @@ async function save(e) {
     }
 }
 
-// دالة متواكبة مع أزرار HTML القديمة التي تنادي saveData()
 async function saveData(e) {
     return await save(e);
 }
@@ -433,9 +420,9 @@ async function searchRecord() {
     if (resultEl) resultEl.innerHTML = "";
 
     try {
-        const data = await callApi({ action: "searchData", nationalId: nationalId });
+        const response = await callApi({ action: "searchData", nationalId: nationalId });
         hideLoading();
-        showResult(data);
+        showResult(response);
     } catch (err) {
         hideLoading();
         triggerError("خطأ أثناء البحث: " + err);
@@ -443,16 +430,20 @@ async function searchRecord() {
 }
 
 //======================================
-// عرض نتائج البحث
+// عرض نتائج البحث (معالجة دقيقة للـ Payload)
 //======================================
-function showResult(data) {
+function showResult(response) {
     const result = document.getElementById("result");
     if (!result) return;
 
-    if (!data || data.error || data.status === "not_found") {
-        result.innerHTML = `<div style="text-align:center; color:#dc3545; font-weight:bold; font-size:18px; padding:20px; border:1px solid #f5c6cb; background:#f8d7da; border-radius:8px;">❌ لا يوجد موظف مسجل بهذا الرقم القومي</div>`;
+    if (!response || response.status === false || !response.data) {
+        const msg = response?.message || "❌ لا يوجد موظف مسجل بهذا الرقم القومي";
+        result.innerHTML = `<div style="text-align:center; color:#dc3545; font-weight:bold; font-size:18px; padding:20px; border:1px solid #f5c6cb; background:#f8d7da; border-radius:8px;">${msg}</div>`;
         return;
     }
+
+    // استخراج الكائن الداخلي بحرفية
+    const data = response.data;
 
     let permitHtml = "";
     const permitSrc = data.permit || data.permitImage;
@@ -551,4 +542,3 @@ function previewCv(){
     const cvEl = document.getElementById("cvInput") || document.getElementById("cv");
     previewImage(cvEl, "cvPreview"); 
 }
-</script>
