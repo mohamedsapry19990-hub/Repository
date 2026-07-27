@@ -23,6 +23,7 @@
             font-weight: bold;
             font-size: 15px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            animation: fadeIn 0.4s ease-in-out;
         }
 
         /* تنسيق شريط التنبيه للنجاح (أخضر) */
@@ -36,6 +37,7 @@
             margin-bottom: 20px;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            animation: fadeIn 0.4s ease-in-out;
         }
 
         .alert-banner-success h4 {
@@ -119,6 +121,13 @@
             max-height: 180px;
             border-radius: 8px;
             border: 1px solid #ddd;
+            margin-top: 10px;
+            object-fit: contain;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -142,88 +151,87 @@
 
         <hr>
 
-        <div class="form-group">
-            <label>الاسم بالكامل</label>
-            <input type="text" id="name" class="form-control" placeholder="أدخل الاسم بالكامل">
-        </div>
+        <form id="renewForm">
+            <div class="form-group">
+                <label>الاسم بالكامل</label>
+                <input type="text" id="name" class="form-control" placeholder="أدخل الاسم بالكامل" required>
+            </div>
 
-        <div class="form-group">
-            <label>الرقم القومي</label>
-            <input type="text" id="nationalId" class="form-control" maxlength="14" placeholder="14 رقم" oninput="this.value = this.value.replace(/\D/g, '')">
-        </div>
+            <div class="form-group">
+                <label>الرقم القومي</label>
+                <input type="text" id="nationalId" class="form-control" maxlength="14" placeholder="14 رقم" required oninput="this.value = this.value.replace(/\D/g, '')">
+            </div>
 
-        <div class="form-group">
-            <label>رقم الهاتف</label>
-            <input type="text" id="phone" class="form-control" placeholder="01xxxxxxxxx">
-        </div>
+            <div class="form-group">
+                <label>رقم الهاتف</label>
+                <input type="text" id="phone" class="form-control" placeholder="01xxxxxxxxx" required>
+            </div>
 
-        <div class="form-group" style="margin-bottom: 25px;">
-            <label style="font-weight: bold; font-size: 16px; margin-bottom: 8px; display: block;">المهنة</label>
-            <div class="custom-select-wrapper" id="jobSelectWrapper">
-                <div class="custom-select-trigger" id="jobTrigger">-- اختر المهنة من القائمة --</div>
-                <input type="hidden" id="job">
-                <div class="custom-options">
-                    <div class="custom-option" data-value="نجار مسلح">نجار مسلح</div>
-                    <div class="custom-option" data-value="حداد مسلح">حداد مسلح</div>
-                    <div class="custom-option" data-value="شده معدنيه">شده معدنيه</div>
-                    <div class="custom-option" data-value="مساعدين">مساعدين</div>
-                    <div class="custom-option" data-value="فرمجي خرسانه">فرمجي خرسانه</div>
-                    <div class="custom-option" data-value="بحريه">بحريه</div>
-                    <div class="custom-option" data-value="عزل">عزل</div>
-                    <div class="custom-option" data-value="كهربائي">كهربائي</div>
-                    <div class="custom-option" data-value="حجار">حجار</div>
-                    <div class="custom-option" data-value="مساح">مساح</div>
-                    <div class="custom-option" data-value="مساعد مساح">مساعد مساح</div>
+            <div class="form-group" style="margin-bottom: 25px;">
+                <label style="font-weight: bold; font-size: 16px; margin-bottom: 8px; display: block;">المهنة</label>
+                <div class="custom-select-wrapper" id="jobSelectWrapper">
+                    <div class="custom-select-trigger" id="jobTrigger">-- اختر المهنة من القائمة --</div>
+                    <input type="hidden" id="job" required>
+                    <div class="custom-options">
+                        <div class="custom-option" data-value="نجار مسلح">نجار مسلح</div>
+                        <div class="custom-option" data-value="حداد مسلح">حداد مسلح</div>
+                        <div class="custom-option" data-value="شده معدنيه">شده معدنيه</div>
+                        <div class="custom-option" data-value="مساعدين">مساعدين</div>
+                        <div class="custom-option" data-value="فرمجي خرسانه">فرمجي خرسانه</div>
+                        <div class="custom-option" data-value="بحريه">بحريه</div>
+                        <div class="custom-option" data-value="عزل">عزل</div>
+                        <div class="custom-option" data-value="كهربائي">كهربائي</div>
+                        <div class="custom-option" data-value="حجار">حجار</div>
+                        <div class="custom-option" data-value="مساح">مساح</div>
+                        <div class="custom-option" data-value="مساعد مساح">مساعد مساح</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="form-group" style="margin-bottom: 25px;">
-            <label style="font-weight: bold; font-size: 16px; margin-bottom: 8px; display: block;">اسم الشركة</label>
-            <div class="custom-select-wrapper" id="companySelectWrapper">
-                <div class="custom-select-trigger" id="companyTrigger">-- اختر اسم الشركة --</div>
-                <input type="hidden" id="company">
-                <div class="custom-options">
-                    <div class="custom-option" data-value="GPS">GPS</div>
+            <div class="form-group" style="margin-bottom: 25px;">
+                <label style="font-weight: bold; font-size: 16px; margin-bottom: 8px; display: block;">اسم الشركة</label>
+                <div class="custom-select-wrapper" id="companySelectWrapper">
+                    <div class="custom-select-trigger" id="companyTrigger">-- اختر اسم الشركة --</div>
+                    <input type="hidden" id="company" required>
+                    <div class="custom-options">
+                        <div class="custom-option" data-value="GPS">GPS</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <hr>
+            <hr>
 
-        <div class="form-group">
-            <label>صورة البطاقة (الوجه)</label>
-            <input type="file" id="front" accept="image/*" class="form-control" onchange="previewImage(this, 'frontPreview')">
-            <br>
-            <img id="frontPreview" class="preview-image" style="display:none;">
-        </div>
+            <div class="form-group">
+                <label>صورة البطاقة (الوجه)</label>
+                <input type="file" id="front" accept="image/*" class="form-control" required onchange="previewImage(this, 'frontPreview')">
+                <img id="frontPreview" class="preview-image" style="display:none;">
+            </div>
 
-        <div class="form-group">
-            <label>صورة البطاقة (الخلف)</label>
-            <input type="file" id="back" accept="image/*" class="form-control" onchange="previewImage(this, 'backPreview')">
-            <br>
-            <img id="backPreview" class="preview-image" style="display:none;">
-        </div>
+            <div class="form-group">
+                <label>صورة البطاقة (الخلف)</label>
+                <input type="file" id="back" accept="image/*" class="form-control" required onchange="previewImage(this, 'backPreview')">
+                <img id="backPreview" class="preview-image" style="display:none;">
+            </div>
 
-        <div class="form-group">
-            <label>صورة التصريح (القديم)</label>
-            <input type="file" id="permit" accept="image/*" class="form-control" onchange="previewImage(this, 'permitPreview')">
-            <br>
-            <img id="permitPreview" class="preview-image" style="display:none;">
-        </div>
+            <div class="form-group">
+                <label>صورة التصريح (القديم)</label>
+                <input type="file" id="permit" accept="image/*" class="form-control" required onchange="previewImage(this, 'permitPreview')">
+                <img id="permitPreview" class="preview-image" style="display:none;">
+            </div>
 
-        <hr>
+            <hr>
 
-        <button type="button" class="btn btn-info" style="width: 100%; background-color: #17a2b8; color: white;" onclick="validateAndSave()">
-            💾 إرسال طلب التجديد
-        </button>
+            <button type="button" id="submitBtn" class="btn btn-info" style="width: 100%; background-color: #17a2b8; color: white;" onclick="validateAndSave()">
+                💾 إرسال طلب التجديد
+            </button>
 
-        <button type="button" class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="goHome()">
-            🏠 العودة للرئيسية
-        </button>
+            <button type="button" class="btn btn-secondary" style="width: 100%; margin-top: 10px;" onclick="goHome()">
+                🏠 العودة للرئيسية
+            </button>
+        </form>
 
         <div id="loading" style="display:none; text-align:center; margin-top:20px; color:#17a2b8; font-weight:bold;">
-            ⏳ جاري إرسال الطلب...
+            ⏳ جاري ضغط الصور وإرسال الطلب...
         </div>
     </div>
 </div>
@@ -237,6 +245,11 @@
     const jobTrigger = document.getElementById('jobTrigger');
     const jobInput = document.getElementById('job');
     const jobOptions = jobWrapper.querySelectorAll('.custom-option');
+
+    const companyWrapper = document.getElementById('companySelectWrapper');
+    const companyTrigger = document.getElementById('companyTrigger');
+    const companyInput = document.getElementById('company');
+    const companyOptions = companyWrapper.querySelectorAll('.custom-option');
 
     jobTrigger.addEventListener('click', function (e) {
         e.stopPropagation();
@@ -255,11 +268,6 @@
             this.classList.add('selected');
         });
     });
-
-    const companyWrapper = document.getElementById('companySelectWrapper');
-    const companyTrigger = document.getElementById('companyTrigger');
-    const companyInput = document.getElementById('company');
-    const companyOptions = companyWrapper.querySelectorAll('.custom-option');
 
     companyTrigger.addEventListener('click', function (e) {
         e.stopPropagation();
@@ -323,20 +331,47 @@
         }
     }
 
-    function validateAndSave() {
-        hideErrorBanner();
-        var nationalId = document.getElementById('nationalId').value.trim();
-        
-        if (nationalId.length !== 14) {
-            showErrorBanner('الرقم القومي غير مكتمل! يجب أن يحتوي على 14 رقماً بالضبط.');
-            return;
-        }
-        
-        document.getElementById('loading').style.display = 'block';
-        processImagesAndSave();
+    // ضغط الصور لحجم خفيف يضمن الرفع السريع وعدم تجاوز سعة Apps Script
+    function fileToBase64Optimized(file) {
+        return new Promise((resolve, reject) => {
+            if (!file) return resolve("");
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    const maxDim = 1000;
+
+                    if (width > maxDim || height > maxDim) {
+                        if (width > height) {
+                            height = Math.round((height * maxDim) / width);
+                            width = maxDim;
+                        } else {
+                            width = Math.round((width * maxDim) / height);
+                            height = maxDim;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    resolve(canvas.toDataURL('image/jpeg', 0.70));
+                };
+                img.onerror = () => resolve(e.target.result);
+                img.src = e.target.result;
+            };
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
     }
 
-    function processImagesAndSave() {
+    async function validateAndSave() {
+        hideErrorBanner();
+
         const name = document.getElementById('name').value.trim();
         const nationalId = document.getElementById('nationalId').value.trim();
         const phone = document.getElementById('phone').value.trim();
@@ -348,66 +383,75 @@
         const permitFile = document.getElementById('permit').files[0];
 
         if (!name || !nationalId || !phone || !job || !company || !frontFile || !backFile || !permitFile) {
-            document.getElementById('loading').style.display = 'none';
             showErrorBanner('الرجاء إدخال جميع البيانات المطلوبة وإرفاق كافة الصور!');
             return;
         }
 
-        readFilesAsBase64([frontFile, backFile, permitFile], function(base64Images) {
+        if (nationalId.length !== 14) {
+            showErrorBanner('الرقم القومي غير مكتمل! يجب أن يحتوي على 14 رقماً بالضبط.');
+            return;
+        }
+
+        const submitBtn = document.getElementById('submitBtn');
+        const loading = document.getElementById('loading');
+
+        submitBtn.disabled = true;
+        loading.style.display = 'block';
+
+        try {
+            // ضغط الصور الثلاث معاً بشكل متوازي
+            const [frontBase64, backBase64, permitBase64] = await Promise.all([
+                fileToBase64Optimized(frontFile),
+                fileToBase64Optimized(backFile),
+                fileToBase64Optimized(permitFile)
+            ]);
+
             const payload = {
+                action: "saveData",
                 type: "تجديد التصريح",
                 name: name,
                 nationalId: nationalId,
                 phone: phone,
                 job: job,
                 company: company,
-                frontImage: base64Images[0],
-                backImage: base64Images[1],
-                permitImage: base64Images[2]
+                frontImage: frontBase64,
+                backImage: backBase64,
+                permitImage: permitBase64
             };
 
-            // استدعاء دالة الإرسال المعرفة في script.js
-            if (typeof saveData === 'function') {
-                saveData(payload).then(handleServerResponse).catch(err => {
-                    document.getElementById('loading').style.display = 'none';
-                    showErrorBanner("حدث خطأ أثناء الاتصال بالخادم: " + err.message);
-                });
+            let apiCallPromise;
+            if (typeof callApi === 'function') {
+                apiCallPromise = callApi(payload);
+            } else if (typeof saveData === 'function') {
+                apiCallPromise = saveData(payload);
             } else {
-                document.getElementById('loading').style.display = 'none';
-                showErrorBanner("دالة saveData غير معرفة في script.js");
+                const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2dMvVYPBC-C6bJNdLA0bNYqRpA-4scruM6ldlCwxscwqyBNog61e8mDYdyifzftvZVw/exec";
+                apiCallPromise = fetch(SCRIPT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify(payload)
+                }).then(res => res.json());
             }
-        });
-    }
 
-    function readFilesAsBase64(files, callback) {
-        let results = [];
-        let completed = 0;
-        files.forEach((file, index) => {
-            let reader = new FileReader();
-            reader.onload = function(e) {
-                results[index] = e.target.result;
-                completed++;
-                if (completed === files.length) {
-                    callback(results);
-                }
-            };
-            reader.readAsDataURL(file);
-        });
-    }
+            const res = await apiCallPromise;
+            loading.style.display = 'none';
+            submitBtn.disabled = false;
 
-    function handleServerResponse(res) {
-        document.getElementById('loading').style.display = 'none';
-        if (res && res.status) {
-            showSuccessBanner();
-        } else {
-            showErrorBanner(res ? res.message : 'حدث خطأ غير متوقع');
+            if (res && (res.status === true || res.status === "success")) {
+                showSuccessBanner();
+            } else {
+                showErrorBanner(res ? res.message : 'حدث خطأ أثناء إرسال طلب التجديد');
+            }
+
+        } catch (err) {
+            loading.style.display = 'none';
+            submitBtn.disabled = false;
+            showErrorBanner("حدث خطأ أثناء الاتصال بالخادم أو معالجة الصور: " + err.message);
         }
     }
 
     function resetFormFields() {
-        document.getElementById('name').value = '';
-        document.getElementById('nationalId').value = '';
-        document.getElementById('phone').value = '';
+        document.getElementById('renewForm').reset();
         
         document.getElementById('job').value = '';
         jobTrigger.textContent = '-- اختر المهنة من القائمة --';
@@ -418,10 +462,6 @@
         companyTrigger.textContent = '-- اختر اسم الشركة --';
         companyTrigger.style.color = '#333';
         companyOptions.forEach(opt => opt.classList.remove('selected'));
-        
-        document.getElementById('front').value = '';
-        document.getElementById('back').value = '';
-        document.getElementById('permit').value = '';
 
         document.getElementById('frontPreview').style.display = 'none';
         document.getElementById('backPreview').style.display = 'none';
