@@ -30,11 +30,12 @@
         }
         .preview-img {
             max-width: 100%;
-            max-height: 180px;
+            max-height: 150px;
             margin-top: 10px;
             border-radius: 8px;
             display: none;
             border: 1px solid #ddd;
+            object-fit: contain;
         }
         
         /* القائمة المنسدلة المخصصة للموبايل */
@@ -143,7 +144,7 @@
                 
                 <div class="custom-select-wrapper" id="jobSelectWrapper">
                     <div class="custom-select-trigger" id="jobTrigger">-- اختر المهنة من القائمة --</div>
-                    <input type="hidden" name="job" id="jobValue" required>
+                    <input type="hidden" name="job" id="job" required>
                     <div class="custom-options">
                         <div class="custom-option" data-value="نجار مسلح">نجار مسلح</div>
                         <div class="custom-option" data-value="حداد مسلح">حداد مسلح</div>
@@ -167,7 +168,7 @@
             <!-- حقل رفع الـ CV (يظهر للمشرفين) -->
             <div class="form-group" id="cvContainer" style="display: none; background: #eef2f7; padding: 15px; border-radius: 8px; border: 1px dashed #007bff; margin-bottom: 25px;">
                 <label style="color: #0056b3; font-weight: bold;">رفع ملف الـ CV بصيغة PDF فقط (إلزامي للمشرفين)</label>
-                <input type="file" id="cvInput" accept="application/pdf,.pdf" class="form-control" onchange="handleCvFile(this)">
+                <input type="file" id="cv" name="cv" accept="application/pdf,.pdf" class="form-control" onchange="handleCvFile(this)">
                 <div id="cvFileName" style="margin-top:8px; font-size:14px; color:#0056b3; font-weight:bold; display:none;"></div>
             </div>
 
@@ -175,13 +176,13 @@
 
             <div class="form-group">
                 <label>صورة البطاقة (الوجه الأمامي)</label>
-                <input type="file" id="frontInput" accept="image/*" class="form-control" required onchange="previewFile(this, 'frontPreview')">
+                <input type="file" id="front" name="front" accept="image/*" class="form-control" required onchange="previewFile(this, 'frontPreview')">
                 <img id="frontPreview" class="preview-img" alt="معاينة الوجه الأمامي">
             </div>
 
             <div class="form-group">
                 <label>صورة البطاقة (الوجه الخلفي)</label>
-                <input type="file" id="backInput" accept="image/*" class="form-control" required onchange="previewFile(this, 'backPreview')">
+                <input type="file" id="back" name="back" accept="image/*" class="form-control" required onchange="previewFile(this, 'backPreview')">
                 <img id="backPreview" class="preview-img" alt="معاينة الوجه الخلفي">
             </div>
 
@@ -195,7 +196,7 @@
         </form>
 
         <div id="loading" style="display: none; text-align: center; margin-top: 15px; color: #007bff; font-weight: bold;">
-            ⏳ جاري حفظ البيانات ......
+            ⏳ جاري ضغط الصور وحفظ البيانات ......
         </div>
     </div>
 </div>
@@ -207,7 +208,7 @@
     // تفعيل القائمة المنسدلة المخصصة
     const selectWrapper = document.getElementById('jobSelectWrapper');
     const selectTrigger = document.getElementById('jobTrigger');
-    const jobInput = document.getElementById('jobValue');
+    const jobInput = document.getElementById('job');
     const optionsList = document.querySelectorAll('.custom-option');
 
     selectTrigger.addEventListener('click', function (e) {
@@ -241,7 +242,7 @@
     function toggleCvField() {
         const jobValue = jobInput.value;
         const cvContainer = document.getElementById('cvContainer');
-        const cvInput = document.getElementById('cvInput');
+        const cvInput = document.getElementById('cv');
         const supervisorsList = ['مشرف شدة', 'مشرف لحام', 'مشرف عام', 'مشرف إنشائي'];
         
         if (supervisorsList.includes(jobValue)) {
@@ -303,14 +304,51 @@
         }
     }
 
-    // تحويل الملف لصيغة Base64
-    function getBase64(file) {
+    // تحويل وضغط ملفات الصور والـ PDF بسرعة عالية جداً
+    function fileToBase64Optimized(file) {
         return new Promise((resolve, reject) => {
-            if (!file) resolve("");
+            if (!file) return resolve("");
+
+            // إذا كان الملف PDF يتم تحويله مباشر بدون ضغط
+            if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+                return;
+            }
+
+            // ضغط الصور لحجم خفيف وسريع جداً للرفع
             const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    const maxDim = 1000;
+
+                    if (width > maxDim || height > maxDim) {
+                        if (width > height) {
+                            height = Math.round((height * maxDim) / width);
+                            width = maxDim;
+                        } else {
+                            width = Math.round((width * maxDim) / height);
+                            height = maxDim;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    resolve(canvas.toDataURL('image/jpeg', 0.70));
+                };
+                img.onerror = () => resolve(e.target.result);
+                img.src = e.target.result;
+            };
             reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
         });
     }
 
@@ -333,19 +371,27 @@
             return;
         }
 
+        const jobValue = jobInput.value;
+        if (!jobValue) {
+            alertBox.className = 'alert-custom alert-danger-custom';
+            alertBox.innerHTML = '❌ يرجى اختيار المهنة من القائمة المنسدلة.';
+            alertBox.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return;
+        }
+
         submitBtn.disabled = true;
         loading.style.display = 'block';
 
         try {
-            const frontFile = document.getElementById('frontInput').files[0];
-            const backFile = document.getElementById('backInput').files[0];
+            const frontFile = document.getElementById('front').files[0];
+            const backFile = document.getElementById('back').files[0];
             
-            const jobValue = jobInput.value;
             const supervisorsList = ['مشرف شدة', 'مشرف لحام', 'مشرف عام', 'مشرف إنشائي'];
             let cvBase64 = "";
             
             if (supervisorsList.includes(jobValue)) {
-                const cvFile = document.getElementById('cvInput').files[0];
+                const cvFile = document.getElementById('cv').files[0];
 
                 if (!cvFile) {
                     loading.style.display = 'none';
@@ -368,13 +414,17 @@
                     return;
                 }
 
-                cvBase64 = await getBase64(cvFile);
+                cvBase64 = await fileToBase64Optimized(cvFile);
             }
 
-            const frontBase64 = await getBase64(frontFile);
-            const backBase64 = await getBase64(backFile);
+            // ضغط وتحويل صور البطاقة بالتوازي لسرعة فائقة
+            const [frontBase64, backBase64] = await Promise.all([
+                fileToBase64Optimized(frontFile),
+                fileToBase64Optimized(backFile)
+            ]);
 
             const payload = {
+                action: "saveData",
                 type: "تسجيل موظف جديد",
                 name: document.getElementById('name').value,
                 nationalId: nationalIdValue,
@@ -386,52 +436,59 @@
                 cvImage: cvBase64
             };
 
-            // الاتصال بالـ Backend من خلال الدالة المعرفة في script.js
-            if (typeof saveData === 'function') {
-                saveData(payload).then(response => {
-                    loading.style.display = 'none';
-                    submitBtn.disabled = false;
-
-                    if (response && response.status) {
-                        alertBox.className = 'alert-custom alert-success-custom';
-                        alertBox.innerHTML = '✅ <strong>تم حفظ البيانات بنجاح!</strong><br><small>بيانات حضرتك وصلت بنجاح وإن شاء الله تصريح حضرتك يطلع في أقرب وقت.</small>';
-                        alertBox.style.display = 'block';
-
-                        document.getElementById('registerForm').reset();
-                        selectTrigger.textContent = '-- اختر المهنة من القائمة --';
-                        selectTrigger.style.color = '#333';
-                        jobInput.value = '';
-                        optionsList.forEach(opt => opt.classList.remove('selected'));
-
-                        document.getElementById('frontPreview').style.display = 'none';
-                        document.getElementById('backPreview').style.display = 'none';
-                        document.getElementById('cvFileName').style.display = 'none';
-                        document.getElementById('cvFileName').innerText = '';
-                        document.getElementById('cvContainer').style.display = 'none';
-                        
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    } else {
-                        alertBox.className = 'alert-custom alert-danger-custom';
-                        alertBox.innerHTML = '❌ ' + (response ? response.message : 'حدث خطأ أثناء حفظ البيانات');
-                        alertBox.style.display = 'block';
-                    }
-                }).catch(err => {
-                    loading.style.display = 'none';
-                    submitBtn.disabled = false;
-                    alertBox.className = 'alert-custom alert-danger-custom';
-                    alertBox.innerHTML = '❌ حدث خطأ أثناء الاتصال بالخادم: ' + err.message;
-                    alertBox.style.display = 'block';
-                });
+            // الرفع إما عن طريق callApi المباشرة أو saveData المعرفة في script.js
+            let apiCallPromise;
+            if (typeof callApi === 'function') {
+                apiCallPromise = callApi(payload);
+            } else if (typeof saveData === 'function') {
+                apiCallPromise = saveData(payload);
             } else {
-                throw new Error("دالة saveData غير معرفة في script.js");
+                // Fallback direct Fetch
+                const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2dMvVYPBC-C6bJNdLA0bNYqRpA-4scruM6ldlCwxscwqyBNog61e8mDYdyifzftvZVw/exec";
+                apiCallPromise = fetch(SCRIPT_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify(payload)
+                }).then(res => res.json());
+            }
+
+            const response = await apiCallPromise;
+            loading.style.display = 'none';
+            submitBtn.disabled = false;
+
+            if (response && (response.status === true || response.status === "success")) {
+                alertBox.className = 'alert-custom alert-success-custom';
+                alertBox.innerHTML = '✅ <strong>تم حفظ البيانات بنجاح!</strong><br><small>بيانات حضرتك وصلت بنجاح وإن شاء الله تصريح حضرتك يطلع في أقرب وقت.</small>';
+                alertBox.style.display = 'block';
+
+                // إعاده ضبط العناصر
+                document.getElementById('registerForm').reset();
+                selectTrigger.textContent = '-- اختر المهنة من القائمة --';
+                selectTrigger.style.color = '#333';
+                jobInput.value = '';
+                optionsList.forEach(opt => opt.classList.remove('selected'));
+
+                document.getElementById('frontPreview').style.display = 'none';
+                document.getElementById('backPreview').style.display = 'none';
+                document.getElementById('cvFileName').style.display = 'none';
+                document.getElementById('cvFileName').innerText = '';
+                document.getElementById('cvContainer').style.display = 'none';
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                alertBox.className = 'alert-custom alert-danger-custom';
+                alertBox.innerHTML = '❌ ' + (response ? response.message : 'حدث خطأ أثناء حفظ البيانات أو الرقم القومي مسجل مسبقاً');
+                alertBox.style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
 
         } catch (err) {
             loading.style.display = 'none';
             submitBtn.disabled = false;
             alertBox.className = 'alert-custom alert-danger-custom';
-            alertBox.innerHTML = '❌ حدث خطأ في معالجة الصور أو الملفات: ' + err.message;
+            alertBox.innerHTML = '❌ حدث خطأ أثناء الاتصال أو معالجة الصور: ' + err.message;
             alertBox.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     });
 
